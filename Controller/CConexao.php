@@ -3,7 +3,7 @@ class CConexao {
     private $servername = "localhost";
     private $username = "root";
     private $password = "";
-    private $dbname = "Biblioteca";
+    private $dbname = "biblioteca";
     private $conn;
 
     public function __construct() {

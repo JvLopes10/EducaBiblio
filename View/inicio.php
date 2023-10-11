@@ -1,3 +1,11 @@
+<?php
+
+include('../Controller/CConexao.php');
+$conexaoObj = new CConexao();
+$conn = $conexaoObj->getConnection();
+session_start();
+
+?>
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -24,49 +32,49 @@
 		</a>
 		<ul class="side-menu top">
 			<li class="active">
-				<a href="inicio.html">
+				<a href="inicio.php">
 					<i class='fas fa-home'></i>
 					<span class="text">Início</span>
 				</a>
 			</li>
 			<li>
-				<a href="livros.html">
+				<a href="livros.php">
 					<i class="fas fa-book"></i>
 					<span class="text">Livros</span>
 				</a>
 			</li>
 			<li>
-				<a href="emprestimos.html">
+				<a href="emprestimos.php">
 					<i class="fas fa-undo"></i>
 					<span class="text">Empréstimos</span>
 				</a>
 			</li>
 			<li>
-				<a href="devolucao.html">
+				<a href="devolucao.php">
 					<i class="fas fa-arrow-left"></i>
 					<span class="text">Devoluções</span>
 				</a>
 			</li>
 			<li>
-				<a href="aluno.html">
+				<a href="aluno.php">
 					<i class="fas fa-graduation-cap"></i>
 					<span class="text">Alunos</span>
 				</a>
 			</li>
 			<li>
-				<a href="turma.html">
+				<a href="turma.php">
 					<i class="fas fa-users"></i>
 					<span class="text">Turma</span>
 				</a>
 			</li>
 			<li>
-				<a href="recomendacoes.html">
+				<a href="recomendacoes.php">
 					<i class="fas fa-download"></i>
 					<span class="text">Recomendações</span>
 				</a>
 			</li>
 			<li>
-				<a href="usuarios.html">
+				<a href="usuarios.php">
 					<i class="fas fa-cogs"></i>
 					<span class="text">Usuários</span>
 				</a>
@@ -74,7 +82,7 @@
 		</ul>
 		<ul class="side-menu">
 			<li>
-				<a href="login.html" class="logout">
+				<a href="login.php" class="logout">
 					<i class="fas fa-sign-out-alt"></i>
 					<span class="text">Deslogar</span>
 				</a>
@@ -96,7 +104,8 @@
 				<div id="menu-btn" class="fas fa-question" onclick="abrirPDFEmNovaAba()"></div>
 			</div>
 
-			<script>function abrirPDFEmNovaAba() {
+			<script>
+				function abrirPDFEmNovaAba() {
 					var urlDoPDF = "../img/Manual.pdf";
 					window.open(urlDoPDF, '_blank');
 				}
@@ -110,7 +119,15 @@
 		<main>
 			<div class="head-title">
 				<div class="left">
-					<h1>Olá, <b>Administrador 👋</b>!</h1>
+					<h1>Olá, <b><?php
+								if (isset($_SESSION['usuario_logado']) && $_SESSION['usuario_logado'] === true) {
+									$nomeDoUsuario = $_SESSION['nomeDoUsuario'];
+									echo $nomeDoUsuario; // Exibe o nome do usuário
+								} else {
+									// Usuário não está logado, redireciona ou exibe uma mensagem de erro
+								}
+								?> 👋</b>!</h1>
+
 					<style type="text/css">
 						b {
 							color: #32CD32;
@@ -124,21 +141,84 @@
 				<li>
 					<i class="fas fa-graduation-cap"></i>
 					<span class="text">
-						<h3>120</h3>
+						<h3><?php
+
+							try {
+								// Consulta SQL para contar o número de alunos
+								$sql = "SELECT COUNT(*) as total FROM aluno";
+								$stmt = $conn->prepare($sql);
+								$stmt->execute();
+								$result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+								if ($result) {
+									$totalAlunos = $result['total'];
+								} else {
+									$totalAlunos = 0;
+								}
+
+								echo $totalAlunos;
+							} catch (PDOException $e) {
+								// Erro na conexão ou consulta SQL
+								echo "Erro: " . $e->getMessage();
+							}
+
+							?></h3>
 						<p>Alunos cadastrados</p>
 					</span>
 				</li>
 				<li>
 					<i class="fas fa-address-book"></i>
 					<span class="text">
-						<h3>120</h3>
+						<h3><?php
+
+							try {
+								// Consulta SQL para contar o número de alunos
+								$sql = "SELECT COUNT(*) as total FROM empestimo";
+								$stmt = $conn->prepare($sql);
+								$stmt->execute();
+								$result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+								if ($result) {
+									$totalAlunos = $result['total'];
+								} else {
+									$totalAlunos = 0;
+								}
+
+								echo $totalAlunos;
+							} catch (PDOException $e) {
+								// Erro na conexão ou consulta SQL
+								echo "Erro: " . $e->getMessage();
+							}
+
+							?></h3>
 						<p>Empréstimos</p>
 					</span>
 				</li>
 				<li>
 					<i class="fas fa-users"></i>
 					<span class="text">
-						<h3>120</h3>
+						<h3><?php
+
+							try {
+								// Consulta SQL para contar o número de alunos
+								$sql = "SELECT COUNT(*) as total FROM devolucao";
+								$stmt = $conn->prepare($sql);
+								$stmt->execute();
+								$result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+								if ($result) {
+									$totalAlunos = $result['total'];
+								} else {
+									$totalAlunos = 0;
+								}
+
+								echo $totalAlunos;
+							} catch (PDOException $e) {
+								// Erro na conexão ou consulta SQL
+								echo "Erro: " . $e->getMessage();
+							}
+
+							?></h3>
 						<p>Pendências</p>
 					</span>
 				</li>
@@ -236,11 +316,11 @@
 						<tbody>
 							<tr>
 								<td>
-										<center>Maria Raquel</center>
+									<center>Maria Raquel</center>
 								</td>
 								<td>
 									<center>1</center>
-							</td>
+								</td>
 								<td>
 									<center>3º</center>
 								</td>
@@ -259,11 +339,11 @@
 							</tr>
 							<tr>
 								<td>
-										<center>Paulo Jefferson</center>
+									<center>Paulo Jefferson</center>
 								</td>
 								<td>
 									<center>2</center>
-							</td>
+								</td>
 								<td>
 									<center>3º</center>
 								</td>
@@ -282,11 +362,11 @@
 							</tr>
 							<tr>
 								<td>
-										<center>Maria Isabel</center>
+									<center>Maria Isabel</center>
 								</td>
 								<td>
 									<center>3</center>
-							</td>
+								</td>
 								<td>
 									<center>3º</center>
 								</td>

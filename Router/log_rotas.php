@@ -1,17 +1,14 @@
-<?php
- if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+<?php 
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['action']) && $_POST['action'] === 'Cadastrar') {
         echo "Ação de salvar_usuario detectada"; // Mensagem de depuração
         include('../Controller/CCad_usu.php');
         $usuarioController = new UsuarioController();
         $usuarioController->salvarUsuario($_POST);
-    }
-}
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($_POST['action']) && $_POST['action'] === 'Entrar') {
+    } elseif (isset($_POST['action']) && $_POST['action'] === 'Entrar') {
         // Obtenha os dados do formulário
         $username = $_POST['UserUsuario'];
-        $password = $_POST['SenhaUsuario']; // Corrigido o nome do campo
+        $password = $_POST['SenhaUsuario'];
 
         // Inclua sua conexão com o banco de dados aqui
         include('../Controller/CConexao.php');
@@ -23,8 +20,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Credenciais corretas, efetue o login
             // Você pode definir uma variável de sessão ou outra lógica de autenticação aqui
             // Em seguida, redirecione para a página de sucesso ou área restrita
+
             session_start();
-            $_SESSION['usuario_logado'] = true; // Exemplo de variável de sessão
+            $_SESSION['usuario_logado'] = true;
+            
+            // Recupere o nome do usuário do banco de dados (substitua com sua consulta SQL)
+            $nomeDoUsuario = obterNomeDoUsuario($conn, $username);
+            $_SESSION['nomeDoUsuario'] = $nomeDoUsuario;
+
             header("Location: ../View/inicio.php");
             exit();
         } else {
@@ -34,18 +37,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-
 // Função para verificar as credenciais do usuário (baseada no seu banco de dados)
-function verificarCredenciais($conn, $username, $password) {
+function verificarCredenciais($conn, $username, $password)
+{
     try {
         // Consulta SQL para verificar as credenciais
-        $sql = "SELECT * FROM usuario WHERE UserUsuario = :username";
+        $sql = "SELECT SenhaUsuario FROM usuario WHERE UserUsuario = :username";
         $stmt = $conn->prepare($sql);
         $stmt->bindParam(':username', $username);
         $stmt->execute();
-        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+        $storedPassword = $stmt->fetch(PDO::FETCH_COLUMN);
 
-        if ($user && password_verify($password, $user['SenhaUsuario'])) {
+        if ($storedPassword === $password) {
             // Senha correta, autenticação bem-sucedida
             return true;
         } else {
@@ -56,5 +59,27 @@ function verificarCredenciais($conn, $username, $password) {
         // Erro na conexão ou consulta SQL
         echo "Erro: " . $e->getMessage();
         return false;
+    }
+}
+
+// Função para obter o nome do usuário a partir do banco de dados
+function obterNomeDoUsuario($conn, $username)
+{
+    try {
+        $sql = "SELECT UserUsuario FROM usuario WHERE UserUsuario = :username";
+        $stmt = $conn->prepare($sql);
+        $stmt->bindParam(':username', $username);
+        $stmt->execute();
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($user) {
+            return $user['UserUsuario'];
+        } else {
+            return "";
+        }
+    } catch (PDOException $e) {
+        // Erro na conexão ou consulta SQL
+        echo "Erro: " . $e->getMessage();
+        return "";
     }
 }

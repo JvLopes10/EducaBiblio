@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Tempo de geração: 08-Out-2023 às 01:15
+-- Tempo de geração: 11-Out-2023 às 13:57
 -- Versão do servidor: 8.0.31
 -- versão do PHP: 8.0.26
 
@@ -32,7 +32,20 @@ CREATE TABLE IF NOT EXISTS `altor` (
   `idAltor` int NOT NULL AUTO_INCREMENT,
   `NomeAltor` varchar(100) NOT NULL,
   PRIMARY KEY (`idAltor`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb3;
+
+--
+-- Extraindo dados da tabela `altor`
+--
+
+INSERT INTO `altor` (`idAltor`, `NomeAltor`) VALUES
+(7, 'Rick Barba'),
+(8, 'Rick Barba'),
+(9, 'Neil Gaiman'),
+(10, 'Neil Gaiman'),
+(11, 'Antoine de Saint-Exupéry'),
+(15, 'J. K. Rolling'),
+(16, 'P.J. Deitel');
 
 -- --------------------------------------------------------
 
@@ -91,7 +104,20 @@ CREATE TABLE IF NOT EXISTS `genero` (
   `NomeGenero` varchar(50) NOT NULL,
   `DidaticoGenero` varchar(45) NOT NULL,
   PRIMARY KEY (`idGenero`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb3;
+
+--
+-- Extraindo dados da tabela `genero`
+--
+
+INSERT INTO `genero` (`idGenero`, `NomeGenero`, `DidaticoGenero`) VALUES
+(7, '5', 'Não'),
+(8, '5', 'Não'),
+(9, '5', 'Não'),
+(10, '5', 'Não'),
+(11, '5', 'Sim'),
+(15, '5', 'Não'),
+(16, '9', 'Sim');
 
 -- --------------------------------------------------------
 
@@ -104,7 +130,16 @@ CREATE TABLE IF NOT EXISTS `idioma` (
   `idIdioma` int NOT NULL AUTO_INCREMENT,
   `Idioma` varchar(50) NOT NULL,
   PRIMARY KEY (`idIdioma`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb3;
+
+--
+-- Extraindo dados da tabela `idioma`
+--
+
+INSERT INTO `idioma` (`idIdioma`, `Idioma`) VALUES
+(1, 'Português'),
+(2, 'Inglês'),
+(3, 'Espanhol');
 
 -- --------------------------------------------------------
 
@@ -122,12 +157,25 @@ CREATE TABLE IF NOT EXISTS `livro` (
   `Genero_idGenero` int NOT NULL,
   `Idioma_idIdioma` int NOT NULL,
   `FotoLivro` blob,
-  `EditoraLivro` varchar(100) NOT NULL,
+  `EditoraLivro` varchar(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL,
+  `EdicaoLivro` varchar(100) DEFAULT NULL,
+  `CaminhoFotoLivro` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`idLivro`),
   KEY `fk_Livro_Altor_idx` (`Altor_idAltor`),
   KEY `fk_Livro_Genero1_idx` (`Genero_idGenero`),
   KEY `fk_Livro_Idioma1_idx` (`Idioma_idIdioma`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb3;
+
+--
+-- Extraindo dados da tabela `livro`
+--
+
+INSERT INTO `livro` (`idLivro`, `NomeLivro`, `IBSMLivro`, `LocalLivro`, `Altor_idAltor`, `Genero_idGenero`, `Idioma_idIdioma`, `FotoLivro`, `EditoraLivro`, `EdicaoLivro`, `CaminhoFotoLivro`) VALUES
+(1, 'God of War: Lore and Legends', '978-1506715520', 'amazon', 7, 7, 2, NULL, 'Dark Horse Books', '1ª edição (8 setembro 2020)', NULL),
+(3, 'Coraline', '978-0380807345', 'Amazon', 9, 9, 2, NULL, 'HarperTrophy; Reprint', 'Anniversary edição (24 abril 2012)', NULL),
+(5, 'O Pequeno Príncipe ', '978-8595081512', 'Amazon', 11, 11, 2, NULL, 'HarperCollins', ' 1ª edição (27 agosto 2018)', NULL),
+(6, 'Harry Potter e a Pedra Filosofal: 1', '978-8532530783', 'Amazon', 15, 15, 1, NULL, 'Rocco', '1ª edição (19 agosto 2017)', NULL),
+(7, 'Java®: Como Programar', '978-8543004792', 'Amazon', 16, 16, 1, NULL, 'Pearson Universidades', '10ª edição (24 junho 2016)', NULL);
 
 -- --------------------------------------------------------
 
@@ -174,7 +222,14 @@ CREATE TABLE IF NOT EXISTS `usuario` (
   `SenhaUsuario` varchar(100) NOT NULL,
   `FotoUsuario` blob,
   PRIMARY KEY (`idUsuario`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3;
+
+--
+-- Extraindo dados da tabela `usuario`
+--
+
+INSERT INTO `usuario` (`idUsuario`, `UserUsuario`, `NomeUsuario`, `EmailUsuario`, `SenhaUsuario`, `FotoUsuario`) VALUES
+(1, 'Murilo', 'Murilo Soares Maciel', 'Murilo.maciel@aluno.ce.gov.br', 'cr701201', NULL);
 
 --
 -- Restrições para despejos de tabelas
