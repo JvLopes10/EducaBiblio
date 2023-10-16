@@ -1,7 +1,6 @@
 <?php 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['action']) && $_POST['action'] === 'Cadastrar') {
-        echo "Ação de salvar_usuario detectada"; // Mensagem de depuração
         include('../Controller/CCad_usu.php');
         $usuarioController = new UsuarioController();
         $usuarioController->salvarUsuario($_POST);
