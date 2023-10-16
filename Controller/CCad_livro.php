@@ -14,22 +14,22 @@ class LivroController
                 $nomeArquivo = $_FILES['FotoLivro']['name'];
                 $caminhoTemporario = $_FILES['FotoLivro']['tmp_name'];
                 $caminhoDestino = '../img/livros/' . $nomeArquivo;
-
+            
                 // Validação do tipo de arquivo (imagem)
                 $tipoArquivo = $_FILES['FotoLivro']['type'];
                 $tamanhoArquivo = $_FILES['FotoLivro']['size'];
-
+            
                 if (!in_array($tipoArquivo, ['image/jpeg', 'image/png'])) {
                     echo "A imagem deve estar no formato JPEG ou PNG.";
                     exit();
                 }
-
+            
                 // Validação do tamanho do arquivo (exemplo: máximo de 2MB)
                 if ($tamanhoArquivo > 2 * 1024 * 1024) {
                     echo "A imagem é muito grande. O tamanho máximo permitido é 2MB.";
                     exit();
                 }
-
+            
                 if (move_uploaded_file($caminhoTemporario, $caminhoDestino)) {
                     // A imagem foi enviada com sucesso, agora você pode salvar o caminho dela no banco de dados
                     $dadosLivro['CaminhoFotoLivro'] = $caminhoDestino;
@@ -39,6 +39,8 @@ class LivroController
                     exit();
                 }
             }
+            
+
 
             // Insira os dados do Altor na tabela Altor
             $sqlAltor = "INSERT INTO Altor (NomeAltor) VALUES (:NomeAltor)";
