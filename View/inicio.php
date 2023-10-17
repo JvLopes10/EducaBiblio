@@ -234,7 +234,7 @@ $livrosRecomendados = $getlivro->obterLivrosRecomendados();
 				</li>
 			</ul>
 
-			
+
 			<section class="container-livros">
 				<h1 class="heading">Recomendações Semanais</h1>
 				<div class="container-card">
@@ -243,21 +243,21 @@ $livrosRecomendados = $getlivro->obterLivrosRecomendados();
 						// Loop para exibir as recomendações da tabela 'recomendacao'
 						foreach ($livrosRecomendados as $livroRecomendado) {
 							echo '<div class="card">
-                        <li>
-                            <a href="' . $livroRecomendado["CamRec"] . '">
-                                <img src="' . $livroRecomendado["CamRec"] . '" alt="">
-                                <div class="card-content">
-                                    <div class="nome">
-                                        <section class="container-livros">
-                                            <h3 class="heading">' . $livroRecomendado["LivroRec"] . '</h3>
-                                            <p><b>Autor: </b>' . $livroRecomendado["AutorRec"] . '</p>
-                                            <p><b>Categoria: </b>' . $livroRecomendado["CatRec"] . '</p>
-                                        </section>
-                                    </div>
-                                </div>
-                            </a>
-                        </li>
-                    </div>';
+                        				<li>
+                            				<a href="' . $livroRecomendado["CamRec"] . '">
+													<img src="' . $livroRecomendado["CamRec"] . '" alt="">
+												<div class="card-content">
+													<div class="nome">
+														<section class="container-livros">
+																<h3 class="heading">' . $livroRecomendado["LivroRec"] . '</h3>
+																<p><b>Autor: </b>' . $livroRecomendado["AutorRec"] . '</p>
+																<p><b>Categoria: </b>' . $livroRecomendado["CatRec"] . '</p>
+														</section>
+													</div>
+												</div>
+											</a>
+										</li>
+                  				  </div>';
 						}
 						?>
 					</ul>

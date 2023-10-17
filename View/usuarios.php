@@ -23,49 +23,49 @@
 		</a>
 		<ul class="side-menu top">
 			<li>
-				<a href="inicio.html">
+				<a href="inicio.php">
 					<i class='fas fa-home'></i>
 					<span class="text">Início</span>
 				</a>
 			</li>
 			<li>
-				<a href="livros.html">
+				<a href="livros.php">
 					<i class="fas fa-book"></i>
 					<span class="text">Livros</span>
 				</a>
 			</li>
 			<li>
-				<a href="emprestimos.html">
+				<a href="emprestimos.php">
 					<i class="fas fa-undo"></i>
 					<span class="text">Empréstimos</span>
 				</a>
 			</li>
 			<li>
-				<a href="devolucao.html">
+				<a href="devolucao.php">
 					<i class="fas fa-arrow-left"></i>
 					<span class="text">Devoluções</span>
 				</a>
 			</li>
 			<li>
-				<a href="aluno.html">
+				<a href="aluno.php">
 					<i class="fas fa-graduation-cap"></i>
 					<span class="text">Alunos</span>
 				</a>
 			</li>
 			<li>
-				<a href="turma.html">
+				<a href="turma.php">
 					<i class="fas fa-users"></i>
 					<span class="text">Turma</span>
 				</a>
 			</li>
 			<li>
-				<a href="recomendacoes.html">
+				<a href="recomendacoes.php">
 					<i class="fas fa-download"></i>
 					<span class="text">Recomendações</span>
 				</a>
 			</li>
 			<li class="active">
-				<a href="usuarios.html">
+				<a href="usuarios.php">
 					<i class="fas fa-cogs"></i>
 					<span class="text">Usuários</span>
 				</a>
@@ -73,7 +73,7 @@
 		</ul>
 		<ul class="side-menu">
 			<li>
-				<a href="index.html" class="logout">
+				<a href="index.php" class="logout">
 					<i class="fas fa-sign-out-alt"></i>
 					<span class="text">Deslogar</span>
 				</a>
