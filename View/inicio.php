@@ -1,9 +1,19 @@
 <?php
-
 include('../Controller/CConexao.php');
-$conexaoObj = new CConexao();
-$conn = $conexaoObj->getConnection();
 session_start();
+
+// Inclua a classe GetLivro
+require '../Controller/CGet_rec.php';
+
+$conexao = new CConexao();
+$conn = $conexao->getConnection();
+
+// Use a classe GetLivro para obter os livros
+$getlivro = new GetLivro($conn);
+
+// Use a função obterLivrosRecomendados para obter os livros recomendados
+$livrosRecomendados = $getlivro->obterLivrosRecomendados();
+?>
 
 ?>
 <!DOCTYPE html>
@@ -224,57 +234,32 @@ session_start();
 				</li>
 			</ul>
 
+			
 			<section class="container-livros">
-				<h1 class="heading">Recomendações <span>semanais</span> </h1>
+				<h1 class="heading">Recomendações Semanais</h1>
 				<div class="container-card">
 					<ul>
-						<div class="card">
-							<li>
-								<a href="">
-									<img src="../img/coraline.jpg" alt="">
-									<div class="card-content">
-										<div class="nome">
-											<section class="container-livros">
-												<h3 class="heading">Coraline e o mundo secreto</h3>
-												<p><b>Autor: </b>Neil Gaiman</p>
-												<p><b>Categoria: </b>Fantasia</p>
-											</section>
-
-										</div>
-									</div>
-								</a>
-							</li>
-						</div>
-						<div class="card">
-							<li>
-								<a href="">
-									<img src="../img/harry.jpg" alt="">
-									<div class="card-content">
-										<div class="nome">
-											<section class="container-livros">
-												<h3 class="heading">Harry Potter e a Pedra Filosofal</h3>
-												<p><b>Autor: </b>J. K. Rowling</p>
-												<p><b>Categoria: </b>Fantasia</p>
-											</section>
-										</div>
-								</a>
-							</li>
-						</div>
-						<div class="card">
-							<li>
-								<a href="">
-									<img src="../img/it.jpg" alt="">
-									<div class="card-content">
-										<div class="nome">
-											<section class="container-livros">
-												<h3 class="heading">It, a coisa</h3>
-												<p><b>Autor: </b>Stephen King</p>
-												<p><b>Categoria: </b>Fantasia</p>
-											</section>
-										</div>
-								</a>
-							</li>
-						</div>
+						<?php
+						// Loop para exibir as recomendações da tabela 'recomendacao'
+						foreach ($livrosRecomendados as $livroRecomendado) {
+							echo '<div class="card">
+                        <li>
+                            <a href="' . $livroRecomendado["CamRec"] . '">
+                                <img src="' . $livroRecomendado["CamRec"] . '" alt="">
+                                <div class="card-content">
+                                    <div class="nome">
+                                        <section class="container-livros">
+                                            <h3 class="heading">' . $livroRecomendado["LivroRec"] . '</h3>
+                                            <p><b>Autor: </b>' . $livroRecomendado["AutorRec"] . '</p>
+                                            <p><b>Categoria: </b>' . $livroRecomendado["CatRec"] . '</p>
+                                        </section>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                    </div>';
+						}
+						?>
 					</ul>
 				</div>
 			</section>

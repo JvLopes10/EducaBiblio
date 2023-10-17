@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Tempo de geração: 11-Out-2023 às 13:57
+-- Tempo de geração: 17-Out-2023 às 11:25
 -- Versão do servidor: 8.0.31
 -- versão do PHP: 8.0.26
 
@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS `altor` (
   `idAltor` int NOT NULL AUTO_INCREMENT,
   `NomeAltor` varchar(100) NOT NULL,
   PRIMARY KEY (`idAltor`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb3;
 
 --
 -- Extraindo dados da tabela `altor`
@@ -45,7 +45,8 @@ INSERT INTO `altor` (`idAltor`, `NomeAltor`) VALUES
 (10, 'Neil Gaiman'),
 (11, 'Antoine de Saint-Exupéry'),
 (15, 'J. K. Rolling'),
-(16, 'P.J. Deitel');
+(16, 'P.J. Deitel'),
+(17, 'sdfsdf');
 
 -- --------------------------------------------------------
 
@@ -62,7 +63,14 @@ CREATE TABLE IF NOT EXISTS `aluno` (
   `Turma_idTurma` int NOT NULL,
   PRIMARY KEY (`idAluno`),
   KEY `fk_Aluno_Turma1_idx` (`Turma_idTurma`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3;
+
+--
+-- Extraindo dados da tabela `aluno`
+--
+
+INSERT INTO `aluno` (`idAluno`, `NomeAluno`, `EmailAluno`, `ObsAluno`, `Turma_idTurma`) VALUES
+(1, 'Murilo Soares Maciel', 'murilo.maciel@aluno.ce.gov.br', NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -104,7 +112,7 @@ CREATE TABLE IF NOT EXISTS `genero` (
   `NomeGenero` varchar(50) NOT NULL,
   `DidaticoGenero` varchar(45) NOT NULL,
   PRIMARY KEY (`idGenero`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb3;
 
 --
 -- Extraindo dados da tabela `genero`
@@ -117,7 +125,8 @@ INSERT INTO `genero` (`idGenero`, `NomeGenero`, `DidaticoGenero`) VALUES
 (10, '5', 'Não'),
 (11, '5', 'Sim'),
 (15, '5', 'Não'),
-(16, '9', 'Sim');
+(16, '9', 'Sim'),
+(17, '1', 'Sim');
 
 -- --------------------------------------------------------
 
@@ -164,7 +173,7 @@ CREATE TABLE IF NOT EXISTS `livro` (
   KEY `fk_Livro_Altor_idx` (`Altor_idAltor`),
   KEY `fk_Livro_Genero1_idx` (`Genero_idGenero`),
   KEY `fk_Livro_Idioma1_idx` (`Idioma_idIdioma`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb3;
 
 --
 -- Extraindo dados da tabela `livro`
@@ -191,7 +200,40 @@ CREATE TABLE IF NOT EXISTS `prof` (
   `MateriaProf` varchar(50) DEFAULT NULL,
   `ObsProf` varchar(250) DEFAULT NULL,
   PRIMARY KEY (`idProf`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3;
+
+--
+-- Extraindo dados da tabela `prof`
+--
+
+INSERT INTO `prof` (`idProf`, `NomeProf`, `EmailProf`, `MateriaProf`, `ObsProf`) VALUES
+(1, 'Cid Barros', 'Cid.barros@prof.ce.gov.br', 'Filosofia', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `recomendacao`
+--
+
+DROP TABLE IF EXISTS `recomendacao`;
+CREATE TABLE IF NOT EXISTS `recomendacao` (
+  `idRec` int NOT NULL AUTO_INCREMENT,
+  `LivroRec` varchar(150) NOT NULL,
+  `AutorRec` varchar(150) NOT NULL,
+  `CatRec` varchar(150) NOT NULL,
+  `ImgRec` blob NOT NULL,
+  `CamRec` varchar(200) NOT NULL,
+  PRIMARY KEY (`idRec`)
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Extraindo dados da tabela `recomendacao`
+--
+
+INSERT INTO `recomendacao` (`idRec`, `LivroRec`, `AutorRec`, `CatRec`, `ImgRec`, `CamRec`) VALUES
+(1, '', '', '', '', ''),
+(2, '', '', '', '', ''),
+(3, '', '', '', '', '');
 
 -- --------------------------------------------------------
 
@@ -205,7 +247,14 @@ CREATE TABLE IF NOT EXISTS `turma` (
   `AnoTurma` varchar(50) NOT NULL,
   `NomeTurma` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`idTurma`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3;
+
+--
+-- Extraindo dados da tabela `turma`
+--
+
+INSERT INTO `turma` (`idTurma`, `AnoTurma`, `NomeTurma`) VALUES
+(1, '3', 'Informática');
 
 -- --------------------------------------------------------
 
@@ -222,14 +271,15 @@ CREATE TABLE IF NOT EXISTS `usuario` (
   `SenhaUsuario` varchar(100) NOT NULL,
   `FotoUsuario` blob,
   PRIMARY KEY (`idUsuario`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3;
 
 --
 -- Extraindo dados da tabela `usuario`
 --
 
 INSERT INTO `usuario` (`idUsuario`, `UserUsuario`, `NomeUsuario`, `EmailUsuario`, `SenhaUsuario`, `FotoUsuario`) VALUES
-(1, 'Murilo', 'Murilo Soares Maciel', 'Murilo.maciel@aluno.ce.gov.br', 'cr701201', NULL);
+(1, 'Murilo', 'Murilo Soares Maciel', 'Murilo.maciel@aluno.ce.gov.br', 'cr701201', NULL),
+(2, 'ADM', 'Administrador', 'Admin@gmail.com', 'cr701201', NULL);
 
 --
 -- Restrições para despejos de tabelas
