@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Tempo de geração: 17-Out-2023 às 14:12
+-- Tempo de geração: 19-Out-2023 às 14:22
 -- Versão do servidor: 8.0.31
 -- versão do PHP: 8.0.26
 
@@ -63,14 +63,17 @@ CREATE TABLE IF NOT EXISTS `aluno` (
   `Turma_idTurma` int NOT NULL,
   PRIMARY KEY (`idAluno`),
   KEY `fk_Aluno_Turma1_idx` (`Turma_idTurma`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3;
 
 --
 -- Extraindo dados da tabela `aluno`
 --
 
 INSERT INTO `aluno` (`idAluno`, `NomeAluno`, `EmailAluno`, `ObsAluno`, `Turma_idTurma`) VALUES
-(1, 'Murilo Soares Maciel', 'murilo.maciel@aluno.ce.gov.br', NULL, 1);
+(1, 'Murilo Soares Maciel', 'murilo.maciel@aluno.ce.gov.br', NULL, 1),
+(2, 'Letícia Maira Crisóstomo Martins', 'leticia.martins@aluno.ce.gov.br', NULL, 2),
+(3, 'Rafael Felipe Sousa Ferreira', 'Rafael.ferreira@aluno.ce.gov.br', NULL, 4),
+(4, 'Ananda Rocha Bastos Aguiar', 'Ananda.aguiar@aluno.ce.gov.br', NULL, 3);
 
 -- --------------------------------------------------------
 
@@ -96,9 +99,17 @@ DROP TABLE IF EXISTS `empestimo`;
 CREATE TABLE IF NOT EXISTS `empestimo` (
   `idEmpestimo` int NOT NULL AUTO_INCREMENT,
   `DataEmprestimo` date NOT NULL,
-  `StatusEmprestimo` varchar(50) NOT NULL,
+  `StatusEmprestimo` int NOT NULL,
   PRIMARY KEY (`idEmpestimo`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3;
+
+--
+-- Extraindo dados da tabela `empestimo`
+--
+
+INSERT INTO `empestimo` (`idEmpestimo`, `DataEmprestimo`, `StatusEmprestimo`) VALUES
+(1, '2023-07-07', 1),
+(2, '2023-10-19', 0);
 
 -- --------------------------------------------------------
 
@@ -249,14 +260,17 @@ CREATE TABLE IF NOT EXISTS `turma` (
   `AnoTurma` varchar(50) NOT NULL,
   `NomeTurma` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`idTurma`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3;
 
 --
 -- Extraindo dados da tabela `turma`
 --
 
 INSERT INTO `turma` (`idTurma`, `AnoTurma`, `NomeTurma`) VALUES
-(1, '3', 'Informática');
+(1, '3', 'Informática'),
+(2, '3', 'Administração'),
+(3, '3', 'Finanças'),
+(4, '3', 'Desenho da Construção Civil');
 
 -- --------------------------------------------------------
 
@@ -280,8 +294,8 @@ CREATE TABLE IF NOT EXISTS `usuario` (
 --
 
 INSERT INTO `usuario` (`idUsuario`, `UserUsuario`, `NomeUsuario`, `EmailUsuario`, `SenhaUsuario`, `FotoUsuario`) VALUES
-(1, 'Murilo', 'Murilo Soares Maciel', 'Murilo.maciel@aluno.ce.gov.br', 'cr701201', NULL),
-(2, 'ADM', 'Administrador', 'Admin@gmail.com', 'cr701201', NULL);
+(1, 'Murilo', 'Murilo Soares Maciel', 'Murilo.maciel@aluno.ce.gov.br', 'cr701201', 0x6d6f64656c6f2e6a666966),
+(2, 'Usuario', 'Usuario', 'Usuario@gmail.com', 'Usuario', 0x436f72616c696e652e6a7067);
 
 --
 -- Restrições para despejos de tabelas

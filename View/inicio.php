@@ -208,21 +208,19 @@ $livrosRecomendados = $getlivro->obterLivrosRecomendados();
 					<i class="fas fa-users"></i>
 					<span class="text">
 						<h3><?php
-
 							try {
-								// Consulta SQL para contar o número de alunos
-								$sql = "SELECT COUNT(*) as total FROM devolucao";
+								$sql = "SELECT COUNT(*) as total FROM empestimo WHERE StatusEmprestimo = 1";
 								$stmt = $conn->prepare($sql);
 								$stmt->execute();
 								$result = $stmt->fetch(PDO::FETCH_ASSOC);
 
 								if ($result) {
-									$totalAlunos = $result['total'];
+									$totalComPendencia = $result['total'];
 								} else {
-									$totalAlunos = 0;
+									$totalComPendencia = 0;
 								}
 
-								echo $totalAlunos;
+								echo $totalComPendencia;
 							} catch (PDOException $e) {
 								// Erro na conexão ou consulta SQL
 								echo "Erro: " . $e->getMessage();
