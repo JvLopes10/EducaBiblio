@@ -1,9 +1,9 @@
 <?php
 include('../Controller/CConexao.php');
-session_start();
 
 // Inclua a classe GetLivro
 require '../Controller/CGet_rec.php';
+
 
 $conexao = new CConexao();
 $conn = $conexao->getConnection();
@@ -92,7 +92,7 @@ $livrosRecomendados = $getlivro->obterLivrosRecomendados();
 		</ul>
 		<ul class="side-menu">
 			<li>
-				<a href="login.php" class="logout">
+				<a href="../Controller/CLogout.php" class="logout">
 					<i class="fas fa-sign-out-alt"></i>
 					<span class="text">Deslogar</span>
 				</a>

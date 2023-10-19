@@ -1,3 +1,7 @@
+<?php 
+
+?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -95,14 +99,15 @@
 				<div id="menu-btn" class="fas fa-question" onclick="abrirPDFEmNovaAba()"></div>
 			</div>
 
-			<script>function abrirPDFEmNovaAba() {
+			<script>
+				function abrirPDFEmNovaAba() {
 					var urlDoPDF = "../img/Manual.pdf";
 					window.open(urlDoPDF, '_blank');
 				}
 			</script>
 			<input type="checkbox" id="switch-mode" hidden>
 			<label for="switch-mode" class="switch-mode"></label>
-            <a href="#" class="profile">
+			<a href="#" class="profile">
 				<img src="../img/adm.png">
 			</a>
 		</nav>
@@ -112,108 +117,113 @@
 		<body>
 
 			<section class="tabela">
-				
-				<div class="row">
-					<form action="" method="post">
-						<h3>Cadastro de usuários</h3>
-						<input type="text" placeholder="ID" name="id" required maxlength="50" class="box3"
-							autocomplete="off" readonly>
-                            <input type="text" placeholder="Nome" name="nome" required maxlength="50" class="box"
-							autocomplete="off" required>
-						<input type="text" placeholder="Usuário" name="usuario" required maxlength="50" class="box"
-							autocomplete="off" required>
-                            <input type="password" placeholder="Senha" name="senha" maxlength="50" class="box"
-							autocomplete="off" required>
-                            <input type="email" placeholder="E-mail" name="email" maxlength="50" class="box"
-							autocomplete="off" required>
-                          
-                          <input type="file" name="file_upload" class="box">
 
-						<center><input type="submit" value="Enviar" class="inline-btn" name="submit"></center>
+				<div class="row">
+
+
+
+
+
+					<form action="../Router/usu_rotas.php" method="post" enctype="multipart/form-data">
+						<h3>Cadastro de usuários</h3>
+						<input type="text" placeholder="ID" name="idUsuario" id="idUsuario" required maxlength="50" class="box3" autocomplete="off">
+						<input type="text" placeholder="Nome" name="NomeUsuario" id="NomeUsuario" required maxlength="50" class="box" autocomplete="off" required>
+						<input type="text" placeholder="Usuário" name="UserUsuario" id="UserUsuario" required maxlength="50" class="box" autocomplete="off" required>
+						<input type="password" placeholder="Senha" name="SenhaUsuario" id="SenhaUsuario" maxlength="50" class="box" autocomplete="off" required>
+						<input type="email" placeholder="E-mail" name="EmailUsuario" id="EmailUsuario" maxlength="50" class="box" autocomplete="off" required>
+
+						<input type="file" name="FotoUsuario" id="FotoUsuario" class="box">
+
+						<center><input type="submit" value="Enviar" class="inline-btn" name="Editar"></center>
 					</form>
+
+
+
+
+
 				</div>
 			</section>
-		<main>
-			<div class="table-data">
-				<div class="order">
-					<div class="head">
-						<h3>Tabela de usuários</h3>
-						<button class="pdf-button">
-							<i class="fas fa-file-pdf"></i></button>
-						  
-					</div>
-					<table>
-						<thead>
-							<tr>
-								<th>
-									<center>Nome</center>
-								</th>
-								<th>
-									<center>ID</center>
-								</th>
-								<th>
-									<center>Usuário</center>
-								</th>
-								<th>
-									<center>E-mail</center>
-								</th>
-								<th>
-									<center>Perfil</center>
-								</th>
-								<th>
-									<center>Editar</center>
-								</th>
-								<th>
-									<center>Excluir</center>
-								</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td>
+			<main>
+				<div class="table-data">
+					<div class="order">
+						<div class="head">
+							<h3>Tabela de usuários</h3>
+							<button class="pdf-button">
+								<i class="fas fa-file-pdf"></i></button>
+
+						</div>
+						<table>
+							<thead>
+								<tr>
+									<th>
+										<center>Nome</center>
+									</th>
+									<th>
+										<center>ID</center>
+									</th>
+									<th>
+										<center>Usuário</center>
+									</th>
+									<th>
+										<center>E-mail</center>
+									</th>
+									<th>
+										<center>Perfil</center>
+									</th>
+									<th>
+										<center>Editar</center>
+									</th>
+									<th>
+										<center>Excluir</center>
+									</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>
 										<center>Bruno</center>
-								</td>
-								<td>
-									<center>1</center>
-							</td>
-								<td>
-									<center>Bruno</center>
-								</td>
-								<td>
-									<center>bruno.duarte@prof.ce.gov.br</center>
-								</td>
-                                <td>
-									<center><a href="#" class="profile">
-                                        <img src="../img/adm.png">
-                                    </a></center>
-								</td>
-								<td>
-									<center><button class="edit-button">
-										<i class="fas fa-pencil-alt"></i> 
-									  </button></center>
-								</td>
-								<td>
-									<center><button class="delete-button">
-										<i class="fas fa-trash-alt"></i> 
-									  </button></center>
-								</td>
-							</tr>
-						</tbody>
-					</table>
+									</td>
+									<td>
+										<center>1</center>
+									</td>
+									<td>
+										<center>Bruno</center>
+									</td>
+									<td>
+										<center>bruno.duarte@prof.ce.gov.br</center>
+									</td>
+									<td>
+										<center><a href="#" class="profile">
+												<img src="../img/adm.png">
+											</a></center>
+									</td>
+									<td>
+										<center><button class="edit-button">
+												<i class="fas fa-pencil-alt"></i>
+											</button></center>
+									</td>
+									<td>
+										<center><button class="delete-button">
+												<i class="fas fa-trash-alt"></i>
+											</button></center>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+
 				</div>
 
-			</div>
+				<footer class="footer">
 
-			<footer class="footer">
+					Copyright @ 2023 por <span>EducaBiblio</span> | Todos os direitos reservados
 
-			 Copyright @ 2023 por <span>EducaBiblio</span> | Todos os direitos reservados
+				</footer>
 
-			</footer>
-			
-		</main>
+			</main>
 	</section>
 
-		</body>
+</body>
 
 </html>
 

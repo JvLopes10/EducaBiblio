@@ -1,4 +1,7 @@
 <?php
+// Inicialize a sessão
+session_start();
+
 class CConexao {
     private $servername = "localhost";
     private $username = "root";
