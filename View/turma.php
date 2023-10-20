@@ -5,6 +5,7 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+	
 
 	<link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
 	<script src="https://kit.fontawesome.com/a81368914c.js"></script>
@@ -84,7 +85,7 @@
 	<section id="content">
 		<nav>
 			<i class='fas fa-bars'></i>
-			<form action="#">
+			<form action="#"> 
 				<div class="form-input">
 					<input type="search" placeholder="Pesquisar">
 					<button type="submit" class="search-btn"><i class='bx bx-search'></i></button>
@@ -129,6 +130,18 @@
 					</form>
 				</div>
 			</section>
+
+
+
+
+
+
+
+
+
+
+
+
 			<main>
 				<div class="table-data">
 					<div class="order">
@@ -138,7 +151,7 @@
 								<i class="fas fa-file-pdf"></i></button>
 
 						</div>
-						<table>
+						<table id="tabelaTurma">
 							<thead>
 								<tr>
 									<th>
@@ -235,6 +248,15 @@
 				</footer>
 
 			</main>
+
+
+
+
+
+
+
+
+
 	</section>
 
 </body>
@@ -242,6 +264,7 @@
 </html>
 
 <script src="../JS/script.js"></script>
+
 
 </body>
 

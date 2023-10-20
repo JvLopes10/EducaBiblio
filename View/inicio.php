@@ -15,7 +15,7 @@ $getlivro = new GetLivro($conn);
 $livrosRecomendados = $getlivro->obterLivrosRecomendados();
 ?>
 
-?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 
