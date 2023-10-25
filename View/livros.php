@@ -128,15 +128,15 @@
 						<input type="text" placeholder="ISBN" name="IBSMLivro" id="IBSMLivro" maxlength="50" class="box" autocomplete="off">
 
 						<select name="NomeGenero" id="NomeGenero" class="box select-dark-mode" required>
-							<option value="1">Autoajuda</option>
-							<option value="2">Biografia</option>
-							<option value="3">Clássico</option>
-							<option value="4">Conto</option>
-							<option value="5">Fantasia</option>
-							<option value="6">Ficção científica</option>
-							<option value="7">Poesia</option>
-							<option value="8">Romance</option>
-							<option value="9">Outro</option>
+							<option value="Autoajuda">Autoajuda</option>
+							<option value="Biografia">Biografia</option>
+							<option value="Clássico">Clássico</option>
+							<option value="Conto">Conto</option>
+							<option value="Fantasia">Fantasia</option>
+							<option value="Ficção científica">Ficção científica</option>
+							<option value="Poesia">Poesia</option>
+							<option value="Romance">Romance</option>
+							<option value="Outro">Outro</option>
 						</select>
 						<select name="Idioma_idIdioma" id="Idioma_idIdioma" class="box select-dark-mode">
 							<option value="1">Português</option>
