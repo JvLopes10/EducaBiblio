@@ -8,7 +8,7 @@ class CEmprestimoController {
             $dataEmprestimo = $_POST['DataEmprestimo'];
             $livroId = $_POST['livro_idLivro'];
             $usuarioId = $_POST['usuario_idUsuario'];
-            $profId = 1; // Substitua pelo ID do professor, se aplicável.
+         //   $profId = $_POST['profId'];
             $alunoId = $_POST['aluno_idAluno'];
             $quantidade = $_POST['quantidade'];
 
@@ -19,12 +19,12 @@ class CEmprestimoController {
             $conn = $conexao->getConnection();
 
             // Execute a inserção no banco de dados
-            $query = "INSERT INTO empestimo (DataEmprestimo, livro_idLivro, usuario_idUsuario, prof_idProf, aluno_idAluno, Quantidade_emp) VALUES (:dataEmprestimo, :livroId, :usuarioId, :profId, :alunoId, :quantidade)";
+            $query = "INSERT INTO empestimo (DataEmprestimo, livro_idLivro, usuario_idUsuario, aluno_idAluno, Quantidade_emp) VALUES (:dataEmprestimo, :livroId, :usuarioId, :alunoId, :quantidade)";
             $stmt = $conn->prepare($query);
             $stmt->bindParam(':dataEmprestimo', $dataEmprestimo);
             $stmt->bindParam(':livroId', $livroId);
             $stmt->bindParam(':usuarioId', $usuarioId);
-            $stmt->bindParam(':profId', $profId);
+          //  $stmt->bindParam(':profId', $profId);
             $stmt->bindParam(':alunoId', $alunoId);
             $stmt->bindParam(':quantidade', $quantidade);
 
