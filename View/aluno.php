@@ -141,6 +141,7 @@
 						</select>
 						<select id="Turma_idTurma" name="Turma_idTurma" class="box select-dark-mode">
 							<option value="0">Turma</option>
+
 							<?php
 
 							include('../Controller/CGet_turma.php');
@@ -149,7 +150,10 @@
 							foreach ($turma as $idTurma => $nomeTurma) {
 								echo "<option value=\"$idTurma\">$nomeTurma</option>";
 							}
+
+							
 							?>
+
 						</select>
 
 						<input type="text" placeholder="Materia" name="MateriaProf" id="MateriaProf" maxlength="50" class="box" autocomplete="off">
