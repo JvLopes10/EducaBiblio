@@ -132,55 +132,55 @@ $conn = $conexao->getConnection();
 
 
 
-						<form action="../Router/emp_rotas.php" method="post">
-							<h3>Empréstimo de livros</h3>
-							<input type="text" placeholder="ID" name="idEmpestimo" id="idEmpestimo" required maxlength="50" class="box2" autocomplete="off" readonly>
-							<select id="Genero_idGenero" name="Genero_idGenero" class="box select-dark-mode" required>
-								<option value="">Selecione um gênero</option>
-								<?php
-								// Preencha as opções de gênero a partir do banco de dados.
-								$query = "SELECT idGenero, NomeGenero FROM genero";
-								$stmt = $conn->query($query);
-								while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-									echo "<option value='" . $row['idGenero'] . "'>" . $row['NomeGenero'] . "</option>";
-								}
-								?>
-							</select>
-							<select id="livro_idLivro" name="livro_idLivro" class="box select-dark-mode">
-								<option value="">Selecione um livro</option>
-								<!-- Opções de livros serão preenchidas dinamicamente com JavaScript -->
-							</select>
-							<select id="Turma_idTurma" name="Turma_idTurma" class="box select-dark-mode" required>
-								<option value="">Selecione uma turma</option>
-								<?php
-								// Preencha as opções de turma a partir do banco de dados.
-								$query = "SELECT AnodeInicio, NomeTurma FROM turma";
-								$stmt = $conn->query($query);
-								while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-									echo "<option value='" . $row['AnodeInicio'] . "'>" . $row['NomeTurma'] . "</option>";
-								}
-								?>
-							</select>
-							<select id="aluno_idAluno" name="aluno_idAluno" class="box select-dark-mode">
-								<option value="">Selecione um aluno</option>
-								<!-- Opções de alunos serão preenchidas dinamicamente com JavaScript -->
-							</select>
-							<input type="date" placeholder="Data" name="DataEmprestimo" id="DataEmprestimo" required class="box" autocomplete="off" required>
-							<input type="date" placeholder="Data" name="data" required class="box" autocomplete="off" required>
-							<input type="text" placeholder="Quantidade" name="quantidade" required class="box" autocomplete="off" required>
-							<select id="usuario_idUsuario" name="usuario_idUsuario" class="box select-dark-mode" required>
-								<option value="">Selecione um usuário</option>
-								<?php
-								// Preencha as opções de usuário a partir do banco de dados.
-								$query = "SELECT idUsuario, UserUsuario FROM usuario";
-								$stmt = $conn->query($query);
-								while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-									echo "<option value='" . $row['idUsuario'] . "'>" . $row['UserUsuario'] . "</option>";
-								}
-								?>
-							</select>
-							<center> <input type="submit" value="Enviar" class="inline-btn" name="emprestar"> </center>
-						</form>
+					<form action="../Router/emp_rotas.php" method="post">
+						<h3>Empréstimo de livros</h3>
+						<input type="text" placeholder="ID" name="idEmpestimo" id="idEmpestimo" required maxlength="50" class="box2" autocomplete="off" readonly>
+						<select id="Genero_idGenero" name="Genero_idGenero" class="box select-dark-mode" required>
+							<option value="">Selecione um gênero</option>
+							<?php
+							// Preencha as opções de gênero a partir do banco de dados.
+							$query = "SELECT idGenero, NomeGenero FROM genero";
+							$stmt = $conn->query($query);
+							while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+								echo "<option value='" . $row['idGenero'] . "'>" . $row['NomeGenero'] . "</option>";
+							}
+							?>
+						</select>
+						<select id="livro_idLivro" name="livro_idLivro" class="box select-dark-mode">
+							<option value="">Selecione um livro</option>
+							<!-- Opções de livros serão preenchidas dinamicamente com JavaScript -->
+						</select>
+						<select id="Turma_idTurma" name="Turma_idTurma" class="box select-dark-mode" required>
+							<option value="">Selecione uma turma</option>
+							<?php
+							// Preencha as opções de turma a partir do banco de dados.
+							$query = "SELECT AnodeInicio, AnoTurma, NomeTurma FROM turma";
+							$stmt = $conn->query($query);
+							while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+								echo "<option value='" . $row['AnodeInicio'] . "'>" . $row['AnoTurma'] . 'º ' . $row['NomeTurma'] . "</option>";
+							}
+							?>
+						</select>
+						<select id="aluno_idAluno" name="aluno_idAluno" class="box select-dark-mode">
+							<option value="">Selecione um aluno</option>
+							<!-- Opções de alunos serão preenchidas dinamicamente com JavaScript -->
+						</select>
+						<input type="date" placeholder="Data" name="DataEmprestimo" id="DataEmprestimo" required class="box" autocomplete="off" required>
+						<input type="date" placeholder="Data" name="data" required class="box" autocomplete="off" required>
+						<input type="text" placeholder="Quantidade" name="quantidade" required class="box" autocomplete="off" required>
+						<select id="usuario_idUsuario" name="usuario_idUsuario" class="box select-dark-mode" required>
+							<option value="">Selecione um usuário</option>
+							<?php
+							// Preencha as opções de usuário a partir do banco de dados.
+							$query = "SELECT idUsuario, UserUsuario FROM usuario";
+							$stmt = $conn->query($query);
+							while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+								echo "<option value='" . $row['idUsuario'] . "'>" . $row['UserUsuario'] . "</option>";
+							}
+							?>
+						</select>
+						<center> <input type="submit" value="Enviar" class="inline-btn" name="emprestar"> </center>
+					</form>
 
 
 
@@ -303,43 +303,46 @@ $conn = $conexao->getConnection();
 
 <script src="../JS/script.js"></script>
 <script>
-$(document).ready(function() {
-    // Evento para quando o usuário seleciona um gênero
-   
-	$("#Genero_idGenero").change(function() {
-        var generoId = $(this).val();
-        if (generoId) {
-            $.ajax({
-                type: "GET",
-                url: "../Controller/CBuscar_livros.php", // Atualize o caminho para o arquivo PHP correto
-                data: { generoId: generoId },
-                success: function(data) {
-                    $("#livro_idLivro").html(data);
-                }
-            });
-        } else {
-            $("#livro_idLivro").html("<option value=''>Selecione um livro</option>");
-        }
-    });
+	$(document).ready(function() {
+		// Evento para quando o usuário seleciona um gênero
 
-    // Evento para quando o usuário seleciona uma turma
-    $("#Turma_idTurma").change(function() {
-        var turmaId = $(this).val();
-        if (turmaId) {
-            $.ajax({
-                type: "GET",
-                url: "../Controller/CBusca_alunos.php", // Atualize o caminho para o arquivo PHP correto
-                data: { turmaId: turmaId },
-                success: function(data) {
-                    $("#aluno_idAluno").html(data);
-                }
-            });
-        } else {
-            $("#aluno_idAluno").html("<option value=''>Selecione um aluno</option>");
-        }
-    });
-});
+		$("#Genero_idGenero").change(function() {
+			var generoId = $(this).val();
+			if (generoId) {
+				$.ajax({
+					type: "GET",
+					url: "../Controller/CBuscar_livros.php", // Atualize o caminho para o arquivo PHP correto
+					data: {
+						generoId: generoId
+					},
+					success: function(data) {
+						$("#livro_idLivro").html(data);
+					}
+				});
+			} else {
+				$("#livro_idLivro").html("<option value=''>Selecione um livro</option>");
+			}
+		});
 
+		// Evento para quando o usuário seleciona uma turma
+		$("#Turma_idTurma").change(function() {
+			var turmaId = $(this).val();
+			if (turmaId) {
+				$.ajax({
+					type: "GET",
+					url: "../Controller/CBusca_alunos.php", // Atualize o caminho para o arquivo PHP correto
+					data: {
+						turmaId: turmaId
+					},
+					success: function(data) {
+						$("#aluno_idAluno").html(data);
+					}
+				});
+			} else {
+				$("#aluno_idAluno").html("<option value=''>Selecione um aluno</option>");
+			}
+		});
+	});
 </script>
 
 

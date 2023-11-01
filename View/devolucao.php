@@ -156,10 +156,10 @@ $conn = $conexao->getConnection();
 								<option value="">Selecione uma turma</option>
 								<?php
 								// Preencha as opções de turma a partir do banco de dados.
-								$query = "SELECT AnodeInicio, NomeTurma FROM turma";
+								$query = "SELECT AnodeInicio, AnoTurma, NomeTurma FROM turma";
 								$stmt = $conn->query($query);
 								while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-									echo "<option value='" . $row['AnodeInicio'] . "'>" . $row['NomeTurma'] . "</option>";
+									echo "<option value=	'" . $row['AnodeInicio'] . "'>" . $row['AnoTurma'] . 'º ' . $row['NomeTurma'] . "</option>";
 								}
 								?>
 							</select>
