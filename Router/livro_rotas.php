@@ -28,5 +28,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 // header("Location: ../View/livros.php");
 }
 
-// header("Location: ../View/livros.php");
+ header("Location: ../View/livros.php");
 ?>
