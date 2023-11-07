@@ -1,3 +1,7 @@
+<?php
+include('../Controller/CConexao.php');
+
+?>
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -19,6 +23,35 @@
 
 	<title>EducaBiblio</title>
 </head>
+<style>
+	.pagination {
+		text-align: center;
+		margin-top: 15px;
+
+	}
+
+	.page-link {
+		display: inline-block;
+		padding: 5px 10px;
+		margin: 2px;
+		border: 1px solid #333;
+		background-color: #fff;
+		color: #333;
+		text-decoration: none;
+		border-radius: 5px;
+		transition: background-color 0.3s, color 0.3s;
+	}
+
+	.page-link.active {
+		background-color: #333;
+		color: #fff;
+	}
+
+	.page-link:hover {
+		background-color: #333;
+		color: #fff;
+	}
+</style>
 
 <body>
 
@@ -151,7 +184,7 @@
 								echo "<option value=\"$idTurma\">$nomeTurma</option>";
 							}
 
-							
+
 							?>
 
 						</select>
@@ -203,103 +236,66 @@
 									</th>
 								</tr>
 							</thead>
-							<tbody>
-								<tr>
-									<td>
-										<center>Maria Raquel</center>
-									</td>
-									<td>
-										<center>1</center>
-									</td>
-									<td>
-										<center>maria.raquel@aluno.ce.gov.br</center>
-									</td>
-									<td>
-										<center>Estudante</center>
-									</td>
-									<td>
-										<center>3º DCC</center>
-									</td>
-									<td>
-										<center><button class="edit-button">
-												<i class="fas fa-pencil-alt"></i>
-											</button></center>
-									</td>
-									<td>
-										<center><button class="delete-button">
-												<i class="fas fa-trash-alt"></i>
-											</button></center>
-									</td>
-									<td>
-										<center><button class="historico-button">
-												<i class="fas fa-history"></i>
-											</button></center>
-									</td>
-								</tr>
-								<tr>
-									<td>
-										<center>Paulo Jefferson</center>
-									</td>
-									<td>
-										<center>2</center>
-									</td>
-									<td>
-										<center>paulo.jefferson@aluno.ce.gov.br</center>
-									</td>
-									<td>
-										<center>Estudante</center>
-									</td>
-									<td>
-										<center>3º INF</center>
-									</td>
-									<td>
-										<center><button class="edit-button">
-												<i class="fas fa-pencil-alt"></i>
-											</button></center>
-									</td>
-									<td>
-										<center><button class="delete-button">
-												<i class="fas fa-trash-alt"></i>
-											</button></center>
-									</td>
-									<td>
-										<center><button class="historico-button">
-												<i class="fas fa-history"></i>
-											</button></center>
-									</td>
-								</tr>
-								<tr>
-									<td>
-										<center>Maria Isabel</center>
-									</td>
-									<td>
-										<center>3</center>
-									</td>
-									<td>
-										<center>maria.isabel@aluno.ce.gov.br</center>
-									</td>
-									<td>
-										<center>Estudante</center>
-									</td>
-									<td>
-										<center>3º INF</center>
-									</td>
-									<td>
-										<center><button class="edit-button">
-												<i class="fas fa-pencil-alt"></i>
-											</button></center>
-									</td>
-									<td>
-										<center> <button class="delete-button">
-												<i class="fas fa-trash-alt"></i>
-											</button></center>
-									</td>
-									<td>
-										<center><button class="historico-button">
-												<i class="fas fa-history"></i>
-											</button></center>
-									</td>
-								</tr>
+							<tbody><?php
+									$conexao = new CConexao();
+									$conn = $conexao->getConnection();
+
+									// Consulta para obter os dados da tabela de turma
+									$sql = "SELECT aluno.idAluno, aluno.NomeAluno, aluno.EmailAluno, turma.NomeTurma
+      								  FROM aluno
+     								  LEFT JOIN turma ON aluno.Turma_idTurma = turma.AnodeInicio
+    								  UNION
+     								  SELECT prof.idProf, prof.NomeProf, prof.EmailProf, NULL as NomeTurma
+    								  FROM prof";
+									$result = $conn->query($sql);
+
+									if ($result === false) {
+										// Use errorInfo para obter informações sobre o erro
+										$errorInfo = $conn->errorInfo();
+										echo "Erro na consulta SQL: " . $errorInfo[2];
+									} else {
+										if ($result->rowCount() > 0) {
+											$leitores = $result->fetchAll(PDO::FETCH_ASSOC);
+											$leitoresPorPagina = 4;
+											$paginaAtual = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
+											$indiceInicial = ($paginaAtual - 1) * $leitoresPorPagina;
+											$leitoresExibidos = array_slice($leitores, $indiceInicial, $leitoresPorPagina);
+
+											foreach ($leitoresExibidos as $row) {
+												echo "<tr>";
+												echo "<td><center>" . $row["NomeAluno"] . "</center></td>";
+												echo "<td><center>" . $row["idAluno"] . "</center></td>";
+												echo "<td><center>" . $row["EmailAluno"] . "</center></td>";
+												echo "<td><center>" . ($row["NomeTurma"] ? 'Aluno' : 'Professor') . "</center></td>";
+												echo "<td><center>" . ($row["NomeTurma"] ? $row["NomeTurma"] : "N/A") . "</center></td>";
+												echo "<td><center><button class='edit-button'><i class='fas fa-pencil-alt'></i></button></center></td>";
+												echo "<td><center><button class='delete-button'><i class='fas fa-trash-alt'></i></button></center></td>";
+												echo "<td><center><button class='historico-button'><i class='fas fa-history'></i></button></center></td>";
+												echo "</tr>";
+											}
+
+											echo "</tbody>";
+											echo "</table>";
+
+											// Adiciona links de páginação
+											echo "<div class='pagination'>";
+											$totalleitores = count($leitores);
+											$totalPaginas = ceil($totalleitores / $leitoresPorPagina);
+											for ($i = 1; $i <= $totalPaginas; $i++) {
+												$classeAtiva = ($i === $paginaAtual) ? "active" : "";
+												echo "<a class='page-link $classeAtiva' href='turma.php?pagina=$i'>$i</a>";
+											}
+											echo "</div>";
+										} else {
+											echo "<tr><td colspan='5'>Nenhum leitor encontrado.</td></tr>";
+										}
+									}
+
+									$conn = null; // Fecha a conexão
+									?>
+
+
+
 							</tbody>
 						</table>
 					</div>
@@ -320,6 +316,13 @@
 </html>
 
 <script src="../JS/script.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.6/js/jquery.dataTables.min.js"></script> <!-- Biblioteca DataTables -->
+<script>
+	$(document).ready(function() {
+		$('#turmaTable').DataTable(); // Inicializa o DataTables para a tabela de turma
+	});
+</script>
 
 </body>
 

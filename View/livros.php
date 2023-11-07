@@ -1,3 +1,7 @@
+<?php
+include('../Controller/CConexao.php');
+
+?>
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -167,95 +171,95 @@
 
 						</div>
 						<table>
-							<thead>
-								<tr>
-									<th>
-										<center>Nome</center>
-									</th>
-									<th>
-										<center>ID</center>
-									</th>
-									<th>
-										<center>Autor</center>
-									</th>
-									<th>
-										<center>Edição</center>
-									</th>
-									<th>
-										<center>Editora</center>
-									</th>
-									<th>
-										<center>ISBN</center>
-									</th>
-									<th>
-										<center>Gênero</center>
-									</th>
-									<th>
-										<center>Idioma_idIdioma</center>
-									</th>
-									<th>
-										<center>Imagem</center>
-									</th>
-									<th>
-										<center>Localização</center>
-									</th>
-									<th>
-										<center>Editar</center>
-									</th>
-									<th>
-										<center>Excluir</center>
-									</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td>
-										<center>Dom Quixote</center>
-									</td>
-									<td>
-										<center>1</center>
-									</td>
-									<td>
-										<center>Miguel de Cervantes</center>
-									</td>
-									<td>
-										<center>1º</center>
-									</td>
-									<td>
-										<center>Editora LBN</center>
-									</td>
-									<td>
-										<center>978-85-7605-563-1</center>
-									</td>
-									<td>
-										<center>Romance</center>
-									</td>
-									<td>
-										<center>Português</center>
-									</td>
-									<td>
-										<center><a href="#" class="profile">
-												<img src="../img/domQuixote.jfif">
-											</a></center>
-									</td>
-									<td>
-										<center><button class="historico-button">
-												<i class="fas fa-map-marker-alt"></i>
-											</button></center>
+						<?php
+$conexao = new CConexao();
+$conn = $conexao->getConnection();
 
-									</td>
-									<td>
-										<center><button class="edit-button">
-												<i class="fas fa-pencil-alt"></i>
-											</button></center>
-									</td>
-									<td>
-										<center><button class="delete-button">
-												<i class="fas fa-trash-alt"></i>
-											</button></center>
-									</td>
-								</tr>
-							</tbody>
+// Consulta para obter os dados da tabela de livros
+$sql = "SELECT
+            livro.idLivro,
+            livro.NomeLivro,
+            livro.EditoraLivro,
+            livro.IBSMLivro,
+            genero.NomeGenero AS GeneroLivro,
+            idioma.Idioma AS IdiomaLivro,
+            livro.FotoLivro,
+            livro.LocalLivro,
+            altor.NomeAltor
+        FROM
+            livro
+        LEFT JOIN
+            genero ON livro.Genero_idGenero = genero.idGenero
+        LEFT JOIN
+            altor ON livro.Altor_idAltor = altor.idAltor
+        LEFT JOIN
+            idioma ON livro.Idioma_idIdioma = idioma.idIdioma";
+
+$result = $conn->query($sql);
+
+if ($result === false) {
+    // Use errorInfo para obter informações sobre o erro
+    $errorInfo = $conn->errorInfo();
+    echo "Erro na consulta SQL: " . $errorInfo[2];
+} else {
+    if ($result->rowCount() > 0) {
+        $livros = $result->fetchAll(PDO::FETCH_ASSOC);
+        $livrosPorPagina = 4;
+        $paginaAtual = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
+        $indiceInicial = ($paginaAtual - 1) * $livrosPorPagina;
+        $livrosExibidos = array_slice($livros, $indiceInicial, $livrosPorPagina);
+
+        echo "<table>";
+        echo "<thead>";
+        echo "<tr>";
+        echo "<th><center>Nome</center></th>";
+        echo "<th><center>ID</center></th>";
+        echo "<th><center>Editora</center></th>";
+        echo "<th><center>ISBN</center></th>";
+        echo "<th><center>Gênero</center></th>";
+        echo "<th><center>Idioma</center></th>";
+        echo "<th><center>Imagem</center></th>";
+        echo "<th><center>Localização</center></th>";
+        echo "<th><center>Editar</center></th>";
+        echo "<th><center>Excluir</center></th>";
+        echo "</tr>";
+        echo "</thead>";
+        echo "<tbody>";
+
+        foreach ($livrosExibidos as $row) {
+            echo "<tr>";
+            echo "<td><center>" . $row["NomeLivro"] . "</center></td>";
+            echo "<td><center>" . $row["idLivro"] . "</center></td>";
+            echo "<td><center>" . $row["EditoraLivro"] . "</center></td>";
+            echo "<td><center>" . $row["IBSMLivro"] . "</center></td>";
+            echo "<td><center>" . $row["GeneroLivro"] . "</center></td>";
+            echo "<td><center>" . $row["IdiomaLivro"] . "</center></td>";
+            echo "<td><center><img src='" . $row["FotoLivro"] . "' alt='Imagem do Livro' /></center></td>";
+            echo "<td><center><button class='historico-button'><i class='fas fa-map-marker-alt'></i></button></center></td>";
+            echo "<td><center><button class='edit-button'><i class='fas fa-pencil-alt'></i></button></center></td>";
+            echo "<td><center><button class='delete-button'><i class='fas fa-trash-alt'></i></button></center></td>";
+            echo "</tr>";
+        }
+
+        echo "</tbody>";
+        echo "</table>";
+
+        // Adiciona links de paginação
+        echo "<div class='pagination'>";
+        $totalLivros = count($livros);
+        $totalPaginas = ceil($totalLivros / $livrosPorPagina);
+        for ($i = 1; $i <= $totalPaginas; $i++) {
+            $classeAtiva = ($i === $paginaAtual) ? "active" : "";
+            echo "<a class='page-link $classeAtiva' href='livros.php?pagina=$i'>$i</a>";
+        }
+        echo "</div>";
+    } else {
+        echo "<tr><td colspan='8'>Nenhum livro encontrado.</td></tr>";
+    }
+}
+
+$conn = null; // Fecha a conexão
+?>
 						</table>
 					</div>
 

@@ -219,7 +219,7 @@ include('../Controller/CConexao.php');
                         } else {
                             if ($result->rowCount() > 0) {
                                 $turmas = $result->fetchAll(PDO::FETCH_ASSOC);
-                                $turmasPorPagina = 5;
+                                $turmasPorPagina = 4;
                                 $paginaAtual = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
                                 $indiceInicial = ($paginaAtual - 1) * $turmasPorPagina;
                                 $turmasExibidas = array_slice($turmas, $indiceInicial, $turmasPorPagina);
