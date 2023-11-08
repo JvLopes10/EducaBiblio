@@ -80,4 +80,3 @@ switchMode.addEventListener('change', function () {
 });
 
 
-
