@@ -1,9 +1,10 @@
-<?php 
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+<?php
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['action']) && $_POST['action'] === 'Cadastrar') {
         include('../Controller/CCad_usu.php');
         $usuarioController = new UsuarioController();
         $usuarioController->salvarUsuario($_POST);
+        header("Location: ../View/login.php");
     } elseif (isset($_POST['action']) && $_POST['action'] === 'Entrar') {
         // Obtenha os dados do formulário
         $username = $_POST['UserUsuario'];
@@ -22,7 +23,7 @@
 
             session_start();
             $_SESSION['usuario_logado'] = true;
-            
+
             // Recupere o nome do usuário do banco de dados (substitua com sua consulta SQL)
             $nomeDoUsuario = obterNomeDoUsuario($conn, $username);
             $_SESSION['nomeDoUsuario'] = $nomeDoUsuario;
@@ -31,7 +32,10 @@
             exit();
         } else {
             // Credenciais incorretas, exiba uma mensagem de erro
-            echo "Nome de usuário ou senha incorretos.";
+            $_SESSION['erro_login'] = "Nome de usuário ou senha incorretos.";
+            header("Location: ../View/login.php?erro=1");
+            
+
         }
     }
 }
