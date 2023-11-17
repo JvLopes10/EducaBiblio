@@ -1,5 +1,5 @@
 <?php
-require_once('../Controller/CAlter_usu.php'); // Inclua o arquivo que contém a classe CAlter_usu
+    require_once('../Controller/CAlter_usu.php'); // Inclua o arquivo que contém a classe CAlter_usu
 
 if (isset($_POST['Editar'])) {
     // Recupere os dados do formulário
@@ -19,11 +19,14 @@ if (isset($_POST['Editar'])) {
     // Movendo o arquivo para a pasta de destino
     move_uploaded_file($fotoUsuarioTemp, $pastaDestino);
 
+    // Caminho da foto para armazenar no banco (caminho completo)
+    $caminhoFoto = "../img/fotoUsu/" . $fotoUsuario;
+
     // Crie uma instância da classe CAlter_usu
     $alteracaoUsuario = new CAlter_usu();
 
     // Chame o método para atualizar o usuário pelo ID
-    $resultado = $alteracaoUsuario->atualizarUsuario($idUsuario, $UserUsuario, $NomeUsuario, $EmailUsuario, $SenhaUsuario, $fotoUsuario);
+    $resultado = $alteracaoUsuario->atualizarUsuario($idUsuario, $UserUsuario, $NomeUsuario, $EmailUsuario, $SenhaUsuario, $fotoUsuario, $caminhoFoto);
 
     if ($resultado) {
         echo "Usuário atualizado com sucesso!";

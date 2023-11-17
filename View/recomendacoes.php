@@ -1,3 +1,7 @@
+<?php
+include('../Controller/CConexao.php');
+
+?>
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -10,7 +14,35 @@
 
 	<title>EducaBiblio</title>
 </head>
+<style>
+	.pagination {
+		text-align: center;
+		margin-top: 15px;
 
+	}
+
+	.page-link {
+		display: inline-block;
+		padding: 5px 10px;
+		margin: 2px;
+		border: 1px solid #333;
+		background-color: #fff;
+		color: #333;
+		text-decoration: none;
+		border-radius: 5px;
+		transition: background-color 0.3s, color 0.3s;
+	}
+
+	.page-link.active {
+		background-color: #333;
+		color: #fff;
+	}
+
+	.page-link:hover {
+		background-color: #333;
+		color: #fff;
+	}
+</style>
 <body>
 
 	<section id="sidebar">
@@ -130,55 +162,81 @@
 								<i class="fas fa-file-pdf"></i></button>
 						</div>
 						<table>
-							<thead>
-								<tr>
-									<th>
-										<center>Livro</center>
-									</th>
-									<th>
-										<center>ID</center>
-									</th>
-									<th>
-										<center>Autor</center>
-									</th>
-									<th>
-										<center>Categoria</center>
-									</th>
-									<th>
-										<center>Imagem</center>
-									</th>
-									<th>
-										<center>Editar</center>
-									</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td>
-										<center>Dom Quixote</center>
-									</td>
-									<td>
-										<center>1</center>
-									</td>
-									<td>
-										<center>Miguel de Cervantes</center>
-									</td>
-									<td>
-										<center>Romance</center>
-									</td>
-									<td>
-										<center><a href="#" class="profile">
-												<img src="../img/it.jpg">
-											</a></center>
-									</td>
-									<td>
-										<center><button class="edit-button">
-												<i class="fas fa-pencil-alt"></i>
-											</button></center>
-									</td>
-								</tr>
-							</tbody>
-						</table>
+							
+							<?php
+    $conexao = new CConexao();
+    $conn = $conexao->getConnection();
+
+    // Consulta para obter os dados da tabela de usuários
+    $sql = "SELECT
+                recomendacao.LivroRec,
+                recomendacao.idRec,
+                recomendacao.AutorRec,
+                recomendacao.CatRec,
+                recomendacao.CamRec
+            FROM recomendacao";
+
+    $result = $conn->query($sql);
+
+    if ($result === false) {
+        // Use errorInfo para obter informações sobre o erro
+        $errorInfo = $conn->errorInfo();
+        echo "Erro na consulta SQL: " . $errorInfo[2];
+    } else {
+        if ($result->rowCount() > 0) {
+            $rec = $result->fetchAll(PDO::FETCH_ASSOC);
+            $RecPorPagina = 4;
+            $paginaAtual = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
+            $indiceInicial = ($paginaAtual - 1) * $RecPorPagina;
+            $RecExibidos = array_slice($rec, $indiceInicial, $RecPorPagina);
+
+            // Exibir a tabela de usuários
+            echo "<table>";
+            echo "<thead>";
+            echo "<tr>";
+            echo "<th><center>Livro</center></th>";
+            echo "<th><center>ID</center></th>";
+            echo "<th><center>Autor</center></th>";
+            echo "<th><center>Categoria</center></th>";
+            echo "<th><center>Imagem</center></th>";
+            echo "<th><center>Editar</center></th>";
+            echo "</tr>";
+            echo "</thead>";
+            echo "<tbody>";
+
+            foreach ($RecExibidos as $row) {
+                echo "<tr>";
+                echo "<td><center>" . $row["LivroRec"] . "</center></td>";
+                echo "<td><center>" . $row["idRec"] . "</center></td>";
+                echo "<td><center>" . $row["AutorRec"] . "</center></td>";
+                echo "<td><center>" . $row["CatRec"] . "</center></td>"; 
+                echo "<td><center><img src='" . $row["CamRec"] . "' alt='Imagem do Livro' /></center></td>";
+                echo "<td><center><button class='edit-button'><i class='fas fa-pencil-alt'></i></button></center></td>";
+                echo "</tr>";
+            }
+
+            echo "</tbody>";
+            echo "</table>";
+
+            // Adiciona links de paginação
+            echo "<div class='pagination'>";
+            $totalRec = count($rec);
+            $totalPaginas = ceil($totalRec / $RecPorPagina);
+            for ($i = 1; $i <= $totalPaginas; $i++) {
+                $classeAtiva = ($i === $paginaAtual) ? "active" : "";
+                echo "<a class='page-link $classeAtiva' href='recomendacoes.php?pagina=$i'>$i</a>";
+            }
+            echo "</div>";
+
+            // Botão Fechar do popup fora da tabela
+            
+        } else {
+            echo "<p>Nenhum usuário encontrado.</p>";
+        }
+    }
+
+    $conn = null; // Fecha a conexão
+?>
 					</div>
 
 				</div>

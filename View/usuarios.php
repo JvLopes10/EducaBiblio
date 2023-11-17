@@ -1,10 +1,9 @@
-
-<?php 
+<?php
+include('../Controller/CConexao.php');
 
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,7 +14,35 @@
 
 	<title>EducaBiblio</title>
 </head>
+<style>
+	.pagination {
+		text-align: center;
+		margin-top: 15px;
 
+	}
+
+	.page-link {
+		display: inline-block;
+		padding: 5px 10px;
+		margin: 2px;
+		border: 1px solid #333;
+		background-color: #fff;
+		color: #333;
+		text-decoration: none;
+		border-radius: 5px;
+		transition: background-color 0.3s, color 0.3s;
+	}
+
+	.page-link.active {
+		background-color: #333;
+		color: #fff;
+	}
+
+	.page-link:hover {
+		background-color: #333;
+		color: #fff;
+	}
+</style>
 <body>
 
 	<section id="sidebar">
@@ -99,9 +126,11 @@
 			</script>
 			<input type="checkbox" id="switch-mode" hidden>
 			<label for="switch-mode" class="switch-mode"></label>
+			
 			<a href="#" class="profile">
 				<img src="../img/adm.png">
 			</a>
+			
 		</nav>
 
 		</head>
@@ -113,7 +142,7 @@
 				<div class="row">
 				<form action="../Router/usu_rotas.php" method="post" enctype="multipart/form-data">
 						<h3>Cadastro de usuários</h3>
-						<input type="text" placeholder="ID" name="idUsuario" id="idUsuario" required maxlength="50" class="box3" autocomplete="off">
+						<input type="text" placeholder="ID" name="idUsuario" id="idUsuario"  maxlength="50" class="box3" autocomplete="off">
 						<input type="text" placeholder="Nome" name="NomeUsuario" id="NomeUsuario" required maxlength="50" class="box" autocomplete="off" required>
 						<input type="text" placeholder="Usuário" name="UserUsuario" id="UserUsuario" required maxlength="50" class="box" autocomplete="off" required>
 						<input type="password" placeholder="Senha" name="SenhaUsuario" id="SenhaUsuario" maxlength="50" class="box" autocomplete="off" required>
@@ -135,84 +164,84 @@
 
 						</div>
 						<table>
-							<thead>
-								<tr>
-									<th>
-										<center>Nome</center>
-									</th>
-									<th>
-										<center>ID</center>
-									</th>
-									<th>
-										<center>Usuário</center>
-									</th>
-									<th>
-										<center>E-mail</center>
-									</th>
-									<th>
-										<center>Perfil</center>
-									</th>
-									<th>
-										<center>Editar</center>
-									</th>
-									<th>
-										<center>Excluir</center>
-									</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td>
-										<center>Bruno</center>
-									</td>
-									<td>
-										<center>1</center>
-									</td>
-									<td>
-										<center>Bruno</center>
-									</td>
-									<td>
-										<center>bruno.duarte@prof.ce.gov.br</center>
-									</td>
-									<td>
-										<center><a href="#" class="profile">
-												<img src="../img/adm.png">
-											</a></center>
-									</td>
-									<td>
-										<center><button class="edit-button">
-												<i class="fas fa-pencil-alt"></i>
-											</button></center>
-									</td>
-									<td>
-										<div class="container">
-											<center><button class="delete-button" type="submit" onclick="handlePopup(true)">
-													<i class="fas fa-trash-alt"></i>
-												</button></center>
-												<div class="popup" id="popup">
-													<img src="../img/decisao.png">
-									
-													<h2 class="title">Aviso!</h2>
-									
-													<p class="desc">Deseja mesmo excluir?</p>
-									
-													<button class="close-popup-button" type="submit" onclick="handlePopup(false)">
-														Fechar
-													</button>
-													<button class="close-popup-button">
-														Excluir
-													</button>
-												</div>
-											</div>
-											</div>
-											<style>
-												.popup{
-													top: -130px;
-												}
-											</style>
-									</td>
-								</tr>
-							</tbody>
+								
+							<?php
+		$conexao = new CConexao();
+		$conn = $conexao->getConnection();
+
+		// Consulta para obter os dados da tabela de usuários
+		$sql = "SELECT
+					usuario.NomeUsuario,
+					usuario.idUsuario,
+					usuario.UserUsuario,
+					usuario.EmailUsuario,
+					usuario.camfoto
+				FROM usuario";
+
+		$result = $conn->query($sql);
+
+		if ($result === false) {
+			// Use errorInfo para obter informações sobre o erro
+			$errorInfo = $conn->errorInfo();
+			echo "Erro na consulta SQL: " . $errorInfo[2];
+		} else {
+			if ($result->rowCount() > 0) {
+				$user = $result->fetchAll(PDO::FETCH_ASSOC);
+				$UsuarioPorPagina = 4;
+				$paginaAtual = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
+				$indiceInicial = ($paginaAtual - 1) * $UsuarioPorPagina;
+				$UsuarioExibidos = array_slice($user, $indiceInicial, $UsuarioPorPagina);
+
+				// Exibir a tabela de usuários
+				echo "<table>";
+				echo "<thead>";
+				echo "<tr>";
+				echo "<th><center>Nome</center></th>";
+				echo "<th><center>ID</center></th>";
+				echo "<th><center>Usuario</center></th>";
+				echo "<th><center>Email</center></th>";
+				echo "<th><center>Perfil</center></th>";
+				echo "<th><center>Editar</center></th>";
+				echo "<th><center>Excluir</center></th>";
+				echo "</tr>";
+				echo "</thead>";
+				echo "<tbody>";
+
+				foreach ($UsuarioExibidos as $row) {
+					echo "<tr>";
+					echo "<td><center>" . $row["NomeUsuario"] . "</center></td>";
+					echo "<td><center>" . $row["idUsuario"] . "</center></td>";
+					echo "<td><center>" . $row["UserUsuario"] . "</center></td>";
+					echo "<td><center>" . $row["EmailUsuario"] . "</center></td>"; 
+					echo "<td><center><img src='" . $row["camfoto"] . "' alt='Imagem do usuário' /></center></td>";
+					echo "<td><center><button class='edit-button'><i class='fas fa-pencil-alt'></i></button></center></td>";
+					echo "<td><div class='container'><center><button class='delete-button' type='button' onclick='handlePopup(true)' aria-label='botão excluir'><i class='fas fa-trash-alt'></i></button></center><div class='popup' id='popup'><img src='../img/decisao.png' aria-label='popup decisão'><h2 class='title'>Aviso!</h2><p class='desc'>Deseja mesmo excluir?</p><button class='close-popup-button' type='button' onclick='handlePopup(false)'>Fechar</button><a href='../Controller/CExcluir_usuario.php?id={$row["idUsuario"]}'><button class='close-popup-button'>Excluir</button></a></div></div></div></td>";
+					echo "</tr>";
+				}
+
+				echo "</tbody>";
+				echo "</table>";
+
+				// Adiciona links de paginação
+				echo "<div class='pagination'>";
+				$totalUser = count($user);
+				$totalPaginas = ceil($totalUser / $UsuarioPorPagina);
+				for ($i = 1; $i <= $totalPaginas; $i++) {
+					$classeAtiva = ($i === $paginaAtual) ? "active" : "";
+					echo "<a class='page-link $classeAtiva' href='usuarios.php?pagina=$i'>$i</a>";
+				}
+				echo "</div>";
+
+				// Botão Fechar do popup fora da tabela
+				
+			} else {
+				echo "<p>Nenhum usuário encontrado.</p>";
+			}
+		}
+
+		$conn = null; // Fecha a conexão
+	?>
+
 						</table>
 					</div>
 
@@ -228,6 +257,7 @@
 	</section>
 
 </body>
+
 
 </html>
 

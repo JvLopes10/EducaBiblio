@@ -2,14 +2,14 @@
 require_once('CConexao.php');
 
 class CAlter_usu {
-    public function atualizarUsuario($idUsuario, $UserUsuario, $NomeUsuario, $EmailUsuario, $SenhaUsuario, $FotoUsuario) {
+    public function atualizarUsuario($idUsuario, $UserUsuario, $NomeUsuario, $EmailUsuario, $SenhaUsuario, $FotoUsuario, $caminhoFoto) {
         try {
             // Crie uma instância da classe de conexão
             $conexao = new CConexao();
             $conn = $conexao->getConnection();
 
             // Construa a consulta SQL para atualizar o usuário
-            $sql = "UPDATE usuario SET UserUsuario = :UserUsuario, NomeUsuario = :NomeUsuario, EmailUsuario = :EmailUsuario, SenhaUsuario = :SenhaUsuario, FotoUsuario = :FotoUsuario WHERE idUsuario = :idUsuario";
+            $sql = "UPDATE usuario SET UserUsuario = :UserUsuario, NomeUsuario = :NomeUsuario, EmailUsuario = :EmailUsuario, SenhaUsuario = :SenhaUsuario, FotoUsuario = :FotoUsuario, camfoto = :caminhoFoto WHERE idUsuario = :idUsuario";
 
             // Prepare a consulta
             $stmt = $conn->prepare($sql);
@@ -20,6 +20,7 @@ class CAlter_usu {
             $stmt->bindParam(':EmailUsuario', $EmailUsuario);
             $stmt->bindParam(':SenhaUsuario', $SenhaUsuario);
             $stmt->bindParam(':FotoUsuario', $FotoUsuario);
+            $stmt->bindParam(':caminhoFoto', $caminhoFoto);
             $stmt->bindParam(':idUsuario', $idUsuario);
 
             // Execute a consulta
