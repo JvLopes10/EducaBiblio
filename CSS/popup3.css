@@ -1,0 +1,100 @@
+/* Define estilos para todos os elementos na página */
+* {
+    outline: none; /* Remove a borda de foco em todos os elementos */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Define a fonte padrão */
+}
+
+/* Define variáveis de cor personalizadas no root do documento */
+:root {
+    --pop-up: #F9F9F9; /* Cor de fundo do popup */
+    --pop-upTexto: #3a3a3a; /* Cor do texto no popup */
+    --vermelho: #DB504A; /* Cor vermelha personalizada */
+    --verde: #32CD32; /* Cor verde personalizada */
+}
+
+/* Estilos para o corpo da página */
+body {
+    margin: 0; /* Remove as margens padrão */
+}
+
+/* Estilos para um contêiner que contém o popup */
+.container {
+    position: relative; /* Define a posição como relativa */
+}
+
+/* Estilos para o popup */
+.popup {
+    position: absolute; /* Define a posição como absoluta para posicionamento personalizado */
+    top: -450%; /* Inicialmente, o topo está fora da tela */
+    right: 180%; /* Inicialmente, a direita está fora da tela */
+    padding: 5%; /* Preenchimento interno do popup */
+    border-radius: 8px; /* Borda arredondada */
+    text-align: center; /* Centraliza o conteúdo */
+    box-sizing: border-box; /* Faz com que o preenchimento não afete o tamanho total */
+    transition: all 0.4s; /* Transição suave para animações */
+    z-index: -1; /* Z-index negativo para ficar por trás de outros elementos */
+    opacity: 0; /* Inicialmente, o popup é invisível */
+    position: absolute; /* Repetição da propriedade 'position' (redundante, pode ser removida) */
+    background-color: var(--pop-up); /* Cor de fundo usando a variável personalizada */
+    padding: 20px 30px; /* Mais preenchimento interno */
+    border-radius: 8px; /* Mais borda arredondada */
+    text-align: center; /* Mais centralização de conteúdo */
+    width: 360px; /* Largura fixa do popup */
+    box-sizing: border-box; /* Outra vez, garante que o preenchimento não afete o tamanho total */
+    transition: all .4s; /* Outra transição suave */
+    z-index: -1; /* Z-index negativo novamente */
+    transform: scale(.4); /* Escala do popup para torná-lo pequeno */
+    opacity: 0; /* Mais uma vez, definindo a opacidade inicial como 0 */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Sombra do popup */
+}
+
+/* Estilos para o botão de fechamento do popup */
+.popup .close-popup-button {
+    background-color: var(--verde); /* Cor de fundo usando a variável personalizada verde */
+    font-size: 20px; /* Tamanho da fonte */
+    align-items: center; /* Alinhar itens ao centro */
+    border: none; /* Remove a borda */
+    padding: 8px 30px; /* Preenchimento interno */
+    border-radius: 16px; /* Borda arredondada */
+    text-transform: uppercase; /* Transforma o texto em maiúsculas */
+    color: #FFF; /* Cor do texto em branco */
+    font-size: 16px; /* Tamanho da fonte */
+    font-weight: 600; /* Peso da fonte */
+    cursor: pointer; /* Mostra uma mão ao passar o mouse (cursor de clique) */
+    transition: all .4s; /* Transição suave para animações */
+    margin: 6px 0; /* Margens */
+    margin-top: 15px; /* Margem superior */
+}
+
+/* Estilos para o botão de fechamento do popup quando o mouse passa por cima (hover) */
+.popup .close-popup-button:hover {
+    background-color: #26b626; /* Altera a cor de fundo para verde no hover */
+}
+
+/* Estilos para o botão de fechamento do popup quando pressionado (active) */
+.popup-button:active,
+.popup .close-popup-button:active {
+    transform: scale(.8); /* Reduz a escala do botão quando pressionado */
+}
+
+/* Estilos para o popup quando está aberto (opened) */
+.popup.opened {
+    z-index: 999; /* Z-index alto para torná-lo visível acima de outros elementos */
+    transform: scale(1); /* Traz o popup de volta para o tamanho original */
+    opacity: 1; /* Torna o popup visível */
+}
+
+/* Estilos para imagens dentro do popup */
+.popup img {
+    border-radius: 0% !important; /* Remove a borda arredondada da imagem (important é usado para garantir prioridade) */
+}
+
+/* Estilos para o título dentro do popup */
+.popup h2.title {
+    color: var(--verde); /* Define a cor do título usando a variável verde */
+}
+
+/* Estilos para a descrição dentro do popup */
+.popup p.desc {
+    color: var(--pop-upTexto); /* Define a cor do texto usando a variável de texto do popup */
+}

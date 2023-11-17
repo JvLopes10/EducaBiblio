@@ -1,20 +1,11 @@
 <?php
 include('../Controller/CConexao.php');
-
-// Inclua a classe GetLivro
 require '../Controller/CGet_rec.php';
-
-
 $conexao = new CConexao();
 $conn = $conexao->getConnection();
-
-// Use a classe GetLivro para obter os livros
 $getlivro = new GetLivro($conn);
-
-// Use a função obterLivrosRecomendados para obter os livros recomendados
 $livrosRecomendados = $getlivro->obterLivrosRecomendados();
 ?>
-
 
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -22,19 +13,13 @@ $livrosRecomendados = $getlivro->obterLivrosRecomendados();
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-
-	<link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
-	<script src="https://kit.fontawesome.com/a81368914c.js"></script>
+	<script src="../ArquivosExternos/icons.js"></script>
 	<link rel="shortcut icon" href="../img/icon.png" type="image/x-icon" />
-
 	<link rel="stylesheet" href="../CSS/style.css">
-
 	<title>EducaBiblio</title>
 </head>
 
 <body>
-
 	<section id="sidebar" class="page-transition">
 		<a href="#" class="brand">
 			<i class="fas fa-book"></i>
@@ -103,12 +88,7 @@ $livrosRecomendados = $getlivro->obterLivrosRecomendados();
 	<section id="content">
 		<nav>
 			<i class='fas fa-bars'></i>
-			<form action="#">
-				<div class="form-input">
-					<input type="search" placeholder="Pesquisar">
-					<button type="submit" class="search-btn"><i class='bx bx-search'></i></button>
-				</div>
-			</form>
+			<form action="#"></form>
 
 			<div class="icons">
 				<div id="menu-btn" class="fas fa-question" onclick="abrirPDFEmNovaAba()"></div>
@@ -116,7 +96,7 @@ $livrosRecomendados = $getlivro->obterLivrosRecomendados();
 
 			<script>
 				function abrirPDFEmNovaAba() {
-					var urlDoPDF = "../img/Manual.pdf";
+					var urlDoPDF = "../ArquivosExternos/Manual.pdf";
 					window.open(urlDoPDF, '_blank');
 				}
 			</script>
@@ -137,7 +117,6 @@ $livrosRecomendados = $getlivro->obterLivrosRecomendados();
 									// Usuário não está logado, redireciona ou exibe uma mensagem de erro
 								}
 								?> 👋</b>!</h1>
-
 					<style type="text/css">
 						b {
 							color: #32CD32;
@@ -232,9 +211,8 @@ $livrosRecomendados = $getlivro->obterLivrosRecomendados();
 				</li>
 			</ul>
 
-
 			<section class="container-livros">
-				<h1 class="heading">Recomendações Semanais</h1>
+				<h1 class="heading">Recomendações <span>semanais</span> </h1>
 				<div class="container-card">
 					<ul>
 						<?php
@@ -373,7 +351,7 @@ $livrosRecomendados = $getlivro->obterLivrosRecomendados();
 			</div>
 			<footer class="footer">
 
-				Copyright @ 2023 por <span>EducaBiblio</span> | Todos os direitos reservados
+				© Copyright 2023 por <span>EducaBiblio</span> | Todos os direitos reservados
 
 			</footer>
 		</main>

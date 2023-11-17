@@ -8,7 +8,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'NomeLivro' => $_POST['NomeLivro'],
             'IBSMLivro' => $_POST['IBSMLivro'],
             'LocalLivro' => $_POST['LocalLivro'],
+            'PrateleiraLivro' => $_POST['PrateleiraLivro'],
+            'ColunaLivro' => $_POST['ColunaLivro'],
             'NomeAltor' => $_POST['NomeAltor'],
+            'QuantidadeLivros' => $_POST['QuantidadeLivros'],
             'FotoLivro' => $_FILES['FotoLivro'],  // Use $_FILES para campos de arquivo
             'DidaticoGenero' => $_POST['DidaticoGenero'],
             'NomeGenero' => $_POST['NomeGenero'],
@@ -28,5 +31,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 // header("Location: ../View/livros.php");
 }
 
- header("Location: ../View/livros.php");
+ header("Location: ../Controller/CCad_livro.php");
 ?>

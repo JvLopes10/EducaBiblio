@@ -62,12 +62,14 @@ class LivroController
             $idGenero = $conn->lastInsertId();
 
             // Insira os dados do livro na tabela Livro
-            $sqlLivro = "INSERT INTO Livro (NomeLivro, IBSMLivro, LocalLivro, Altor_idAltor, Genero_idGenero, Idioma_idIdioma, EditoraLivro, EdicaoLivro, CaminhoFotoLivro)
-                         VALUES (:NomeLivro, :IBSMLivro, :LocalLivro, :Altor_idAltor, :Genero_idGenero, :Idioma_idIdioma, :EditoraLivro, :EdicaoLivro, :CaminhoFotoLivro)";
+            $sqlLivro = "INSERT INTO Livro (NomeLivro, IBSMLivro, LocalLivro, PrateleiraLivro, ColunaLivro, Altor_idAltor, Genero_idGenero, Idioma_idIdioma, EditoraLivro, EdicaoLivro, CaminhoFotoLivro, QuantidadeLivros)
+                         VALUES (:NomeLivro, :IBSMLivro, :LocalLivro, :PrateleiraLivro, :ColunaLivro, :Altor_idAltor, :Genero_idGenero, :Idioma_idIdioma, :EditoraLivro, :EdicaoLivro, :CaminhoFotoLivro, :QuantidadeLivros)";
             $stmtLivro = $conn->prepare($sqlLivro);
             $stmtLivro->bindParam(':NomeLivro', $dadosLivro['NomeLivro']);
             $stmtLivro->bindParam(':IBSMLivro', $dadosLivro['IBSMLivro']);
             $stmtLivro->bindParam(':LocalLivro', $dadosLivro['LocalLivro']);
+            $stmtLivro->bindParam(':PrateleiraLivro', $dadosLivro['PrateleiraLivro']);
+            $stmtLivro->bindParam(':ColunaLivro', $dadosLivro['ColunaLivro']);
             $stmtLivro->bindParam(':Altor_idAltor', $idAltor);
             $stmtLivro->bindParam(':Genero_idGenero', $idGenero);
             $stmtLivro->bindParam(':Idioma_idIdioma', $dadosLivro['Idioma_idIdioma']);
@@ -80,7 +82,7 @@ class LivroController
             $conn->commit();
 
             // Redirecione para uma página de sucesso ou outra página apropriada após o cadastro
-             header("Location: ../View/livros.php");
+             //header("Location: ../View/livros.php");
             exit();
         } catch (PDOException $e) {
             // Em caso de erro, faça o rollback da transação e exiba uma mensagem de erro

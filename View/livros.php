@@ -8,12 +8,10 @@ include('../Controller/CConexao.php');
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-
-	<link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
-	<script src="https://kit.fontawesome.com/a81368914c.js"></script>
-	<link rel="shortcut icon" href="../img/icon.png" type="image/x-icon" />
+	<script src="../ArquivosExternos/icons.js"></script>
+	<link rel="shortcut icon" href="../img/icon.png" type="image/x-icon" alt="icon do site" />
 	<link rel="stylesheet" href="../CSS/style.css">
+	<link rel="stylesheet" href="../CSS/popup2.css">
 
 	<title>EducaBiblio</title>
 </head>
@@ -88,30 +86,23 @@ include('../Controller/CConexao.php');
 	<section id="content">
 		<nav>
 			<i class='fas fa-bars'></i>
-			<form action="#">
-				<div class="form-input">
-					<input type="search" placeholder="Pesquisar">
-					<button type="submit" class="search-btn"><i class='bx bx-search'></i></button>
-				</div>
-			</form>
-
+			<form action="#"></form>
 			<div class="icons">
 				<div id="menu-btn" class="fas fa-question" onclick="abrirPDFEmNovaAba()"></div>
 			</div>
 
 			<script>
 				function abrirPDFEmNovaAba() {
-					var urlDoPDF = "../img/Manual.pdf";
+					var urlDoPDF = "../ArquivosExternos/Manual.pdf";
 					window.open(urlDoPDF, '_blank');
 				}
 			</script>
 			<input type="checkbox" id="switch-mode" hidden>
 			<label for="switch-mode" class="switch-mode"></label>
 			<a href="#" class="profile">
-				<img src="../img/adm.png">
+				<img src="../img/adm.png" alt="perfil administrador">
 			</a>
 		</nav>
-
 		</head>
 
 		<body>
@@ -121,7 +112,7 @@ include('../Controller/CConexao.php');
 				<div class="row">
 					<form action="../router/livro_rotas.php" method="post" enctype="multipart/form-data">
 						<h3>Cadastro de livros</h3>
-						<input type="text" placeholder="ID" name="id" required maxlength="50" class="box2" autocomplete="off" readonly>
+						<input type="text" placeholder="ID" name="id" required maxlength="50" class="box3" autocomplete="off" readonly>
 						<style>
 
 						</style>
@@ -155,7 +146,33 @@ include('../Controller/CConexao.php');
 
 						<input type="file" name="FotoLivro" id="FotoLivro" class="box">
 						<input type="text" placeholder="Localização" name="LocalLivro" id="LocalLivro" class="box" autocomplete="off">
-
+						<select id="PrateleiraLivro" name="PrateleiraLivro" class="box select-dark-mode">
+							<option>Prateleira</option>
+							<option value="1">1</option>
+							<option value="2">2</option>
+							<option value="3">3</option>
+							<option value="4">4</option>
+							<option value="5">5</option>
+							<option value="6">6</option>
+							<option value="7">7</option>
+							<option value="8">8</option>
+							<option value="9">9</option>
+							<option value="10">10</option>
+						</select>
+						<select id="ColunaLivro" name="ColunaLivro" class="box select-dark-mode">
+							<option>Coluna</option>
+							<option value="A">A</option>
+							<option value="B">B</option>
+							<option value="C">C</option>
+							<option value="D">D</option>
+							<option value="E">E</option>
+							<option value="F">F</option>
+							<option value="G">G</option>
+							<option value="H">H</option>
+							<option value="I">I</option>
+							<option value="J">J</option>
+						</select>
+						<input type="text" placeholder="Quantidade" name="QuantidadeLivros" id="QuantidadeLivros" required maxlength="50" class="box" autocomplete="off">
 
 						<center><input type="submit" value="Cadastrar" class="inline-btn" name="action"></center>
 					</form>
@@ -171,20 +188,23 @@ include('../Controller/CConexao.php');
 
 						</div>
 						<table>
-						<?php
-$conexao = new CConexao();
-$conn = $conexao->getConnection();
+							<?php
+							$conexao = new CConexao();
+							$conn = $conexao->getConnection();
 
-// Consulta para obter os dados da tabela de livros
-$sql = "SELECT
+							// Consulta para obter os dados da tabela de livros
+							$sql = "SELECT
             livro.idLivro,
             livro.NomeLivro,
             livro.EditoraLivro,
             livro.IBSMLivro,
+			livro.QuantidadeLivros,
             genero.NomeGenero AS GeneroLivro,
             idioma.Idioma AS IdiomaLivro,
             livro.FotoLivro,
             livro.LocalLivro,
+            livro.PrateleiraLivro,
+            livro.ColunaLivro,
             altor.NomeAltor
         FROM
             livro
@@ -195,71 +215,81 @@ $sql = "SELECT
         LEFT JOIN
             idioma ON livro.Idioma_idIdioma = idioma.idIdioma";
 
-$result = $conn->query($sql);
+							$result = $conn->query($sql);
 
-if ($result === false) {
-    // Use errorInfo para obter informações sobre o erro
-    $errorInfo = $conn->errorInfo();
-    echo "Erro na consulta SQL: " . $errorInfo[2];
-} else {
-    if ($result->rowCount() > 0) {
-        $livros = $result->fetchAll(PDO::FETCH_ASSOC);
-        $livrosPorPagina = 4;
-        $paginaAtual = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
-        $indiceInicial = ($paginaAtual - 1) * $livrosPorPagina;
-        $livrosExibidos = array_slice($livros, $indiceInicial, $livrosPorPagina);
+							if ($result === false) {
+								// Use errorInfo para obter informações sobre o erro
+								$errorInfo = $conn->errorInfo();
+								echo "Erro na consulta SQL: " . $errorInfo[2];
+							} else {
+								if ($result->rowCount() > 0) {
+									$livros = $result->fetchAll(PDO::FETCH_ASSOC);
+									$livrosPorPagina = 4;
+									$paginaAtual = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
+									$indiceInicial = ($paginaAtual - 1) * $livrosPorPagina;
+									$livrosExibidos = array_slice($livros, $indiceInicial, $livrosPorPagina);
 
-        echo "<table>";
-        echo "<thead>";
-        echo "<tr>";
-        echo "<th><center>Nome</center></th>";
-        echo "<th><center>ID</center></th>";
-        echo "<th><center>Editora</center></th>";
-        echo "<th><center>ISBN</center></th>";
-        echo "<th><center>Gênero</center></th>";
-        echo "<th><center>Idioma</center></th>";
-        echo "<th><center>Imagem</center></th>";
-        echo "<th><center>Localização</center></th>";
-        echo "<th><center>Editar</center></th>";
-        echo "<th><center>Excluir</center></th>";
-        echo "</tr>";
-        echo "</thead>";
-        echo "<tbody>";
+									echo "<table>";
+									echo "<thead>";
+									echo "<tr>";
+									echo "<th><center>Nome</center></th>";
+									echo "<th><center>ID</center></th>";
+									echo "<th><center>Editora</center></th>";
+									echo "<th><center>ISBN</center></th>";
+									echo "<th><center>Gênero</center></th>";
+									echo "<th><center>Idioma</center></th>";
+									echo "<th><center>Quantidade</center></th>";
+									echo "<th><center>Imagem</center></th>";
+									echo "<th><center>Localização</center></th>";
+									echo "<th><center>Editar</center></th>";
+									echo "<th><center>Excluir</center></th>";
+									echo "</tr>";
+									echo "</thead>";
+									echo "<tbody>";
 
-        foreach ($livrosExibidos as $row) {
-            echo "<tr>";
-            echo "<td><center>" . $row["NomeLivro"] . "</center></td>";
-            echo "<td><center>" . $row["idLivro"] . "</center></td>";
-            echo "<td><center>" . $row["EditoraLivro"] . "</center></td>";
-            echo "<td><center>" . $row["IBSMLivro"] . "</center></td>";
-            echo "<td><center>" . $row["GeneroLivro"] . "</center></td>";
-            echo "<td><center>" . $row["IdiomaLivro"] . "</center></td>";
-            echo "<td><center><img src='" . $row["FotoLivro"] . "' alt='Imagem do Livro' /></center></td>";
-            echo "<td><center><button class='historico-button'><i class='fas fa-map-marker-alt'></i></button></center></td>";
-            echo "<td><center><button class='edit-button'><i class='fas fa-pencil-alt'></i></button></center></td>";
-            echo "<td><center><button class='delete-button'><i class='fas fa-trash-alt'></i></button></center></td>";
-            echo "</tr>";
-        }
+									foreach ($livrosExibidos as $row) {
+										echo "<tr>";
+										echo "<td><center>" . $row["NomeLivro"] . "</center></td>";
+										echo "<td><center>" . $row["idLivro"] . "</center></td>";
+										echo "<td><center>" . $row["EditoraLivro"] . "</center></td>";
+										echo "<td><center>" . $row["IBSMLivro"] . "</center></td>";
+										echo "<td><center>" . $row["GeneroLivro"] . "</center></td>";
+										echo "<td><center>" . $row["IdiomaLivro"] . "</center></td>";
+										echo "<td><center>" . $row["QuantidadeLivros"] . "</center></td>";
+										echo "<td><center><img src='" . $row["FotoLivro"] . "' alt='Imagem do Livro' /></center></td>";
+										echo "<td><div class='container'><center><button class='historico-button' type='button' onclick='handlePopup1(\"" . $row["LocalLivro"] . "\", \"" . $row["PrateleiraLivro"] . "\", \"" . $row["ColunaLivro"] . "\")'><i class='fas fa-map-marker-alt'></i></button></center><div class='popup1' id='popup1'><img src='../img/livro.png'><h2 class='title'>Localização</h2>";
+										echo "<p class='desc'><b>✧ Localização: </b>" . $row["LocalLivro"] . "</p>";
+										echo "<p class='desc'><b>✧ Prateleira: </b>" . $row["PrateleiraLivro"] . "</p>";
+										echo "<p class='desc'><b>✧ Coluna: </b>" . $row["ColunaLivro"] . "</p>";
+										echo "<button class='close-popup1-button' type='button' onclick='handlePopup1(false)'>Fechar</button></div></div></div></td>";
+										echo "<td><center><button class='edit-button'><i class='fas fa-pencil-alt'></i></button></center></td>";
+										echo "<td><div class='container'><center><button class='delete-button' type='button' onclick='handlePopup(true)' aria-label='botão excluir'><i class='fas fa-trash-alt'></i></button></center><div class='popup' id='popup'><img src='../img/decisao.png' aria-label='popup decisão'><h2 class='title'>Aviso!</h2><p class='desc'>Deseja mesmo excluir?</p><button class='close-popup-button' type='button' onclick='handlePopup(false)'>Fechar</button><button class='close-popup-button'>Excluir</button></div></div></div></td>";
+										echo "</tr>";
+									}
 
-        echo "</tbody>";
-        echo "</table>";
 
-        // Adiciona links de paginação
-        echo "<div class='pagination'>";
-        $totalLivros = count($livros);
-        $totalPaginas = ceil($totalLivros / $livrosPorPagina);
-        for ($i = 1; $i <= $totalPaginas; $i++) {
-            $classeAtiva = ($i === $paginaAtual) ? "active" : "";
-            echo "<a class='page-link $classeAtiva' href='livros.php?pagina=$i'>$i</a>";
-        }
-        echo "</div>";
-    } else {
-        echo "<tr><td colspan='8'>Nenhum livro encontrado.</td></tr>";
-    }
-}
 
-$conn = null; // Fecha a conexão
-?>
+
+									echo "</tbody>";
+									echo "</table>";
+
+									// Adiciona links de paginação
+									echo "<div class='pagination'>";
+									$totalLivros = count($livros);
+									$totalPaginas = ceil($totalLivros / $livrosPorPagina);
+									for ($i = 1; $i <= $totalPaginas; $i++) {
+										$classeAtiva = ($i === $paginaAtual) ? "active" : "";
+										echo "<a class='page-link $classeAtiva' href='livros.php?pagina=$i'>$i</a>";
+									}
+									echo "</div>";
+								} else {
+									echo "<tr><td colspan='8'>Nenhum livro encontrado.</td></tr>";
+								}
+							}
+
+							$conn = null; // Fecha a conexão
+
+							?>
 						</table>
 					</div>
 
@@ -267,7 +297,7 @@ $conn = null; // Fecha a conexão
 
 				<footer class="footer">
 
-					Copyright @ 2023 por <span>EducaBiblio</span> | Todos os direitos reservados
+					© Copyright 2023 por <span>EducaBiblio</span> | Todos os direitos reservados
 
 				</footer>
 
@@ -279,6 +309,7 @@ $conn = null; // Fecha a conexão
 </html>
 
 <script src="../JS/script.js"></script>
+<script src="../JS/popup.js"></script>
 
 </body>
 

@@ -7,26 +7,20 @@ $conexao = new CConexao();
 $conn = $conexao->getConnection();
 ?>
 
+
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
+	<meta name="description" content="Página de devolução de livros.">
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-
-	<link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
-	<script src="https://kit.fontawesome.com/a81368914c.js"></script>
-
-	<link rel="shortcut icon" href="../img/icon.png" type="image/x-icon" />
+	<script src="../ArquivosExternos/icons.js"></script>
+	<link rel="shortcut icon" href="../img/icon.png" type="image/x-icon" alt="icon do site"/>
 	<link rel="stylesheet" href="../CSS/style.css">
-
-
+	<link rel="stylesheet" href="../CSS/popup3.css">
 	<title>EducaBiblio</title>
 </head>
-
 <body>
-
 	<section id="sidebar">
 		<a href="#" class="brand">
 			<i class="fas fa-book"></i>
@@ -34,7 +28,6 @@ $conn = $conexao->getConnection();
 		</a>
 		<ul class="side-menu top">
 			<li>
-
 				<a href="inicio.php">
 					<i class='fas fa-home'></i>
 					<span class="text">Início</span>
@@ -96,61 +89,29 @@ $conn = $conexao->getConnection();
 	<section id="content">
 		<nav>
 			<i class='fas fa-bars'></i>
-			<form action="#">
-				<div class="form-input">
-					<input type="search" placeholder="Pesquisar">
-					<button type="submit" class="search-btn"><i class='bx bx-search'></i></button>
-				</div>
-			</form>
+			<form action="#"></form>
 
 			<div class="icons">
 				<div id="menu-btn" class="fas fa-question" onclick="abrirPDFEmNovaAba()"></div>
 			</div>
 
-			<script>
-				function abrirPDFEmNovaAba() {
-					var urlDoPDF = "../img/Manual.pdf";
+			<script>function abrirPDFEmNovaAba() {
+					var urlDoPDF = "../ArquivosExternos/Manual.pdf";
 					window.open(urlDoPDF, '_blank');
 				}
 			</script>
 			<input type="checkbox" id="switch-mode" hidden>
 			<label for="switch-mode" class="switch-mode"></label>
 			<a href="#" class="profile">
-				<img src="../img/adm.png">
+				<img src="../img/adm.png" alt="imagem de perfil do administrador">
 			</a>
 		</nav>
-
-
-
-		<style>
-
-		</style>
 		</head>
-
 		<body>
-
-
 			<section class="tabela">
 
 				<div class="row">
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-					<form action="../Router/dev_rotas.php" method="post">
+				<form action="../Router/dev_rotas.php" method="post">
 						<h3>Busca de empréstimos</h3>
 						<select id="Turma_idTurma" name="Turma_idTurma" class="box select-dark-mode" required>
 								<option value="">Selecione uma turma</option>
@@ -170,26 +131,6 @@ $conn = $conexao->getConnection();
 						<button class="search-button">
 							<i class="fas fa-search"></i></button>
 					</form>
-
-
-
-
-
-
-					
-
-
-
-
-
-
-
-
-
-
-
-
-
 				</div>
 			</section>
 			<main>
@@ -236,9 +177,26 @@ $conn = $conexao->getConnection();
 										<center><span class="status pending">Pendente</span></center>
 									</td>
 									<td>
-										<center><button class="historico-button">
+										<div class="container">
+										<center><button class="historico-button" type="submit" onclick="handlePopup(true)">
 												<i class="fas fa-check"></i>
 											</button></center>
+											<div class="popup" id="popup">
+												<img src="../img/livro2.png">
+								
+												<h2 class="title">Devolução</h2>
+								
+												<p class="desc">O livro foi realmente devolvido?</p>
+								
+												<button class="close-popup-button" type="submit" onclick="handlePopup(false)">
+													ㅤFecharㅤ
+												</button>
+												<button class="close-popup-button">
+													Devolver
+												</button>
+											</div>
+										</div>
+										</div>
 									</td>
 								</tr>
 							</tbody>
@@ -248,19 +206,15 @@ $conn = $conexao->getConnection();
 				</div>
 
 				<footer class="footer">
-
-					Copyright @ 2023 por <span>EducaBiblio</span> | Todos os direitos reservados
-
+					© Copyright 2023 por <span>EducaBiblio</span> | Todos os direitos reservados
 				</footer>
-
 			</main>
 	</section>
-
 </body>
-
 </html>
 
 <script src="../JS/script.js"></script>
+<script src="../JS/popup.js"></script>
 <script>
 $(document).ready(function() {
    

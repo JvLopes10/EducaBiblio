@@ -2,25 +2,19 @@
 include('../Controller/CConexao.php');
 
 ?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 
 <head>
+	<meta name="description" content="Página de cadastro de leitores">
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-
-	<link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
-	<script src="https://kit.fontawesome.com/a81368914c.js"></script>
-	<script src="../JS/alunos_prof.js"></script>
-
-
-
-	<link rel="shortcut icon" href="../img/icon.png" type="image/x-icon" />
+	<script src="../ArquivosExternos/icons.js"></script>
+	<link rel="shortcut icon" href="../img/icon.png" type="image/x-icon" alt="icon do site"/>
 	<link rel="stylesheet" href="../CSS/style.css">
-
-
-
+	<link rel="stylesheet" href="../CSS/popup.css">
+	<script src="../JS/alunos_prof.js"></script>
 	<title>EducaBiblio</title>
 </head>
 <style>
@@ -52,7 +46,6 @@ include('../Controller/CConexao.php');
 		color: #fff;
 	}
 </style>
-
 <body>
 
 	<section id="sidebar">
@@ -123,40 +116,30 @@ include('../Controller/CConexao.php');
 	<section id="content">
 		<nav>
 			<i class='fas fa-bars'></i>
-			<form action="#">
-				<div class="form-input">
-					<input type="search" placeholder="Pesquisar">
-					<button type="submit" class="search-btn"><i class='bx bx-search'></i></button>
-				</div>
-			</form>
+			<form action="#"></form>
 
 			<div class="icons">
 				<div id="menu-btn" class="fas fa-question" onclick="abrirPDFEmNovaAba()"></div>
 			</div>
 
-			<script>
-				function abrirPDFEmNovaAba() {
-					var urlDoPDF = "../img/Manual.pdf";
+			<script>function abrirPDFEmNovaAba() {
+					var urlDoPDF = "../ArquivosExternos/Manual.pdf";
 					window.open(urlDoPDF, '_blank');
 				}
 			</script>
 			<input type="checkbox" id="switch-mode" hidden>
 			<label for="switch-mode" class="switch-mode"></label>
 			<a href="#" class="profile">
-				<img src="../img/adm.png">
+				<img src="../img/adm.png" alt="imagem de perfil do administrador">
 			</a>
 		</nav>
-
 		</head>
 
 		<body>
 
 			<section class="tabela">:
 				<div class="row">
-
-
-
-					<form action="../Router/alunos_rotas.php" method="post">
+				<form action="../Router/alunos_rotas.php" method="post">
 						<h3>Cadastro de leitores</h3>
 						<input type="text" placeholder="ID" name="id" maxlength="50" class="box2" autocomplete="off" readonly>
 
@@ -193,9 +176,6 @@ include('../Controller/CConexao.php');
 
 						<center><input type="submit" value="Enviar" class="inline-btn" name="action"></center>
 					</form>
-
-
-
 				</div>
 			</section>
 			<main>
@@ -203,7 +183,7 @@ include('../Controller/CConexao.php');
 					<div class="order">
 						<div class="head">
 							<h3>Tabela de leitores</h3>
-							<button class="pdf-button">
+							<button class="pdf-button" id="pdf-button" aria-label="botão pdf">
 								<i class="fas fa-file-pdf"></i></button>
 
 						</div>
@@ -236,94 +216,160 @@ include('../Controller/CConexao.php');
 									</th>
 								</tr>
 							</thead>
-							<tbody><?php
-									$conexao = new CConexao();
-									$conn = $conexao->getConnection();
+							<tbody>
+								<tr>
+									<td>
+										<center>Maria Raquel</center>
+									</td>
+									<td>
+										<center>1</center>
+									</td>
+									<td>
+										<center>maria.raquel@aluno.ce.gov.br</center>
+									</td>
+									<td>
+										<center>Estudante</center>
+									</td>
+									<td>
+										<center>3º DCC</center>
+									</td>
+									<td>
+										<center><button class="edit-button" id="edit-button" aria-label="botão editar">
+												<i class="fas fa-pencil-alt"></i>
+											</button></center>
+									</td>
+									<td>
+										<div class="container">
+											<center><button class="delete-button" type="submit"
+													onclick="handlePopup(true)">
+													<i class="fas fa-trash-alt"></i>
+												</button></center>
+											<div class="popup" id="popup">
+												<img src="../img/decisao.png" alt ="Imagem com ponto de interrogação indicando dous caminhos a serem seguidos">
 
-									// Consulta para obter os dados da tabela de turma
-									$sql = "SELECT aluno.idAluno, aluno.NomeAluno, aluno.EmailAluno, turma.NomeTurma
-      								  FROM aluno
-     								  LEFT JOIN turma ON aluno.Turma_idTurma = turma.AnodeInicio
-    								  UNION
-     								  SELECT prof.idProf, prof.NomeProf, prof.EmailProf, NULL as NomeTurma
-    								  FROM prof";
-									$result = $conn->query($sql);
+												<h2 class="title">Aviso!</h2>
 
-									if ($result === false) {
-										// Use errorInfo para obter informações sobre o erro
-										$errorInfo = $conn->errorInfo();
-										echo "Erro na consulta SQL: " . $errorInfo[2];
-									} else {
-										if ($result->rowCount() > 0) {
-											$leitores = $result->fetchAll(PDO::FETCH_ASSOC);
-											$leitoresPorPagina = 4;
-											$paginaAtual = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
-											$indiceInicial = ($paginaAtual - 1) * $leitoresPorPagina;
-											$leitoresExibidos = array_slice($leitores, $indiceInicial, $leitoresPorPagina);
+												<p class="desc">Deseja mesmo excluir?</p>
 
-											foreach ($leitoresExibidos as $row) {
-												echo "<tr>";
-												echo "<td><center>" . $row["NomeAluno"] . "</center></td>";
-												echo "<td><center>" . $row["idAluno"] . "</center></td>";
-												echo "<td><center>" . $row["EmailAluno"] . "</center></td>";
-												echo "<td><center>" . ($row["NomeTurma"] ? 'Aluno' : 'Professor') . "</center></td>";
-												echo "<td><center>" . ($row["NomeTurma"] ? $row["NomeTurma"] : "N/A") . "</center></td>";
-												echo "<td><center><button class='edit-button'><i class='fas fa-pencil-alt'></i></button></center></td>";
-												echo "<td><center><button class='delete-button'><i class='fas fa-trash-alt'></i></button></center></td>";
-												echo "<td><center><button class='historico-button'><i class='fas fa-history'></i></button></center></td>";
-												echo "</tr>";
-											}
-
-											echo "</tbody>";
-											echo "</table>";
-
-											// Adiciona links de páginação
-											echo "<div class='pagination'>";
-											$totalleitores = count($leitores);
-											$totalPaginas = ceil($totalleitores / $leitoresPorPagina);
-											for ($i = 1; $i <= $totalPaginas; $i++) {
-												$classeAtiva = ($i === $paginaAtual) ? "active" : "";
-												echo "<a class='page-link $classeAtiva' href='turma.php?pagina=$i'>$i</a>";
-											}
-											echo "</div>";
-										} else {
-											echo "<tr><td colspan='5'>Nenhum leitor encontrado.</td></tr>";
-										}
-									}
-
-									$conn = null; // Fecha a conexão
-									?>
-
-
-
-							</tbody>
-						</table>
+												<button class="close-popup-button" type="submit" onclick="handlePopup(false)" aria-label="botão fechar">
+													Fechar
+												</button>
+												<button class="close-popup-button" aria-label="botão excluir">
+													Excluir
+												</button>
+											</div>
+										</div>
 					</div>
+					</td>
+					<td>
+						<center><button class="historico-button" aria-label="botão histórica">
+								<i class="fas fa-history"></i>
+							</button></center>
+					</td>
+					</tr>
+					<tr>
+						<td>
+							<center>Paulo Jefferson</center>
+						</td>
+						<td>
+							<center>2</center>
+						</td>
+						<td>
+							<center>paulo.jefferson@aluno.ce.gov.br</center>
+						</td>
+						<td>
+							<center>Estudante</center>
+						</td>
+						<td>
+							<center>3º INF</center>
+						</td>
+						<td>
+							<center><button class="edit-button" aria-label="botão editar">
+									<i class="fas fa-pencil-alt"></i>
+								</button></center>
+						</td>
+						<td>
+							<div class="container"></div>
+							<center><button class="delete-button" type="submit" onclick="handlePopup(true)" aria-label="botão excluir">
+									<i class="fas fa-trash-alt"></i>
+								</button></center>
+							<div class="popup" id="popup">
+								<img src="../img/decisao.png" alt ="Imagem com ponto de interrogação indicando dous caminhos a serem seguidos">
 
+								<h2 class="title">Aviso!</h2>
+
+								<p class="desc">Deseja mesmo excluir?</p>
+
+								<button class="close-popup-button" type="submit" onclick="handlePopup(false)" aria-label="botão fechar">
+									Fechar
+								</button>
+								<button class="close-popup-button" aria-label="botão excluir">
+									Excluir
+								</button>
+							</div>
 				</div>
-
+				</div>
+				</td>
+				<td>
+					<center><button class="historico-button" aria-label="botão histórico">
+							<i class="fas fa-history"></i>
+						</button></center>
+				</td>
+				</tr>
+				<tr>
+					<td>
+						<center>Maria Isabel</center>
+					</td>
+					<td>
+						<center>3</center>
+					</td>
+					<td>
+						<center>maria.isabel@aluno.ce.gov.br</center>
+					</td>
+					<td>
+						<center>Estudante</center>
+					</td>
+					<td>
+						<center>3º INF</center>
+					</td>
+					<td>
+						<center><button class="edit-button" aria-label="botão editar">
+								<i class="fas fa-pencil-alt"></i>
+							</button></center>
+					</td>
+					<td>
+						<div class="container">
+							<center><button class="delete-button" type="submit" onclick="handlePopup(true)" aria-label="botão excluir">
+									<i class="fas fa-trash-alt"></i>
+								</button></center>
+					</td>
+					<td>
+						<center><button class="historico-button" aria-label="botão histórico">
+								<i class="fas fa-history"></i>
+							</button></center>
+					</td>
+				</tr>
+				</tbody>
+				</table>
+				</div>
+				</div>
 				<footer class="footer">
-
-					Copyright @ 2023 por <span>EducaBiblio</span> | Todos os direitos reservados
-
+					© Copyright 2023 por <span>EducaBiblio</span> | Todos os direitos reservados
 				</footer>
 
 			</main>
 	</section>
-
 </body>
 
 </html>
 
 <script src="../JS/script.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.datatables.net/1.11.6/js/jquery.dataTables.min.js"></script> <!-- Biblioteca DataTables -->
+<script src="../JS/popup.js"></script>
 <script>
 	$(document).ready(function() {
 		$('#turmaTable').DataTable(); // Inicializa o DataTables para a tabela de turma
 	});
 </script>
-
 </body>
 
 </html>

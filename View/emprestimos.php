@@ -8,19 +8,13 @@ $conn = $conexao->getConnection();
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-
-	<link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
-	<script src="https://kit.fontawesome.com/a81368914c.js"></script>
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="../ArquivosExternos/icons.js"></script>
 	<link rel="shortcut icon" href="../img/icon.png" type="image/x-icon" />
 	<link rel="stylesheet" href="../CSS/style.css">
-
-
+	<link rel="stylesheet" href="../CSS/popup2.css">
 	<title>EducaBiblio</title>
 </head>
 
@@ -94,20 +88,13 @@ $conn = $conexao->getConnection();
 	<section id="content">
 		<nav>
 			<i class='fas fa-bars'></i>
-			<form action="#">
-				<div class="form-input">
-					<input type="search" placeholder="Pesquisar">
-					<button type="submit" class="search-btn"><i class='bx bx-search'></i></button>
-				</div>
-			</form>
-
+			<form action="#"></form>
 			<div class="icons">
 				<div id="menu-btn" class="fas fa-question" onclick="abrirPDFEmNovaAba()"></div>
 			</div>
 
-			<script>
-				function abrirPDFEmNovaAba() {
-					var urlDoPDF = "../img/Manual.pdf";
+			<script>function abrirPDFEmNovaAba() {
+					var urlDoPDF = "../ArquivosExternos/Manual.pdf";
 					window.open(urlDoPDF, '_blank');
 				}
 			</script>
@@ -117,11 +104,6 @@ $conn = $conexao->getConnection();
 				<img src="../img/adm.png">
 			</a>
 		</nav>
-
-
-		<style>
-
-		</style>
 		</head>
 
 		<body>
@@ -129,10 +111,7 @@ $conn = $conexao->getConnection();
 			<section class="tabela">
 
 				<div class="row">
-
-
-
-					<form action="../Router/emp_rotas.php" method="post">
+				<form action="../Router/emp_rotas.php" method="post">
 						<h3>Empréstimo de livros</h3>
 						<input type="text" placeholder="ID" name="idEmpestimo" id="idEmpestimo" required maxlength="50" class="box2" autocomplete="off" readonly>
 						<select id="Genero_idGenero" name="Genero_idGenero" class="box select-dark-mode" required>
@@ -165,9 +144,17 @@ $conn = $conexao->getConnection();
 							<option value="">Selecione um aluno</option>
 							<!-- Opções de alunos serão preenchidas dinamicamente com JavaScript -->
 						</select>
+						<h4>Data do empréstimo:</h4>
+						
 						<input type="date" placeholder="Data" name="DataEmprestimo" id="DataEmprestimo" required class="box" autocomplete="off" required>
-						<input type="date" placeholder="Data" name="data" required class="box" autocomplete="off" required>
 						<input type="text" placeholder="Quantidade" name="quantidade" required class="box" autocomplete="off" required>
+						
+						<h4>Data da devolução:</h4>
+						<input type="date" placeholder="Data" name="data" required class="box" autocomplete="off" required>
+						
+
+						
+
 						<select id="usuario_idUsuario" name="usuario_idUsuario" class="box select-dark-mode" required>
 							<option value="">Selecione um usuário</option>
 							<?php
@@ -179,12 +166,10 @@ $conn = $conexao->getConnection();
 							}
 							?>
 						</select>
+
 						<center> <input type="submit" value="Enviar" class="inline-btn" name="emprestar"> </center>
 					</form>
-
-
-
-
+				</div>
 			</section>
 			<main>
 				<div class="table-data">
@@ -272,25 +257,71 @@ $conn = $conexao->getConnection();
 											</button></center>
 									</td>
 									<td>
-										<center><button class="delete-button">
-												<i class="fas fa-trash-alt"></i>
-											</button></center>
-									</td>
-									<td>
-										<center><button class="historico-button">
-												<i class="fas fa-envelope"></i>
-											</button></center>
-									</td>
-								</tr>
-							</tbody>
-						</table>
+										<div class="container">
+											<center><button class="delete-button" type="submit"
+													onclick="handlePopup(true)">
+													<i class="fas fa-trash-alt"></i>
+												</button></center>
+											<div class="popup" id="popup">
+												<img src="../img/decisao.png">
+
+												<h2 class="title">Aviso!</h2>
+
+												<p class="desc">Deseja mesmo excluir?</p>
+
+												<button class="close-popup-button" type="submit"
+													onclick="handlePopup(false)">
+													Fechar
+												</button>
+												<button class="close-popup-button">
+													Excluir
+												</button>
+											</div>
+										</div>
 					</div>
+					</td>
+
+					<td>
+						<div class="container">
+							<center><button class="historico-button" type="submit" onclick="handlePopup2(true)">
+									<i class="fas fa-envelope"></i>
+								</button></center>
+							<div class="popup2" id="popup2">
+								<img src="/img/email.png">
+								<form action="https://formsubmit.co/karla.lima17@aluno.ce.gov.br" method="POST">
+								<h2 class="title">E-mail</h2>
+
+								<p class="desc">Deseja enviar um e-mail ao estudante?</p>
+								<p class="formu"><b>✧ Estudante: </b></p><input type="text" name="Nome" required autocomplete="off">
+								<p class="formu"><b>✧ E-mail: </b> </p> <input type="email" name="E-mail" required autocomplete="off">
+							    <p class="formu"><b>✧ Mensagem: </b></p><textarea name="Mensagem" id="mensagem" cols="45" rows="5"></textarea> <br>
+								<input type="hidden" name="_captcha" value="false">
+								<input type="hidden" name="_next" value="http://127.0.0.1:5500/View/emprestimos.html" !important>
+
+
+								<button class="close-popup2-button" type="submit" onclick="handlePopup2(false)">
+									Fechar
+								</button>
+								
+									  
+								<button class="close-popup2-button">
+									Enviar
+								</button>
+							</form>
+							</div>
+						</div>
+				</div>
+				</td>
+				</tr>
+				</tbody>
+				</table>
+				</div>
 
 				</div>
 
 				<footer class="footer">
 
-					Copyright @ 2023 por <span>EducaBiblio</span> | Todos os direitos reservados
+					© Copyright 2023 por <span>EducaBiblio</span> | Todos os direitos reservados
 
 				</footer>
 
@@ -302,6 +333,7 @@ $conn = $conexao->getConnection();
 </html>
 
 <script src="../JS/script.js"></script>
+<script src="../JS/popup.js"></script>
 <script>
 	$(document).ready(function() {
 		// Evento para quando o usuário seleciona um gênero
@@ -344,9 +376,5 @@ $conn = $conexao->getConnection();
 		});
 	});
 </script>
-
-
-
 </body>
-
 </html>

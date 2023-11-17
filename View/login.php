@@ -4,34 +4,31 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <script src="https://kit.fontawesome.com/a81368914c.js"></script>
+  <script src="../ArquivosExternos/icons.js"></script>
   <link rel="stylesheet" href="../CSS/login.css" />
   <link rel="shortcut icon" href="../img/icon.png" type="image/x-icon" />
   <title>EducaBiblio</title>
 </head>
 <style>
   .error-message {
-    color: red; /* Define a cor vermelha */
+    color: red;
+    /* Define a cor vermelha */
     font-weight: bold;
-}
-
+  }
 </style>
-<body>
 
+<body>
   <div class="container">
     <div class="forms-container">
       <div class="signin-signup">
-
         <form action="../Router/log_rotas.php" method="post" class="sign-in-form">
           <br><br>
           <h2 class="tituloPrincipal">Login</h2>
           <?php
-if (isset($_GET['erro']) && $_GET['erro'] == 1) {
-    echo '<div class="error-message">Nome de usuário ou senha incorretos.</div>';
-    
-}
-?>
-
+             if (isset($_GET['erro']) && $_GET['erro'] == 1) {
+               echo '<div class="error-message">Nome de usuário ou senha incorretos.</div>';
+             }
+          ?>
 
           <div class="input-field">
             <i class="fas fa-user-alt"></i>
@@ -50,9 +47,8 @@ if (isset($_GET['erro']) && $_GET['erro'] == 1) {
             <img src="../img/logoCE.png" alt="Logo 2" />
             <img src="../img/logoCaninde.png" alt="Logo 3" />
           </div>
-          <p class="direitos">© TODOS OS DIREITOS RESERVADOS - EDUCABIBLIO</p>
+          <p class="direitos"> © TODOS OS DIREITOS RESERVADOS - EDUCABIBLIO </p>
         </form>
- 
 
         <form action="../Router/log_rotas.php" method="post" class="sign-up-form">
           <br><br>
@@ -85,6 +81,7 @@ if (isset($_GET['erro']) && $_GET['erro'] == 1) {
           <p class="direitos">© TODOS OS DIREITOS RESERVADOS - EDUCABIBLIO</p>
         </form>
 
+        
       </div>
     </div>
 
@@ -119,13 +116,12 @@ if (isset($_GET['erro']) && $_GET['erro'] == 1) {
   <script>
     // Função para esconder a mensagem de erro após 5 segundos
     setTimeout(function() {
-        var errorMessage = document.querySelector('.error-message');
-        if (errorMessage) {
-            errorMessage.style.display = 'none';
-        }
+      var errorMessage = document.querySelector('.error-message');
+      if (errorMessage) {
+        errorMessage.style.display = 'none';
+      }
     }, 5000); // Tempo em milissegundos (5 segundos)
-</script>
-
+  </script>
 </body>
 
 </html>

@@ -4,10 +4,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-
-	<link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
-	<script src="https://kit.fontawesome.com/a81368914c.js"></script>
+	<script src="../ArquivosExternos/icons.js"></script>
 	<link rel="shortcut icon" href="../img/icon.png" type="image/x-icon" />
 	<link rel="stylesheet" href="../CSS/style.css">
 
@@ -84,20 +81,14 @@
 	<section id="content">
 		<nav>
 			<i class='fas fa-bars'></i>
-			<form action="#">
-				<div class="form-input">
-					<input type="search" placeholder="Pesquisar">
-					<button type="submit" class="search-btn"><i class='bx bx-search'></i></button>
-				</div>
-			</form>
+			<form action="#"></form>
 
 			<div class="icons">
 				<div id="menu-btn" class="fas fa-question" onclick="abrirPDFEmNovaAba()"></div>
 			</div>
 
-			<script>
-				function abrirPDFEmNovaAba() {
-					var urlDoPDF = "../img/Manual.pdf";
+			<script>function abrirPDFEmNovaAba() {
+					var urlDoPDF = "../ArquivosExternos/Manual.pdf";
 					window.open(urlDoPDF, '_blank');
 				}
 			</script>
@@ -115,10 +106,7 @@
 			<section class="tabela">
 
 				<div class="row">
-
-
-
-					<form action="../Router/Rec_rotas.php" method="post" enctype="multipart/form-data">
+				<form action="../Router/Rec_rotas.php" method="post" enctype="multipart/form-data">
 						<h3>Recomendações semanais</h3>
 						<select id="idRec" name="idRec" class="box select-dark-mode">
 							<option value="1">1</option>
@@ -131,9 +119,6 @@
 						<input type="file" name="ImgRec" id="ImgRec" class="box1">
 						<center><input type="submit" value="Enviar" class="inline-btn" name="atualizar"></center>
 					</form>
-
-
-
 				</div>
 			</section>
 			<main>
@@ -143,7 +128,6 @@
 							<h3>Tabela de recomendações</h3>
 							<button class="pdf-button">
 								<i class="fas fa-file-pdf"></i></button>
-
 						</div>
 						<table>
 							<thead>
@@ -200,9 +184,7 @@
 				</div>
 
 				<footer class="footer">
-
-					Copyright @ 2023 por <span>EducaBiblio</span> | Todos os direitos reservados
-
+					© Copyright 2023 por <span>EducaBiblio</span> | Todos os direitos reservados
 				</footer>
 
 			</main>
