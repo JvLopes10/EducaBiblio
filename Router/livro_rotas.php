@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'LocalLivro' => $_POST['LocalLivro'],
             'PrateleiraLivro' => $_POST['PrateleiraLivro'],
             'ColunaLivro' => $_POST['ColunaLivro'],
-            'NomeAltor' => $_POST['NomeAltor'],
+            'NomeAutor' => $_POST['NomeAutor'],
             'QuantidadeLivros' => $_POST['QuantidadeLivros'],
             'FotoLivro' => $_FILES['FotoLivro'],  // Use $_FILES para campos de arquivo
             'DidaticoGenero' => $_POST['DidaticoGenero'],

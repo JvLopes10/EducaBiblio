@@ -102,7 +102,7 @@ include('../Controller/CConexao.php');
 		</ul>
 		<ul class="side-menu">
 			<li>
-				<a href="index.php" class="logout">
+				<a href="../Controller/CLogout.php" class="logout">
 					<i class="fas fa-sign-out-alt"></i>
 					<span class="text">Deslogar</span>
 				</a>
@@ -211,7 +211,7 @@ include('../Controller/CConexao.php');
                 echo "<td><center>" . $row["AutorRec"] . "</center></td>";
                 echo "<td><center>" . $row["CatRec"] . "</center></td>"; 
                 echo "<td><center><img src='" . $row["CamRec"] . "' alt='Imagem do Livro' /></center></td>";
-                echo "<td><center><button class='edit-button'><i class='fas fa-pencil-alt'></i></button></center></td>";
+				echo "<td><center><button class='edit-button' data-id='$row[idRec]'><i class='fas fa-pencil-alt'></i></button></center></td>";
                 echo "</tr>";
             }
 
@@ -253,7 +253,35 @@ include('../Controller/CConexao.php');
 </html>
 
 <script src="../JS/script.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // Capturar clique no botão de edição
+        $('.edit-button').click(function() {
+            // Obter o ID do item a ser editado
+            var id = $(this).data('id');
 
+            // Encontrar os dados correspondentes na tabela e preencher o formulário
+            $('table tbody tr').each(function() {
+                var rowId = $(this).find('td:eq(1)').text(); // Considerando que o ID está na segunda coluna
+                if (rowId == id) {
+                    var livro = $(this).find('td:eq(0)').text();
+                    var autor = $(this).find('td:eq(2)').text();
+                    var categoria = $(this).find('td:eq(3)').text();
+
+                    // Preencher os campos do formulário com os dados obtidos
+                    $('#edit-id').val(id);
+                    $('#LivroRec').val(livro);
+                    $('#AutorRec').val(autor);
+                    $('#CatRec').val(categoria);
+                    // Não está preenchendo o campo de imagem, pois é mais complexo
+                    // Pode exigir uma lógica diferente ou uma abordagem de armazenamento/manipulação diferente
+                    // ...
+                }
+            });
+        });
+    });
+</script>
 </body>
 
 </html>

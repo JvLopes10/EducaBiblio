@@ -102,7 +102,7 @@ include('../Controller/CConexao.php');
 		</ul>
 		<ul class="side-menu">
 			<li>
-				<a href="index.php" class="logout">
+			<a href="../Controller/CLogout.php" class="logout">
 					<i class="fas fa-sign-out-alt"></i>
 					<span class="text">Deslogar</span>
 				</a>
@@ -214,7 +214,8 @@ include('../Controller/CConexao.php');
 					echo "<td><center>" . $row["UserUsuario"] . "</center></td>";
 					echo "<td><center>" . $row["EmailUsuario"] . "</center></td>"; 
 					echo "<td><center><img src='" . $row["camfoto"] . "' alt='Imagem do usuário' /></center></td>";
-					echo "<td><center><button class='edit-button'><i class='fas fa-pencil-alt'></i></button></center></td>";
+					echo "<td><center><button class='edit-button' data-id='$row[idUsuario]'><i class='fas fa-pencil-alt'></i></button></center></td>";
+            
 					echo "<td><div class='container'><center><button class='delete-button' type='button' onclick='handlePopup(true)' aria-label='botão excluir'><i class='fas fa-trash-alt'></i></button></center><div class='popup' id='popup'><img src='../img/decisao.png' aria-label='popup decisão'><h2 class='title'>Aviso!</h2><p class='desc'>Deseja mesmo excluir?</p><button class='close-popup-button' type='button' onclick='handlePopup(false)'>Fechar</button><a href='../Controller/CExcluir_usuario.php?id={$row["idUsuario"]}'><button class='close-popup-button'>Excluir</button></a></div></div></div></td>";
 					echo "</tr>";
 				}
@@ -263,7 +264,36 @@ include('../Controller/CConexao.php');
 
 <script src="../JS/script.js"></script>
 <script src="../JS/popup.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+<script>
+    $(document).ready(function() {
+        // Capturar clique no botão de edição
+        $('.edit-button').click(function() {
+            // Obter o ID do item a ser editado
+            var id = $(this).data('id');
+
+            // Encontrar os dados correspondentes na tabela de usuários e preencher o formulário
+            $('table tbody tr').each(function() {
+                var rowId = $(this).find('td:eq(1)').text(); // Considerando que o ID está na segunda coluna
+                if (rowId == id) {
+                    var nome = $(this).find('td:eq(0)').text();
+                    var usuario = $(this).find('td:eq(2)').text();
+                    var email = $(this).find('td:eq(3)').text();
+                    // A coluna de foto pode ser mais complexa para lidar diretamente assim
+
+                    // Preencher os campos do formulário com os dados obtidos
+                    $('#idUsuario').val(id);
+                    $('#NomeUsuario').val(nome);
+                    $('#UserUsuario').val(usuario);
+                    $('#EmailUsuario').val(email);
+                    // O campo de foto pode exigir uma manipulação diferente, dependendo da lógica usada para armazenamento/manipulação de imagens
+                    // ...
+                }
+            });
+        });
+    });
+</script>
 </body>
 
 </html>

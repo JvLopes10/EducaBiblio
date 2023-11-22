@@ -103,7 +103,7 @@ include('../Controller/CConexao.php');
 		</ul>
 		<ul class="side-menu">
 			<li>
-				<a href="index.php" class="logout">
+			<a href="../Controller/CLogout.php" class="logout">
 					<i class="fas fa-sign-out-alt"></i>
 					<span class="text">Deslogar</span>
 				</a>
@@ -142,12 +142,13 @@ include('../Controller/CConexao.php');
 				<div class="row">
 					<form action="../Router/turma_rotas.php" method="post">
 						<h3>Cadastro de Turmas</h3>
-						<input type="text" placeholder="ID" name="id" required maxlength="50" class="box2" autocomplete="off" readonly>
+						<input type="text" placeholder="ID" name="IdTurma" id="IdTurma" required maxlength="50" class="box3" autocomplete="off" readonly>
+						<input type="text" placeholder="Ano de inicio" name="AnodeInicio" id="AnodeInicio" required maxlength="50" class="box" autocomplete="off">
 						<input type="text" placeholder="Série" name="AnoTurma" id="AnoTurma" required maxlength="50" class="box" autocomplete="off" required>
 						<input type="text" placeholder="Turma" name="NomeTurma" id="NomeTurma" required maxlength="50" class="box" autocomplete="off">
 
 						<center><input type="submit" value="Enviar" class="inline-btn" name="action"></center>
-					</form>
+						</form>
 				</div>
 			</section>
 			<main>
@@ -160,157 +161,79 @@ include('../Controller/CConexao.php');
 
 						</div>
 						<table>
-							<thead>
-								<tr>
-									<th>
-										<center>ID</center>
-									</th>
-									<th>
-										<center>Série</center>
-									</th>
-									<th>
-										<center>Turma</center>
-									</th>
-									<th>
-										<center>Ano</center>
-									</th>
-									<th>
-										<center>Editar</center>
-									</th>
-									<th>
-										<center>Excluir</center>
-									</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td>
-										<center>1</center>
-									</td>
-									<td>
-										<center>3º</center>
-									</td>
-									<td>
-										<center>Informática</center>
-									</td>
-									<td>
-										<center>2021</center>
-									</td>
-									<td>
-										<center><button class="edit-button">
-												<i class="fas fa-pencil-alt"></i>
-											</button></center>
-									</td>
-									<td>
-										<div class="container">
-											<center><button class="delete-button" type="submit" onclick="handlePopup(true)">
-													<i class="fas fa-trash-alt"></i>
-												</button></center>
+							<?php
+		$conexao = new CConexao();
+		$conn = $conexao->getConnection();
 
-											<div class="popup" id="popup">
-												<img src="../img/decisao.png">
+		// Consulta para obter os dados da tabela de usuários
+		$sql = "SELECT
+					turma.AnodeInicio,
+					turma.AnoTurma,
+					turma.NomeTurma,
+					turma.IdTurma
+				FROM turma";
 
-												<h2 class="title">Aviso!</h2>
+		$result = $conn->query($sql);
 
-												<p class="desc">Deseja mesmo excluir?</p>
+		if ($result === false) {
+			// Use errorInfo para obter informações sobre o erro
+			$errorInfo = $conn->errorInfo();
+			echo "Erro na consulta SQL: " . $errorInfo[2];
+		} else {
+			if ($result->rowCount() > 0) {
+				$user = $result->fetchAll(PDO::FETCH_ASSOC);
+				$UsuarioPorPagina = 4;
+				$paginaAtual = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
+				$indiceInicial = ($paginaAtual - 1) * $UsuarioPorPagina;
+				$UsuarioExibidos = array_slice($user, $indiceInicial, $UsuarioPorPagina);
 
-												<button class="close-popup-button" type="submit" onclick="handlePopup(false)">
-													Fechar
-												</button>
-												<button class="close-popup-button">
-													Excluir
-												</button>
-											</div>
-										</div>
-					</div>
-					</td>
-					<style>
-						.popup {
-							right: 210% !important;
-						}
-					</style>
-					</tr>
-					<tr>
-						<td>
-							<center>2</center>
-						</td>
-						<td>
-							<center>3º</center>
-						</td>
-						<td>
-							<center>Desenho da Construção Civil</center>
-						</td>
-						<td>
-							<center>2021</center>
-						</td>
-						<td>
-							<center><button class="edit-button">
-									<i class="fas fa-pencil-alt"></i>
-								</button></center>
-						</td>
-						<td>
-							<center><button class="delete-button" type="submit" onclick="handlePopup(true)">
-									<i class="fas fa-trash-alt"></i>
-								</button></center>
-							<div class="popup" id="popup">
-								<img src="../img/decisao.png">
+				// Exibir a tabela de usuários
+				echo "<table>";
+				echo "<thead>";
+				echo "<tr>";
+				echo "<th><center>ID</center></th>";
+				echo "<th><center>Série</center></th>";
+				echo "<th><center>Turma</center></th>";
+				echo "<th><center>Ano</center></th>";
+				echo "<th><center>Editar</center></th>";
+				echo "<th><center>Excluir</center></th>";
+				echo "</tr>";
+				echo "</thead>";
+				echo "<tbody>";
 
-								<h2 class="title">Aviso!</h2>
+				foreach ($UsuarioExibidos as $row) {
+					echo "<tr>";
+					echo "<td><center>" . $row["IdTurma"] . "</center></td>";
+					echo "<td><center>" . $row["AnoTurma"] . "</center></td>";
+					echo "<td><center>" . $row["NomeTurma"] . "</center></td>";
+					echo "<td><center>" . $row["AnodeInicio"] . "</center></td>";
+					echo "<td><center><button class='edit-button' data-id='$row[IdTurma]'><i class='fas fa-pencil-alt'></i></button></center></td>";
+					echo "<td><div class='container'><center><button class='delete-button' type='button' onclick='handlePopup(true)' aria-label='botão excluir'><i class='fas fa-trash-alt'></i></button></center><div class='popup' id='popup'><img src='../img/decisao.png' aria-label='popup decisão'><h2 class='title'>Aviso!</h2><p class='desc'>Deseja mesmo excluir?</p><button class='close-popup-button' type='button' onclick='handlePopup(false)'>Fechar</button><a href='../Controller/CExcluir_usuario.php?id={$row["AnodeInicio"]}'><button class='close-popup-button'>Excluir</button></a></div></div></div></td>";
+					echo "</tr>";
+				}
 
-								<p class="desc">Deseja mesmo excluir?</p>
+				echo "</tbody>";
+				echo "</table>";
 
-								<button class="close-popup-button" type="submit" onclick="handlePopup(false)">
-									Fechar
-								</button>
-								<button class="close-popup-button">
-									Excluir
-								</button>
-							</div>
-				</div>
-				</div>
-				</td>
-				</tr>
-				<tr>
-					<td>
-						<center>3</center>
-					</td>
-					<td>
-						<center>3º</center>
-					</td>
-					<td>
-						<center>Administração</center>
-					</td>
-					<td>
-						<center>2021</center>
-					</td>
-					<td>
-						<center><button class="edit-button">
-								<i class="fas fa-pencil-alt"></i>
-							</button></center>
-					</td>
-					<td>
-						<center><button class="delete-button" type="submit" onclick="handlePopup(true)">
-								<i class="fas fa-trash-alt"></i>
-							</button></center>
-						<div class="popup" id="popup">
-							<img src="../img/decisao.png">
+				// Adiciona links de paginação
+				echo "<div class='pagination'>";
+				$totalUser = count($user);
+				$totalPaginas = ceil($totalUser / $UsuarioPorPagina);
+				for ($i = 1; $i <= $totalPaginas; $i++) {
+					$classeAtiva = ($i === $paginaAtual) ? "active" : "";
+					echo "<a class='page-link $classeAtiva' href='turma.php?pagina=$i'>$i</a>";
+				}
+				echo "</div>";
 
-							<h2 class="title">Aviso!</h2>
+				// Botão Fechar do popup fora da tabela
+				
+			} else {
+				echo "<p></p>";
+			}
+		}
 
-							<p class="desc">Deseja mesmo excluir?</p>
-
-							<button class="close-popup-button" type="submit" onclick="handlePopup(false)">
-								Fechar
-							</button>
-							<button class="close-popup-button">
-								Excluir
-							</button>
-						</div>
-						</div>
-
-						</div>
-					</td>
-				</tr>
+		$conn = null; // Fecha a conexão
+	?>
 				</tbody>
 				</table>
 				</div>
@@ -336,6 +259,36 @@ include('../Controller/CConexao.php');
 	$(document).ready(function() {
 		$('#turmaTable').DataTable(); // Inicializa o DataTables para a tabela de turma
 	});
+</script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // Capturar clique no botão de edição
+        $('.edit-button').click(function() {
+            // Obter o ID da turma a ser editada
+            var id = $(this).closest('tr').find('td:eq(0)').text(); // Considerando que o ID está na primeira coluna
+
+            // Encontrar os dados correspondentes na tabela de turmas e preencher o formulário
+            $('table tbody tr').each(function() {
+                var rowId = $(this).find('td:eq(0)').text(); // Considerando que o ID está na primeira coluna
+                if (rowId == id) {
+                    var anoInicio = $(this).find('td:eq(3)').text(); // Considerando que o Ano de início está na quarta coluna
+                    var anoTurma = $(this).find('td:eq(1)').text(); // Considerando que a Série está na segunda coluna
+                    var nomeTurma = $(this).find('td:eq(2)').text(); // Considerando que o Nome da turma está na terceira coluna
+
+                    // Preencher os campos do formulário com os dados obtidos
+                    $('#IdTurma').val(id);
+                    $('#AnodeInicio').val(anoInicio);
+                    $('#AnoTurma').val(anoTurma);
+                    $('#NomeTurma').val(nomeTurma);
+
+                    // Alterar o valor e o nome do botão de enviar para atualizar
+                    $('input[type="submit"][name="action"]').val('Atualizar');
+                    $('input[type="submit"][name="action"]').attr('name', 'updateAction');
+                }
+            });
+        });
+    });
 </script>
 </body>
 

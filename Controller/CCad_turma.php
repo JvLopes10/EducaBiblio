@@ -16,14 +16,16 @@ class CCad_turma {
             // Processar os dados do formulário
             $anoTurma = $_POST['AnoTurma'];
             $nomeTurma = $_POST['NomeTurma'];
+            $Inicio = $_POST['AnodeInicio'];
             
             // Preparar e executar a instrução SQL para inserção dos dados
-            $sql = "INSERT INTO turma (AnoTurma, NomeTurma) VALUES (:AnoTurma, :NomeTurma)";
+            $sql = "INSERT INTO turma (AnoTurma, NomeTurma, AnodeInicio) VALUES (:AnoTurma, :NomeTurma, :AnodeInicio)";
             $stmt = $this->pdo->prepare($sql); // Use $this->pdo para acessar a conexão PDO
 
             // Vincular os valores dos campos do formulário à instrução SQL
             $stmt->bindParam(':AnoTurma', $anoTurma, PDO::PARAM_STR);
             $stmt->bindParam(':NomeTurma', $nomeTurma, PDO::PARAM_STR);
+            $stmt->bindParam(':AnodeInicio', $Inicio, PDO::PARAM_STR);
 
             // Executar a instrução SQL
             if ($stmt->execute()) {
@@ -35,4 +37,5 @@ class CCad_turma {
             }
         }
     }
+    
 }

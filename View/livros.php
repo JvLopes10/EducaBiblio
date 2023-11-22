@@ -75,7 +75,7 @@ include('../Controller/CConexao.php');
 		</ul>
 		<ul class="side-menu">
 			<li>
-				<a href="index.php" class="logout">
+			<a href="../Controller/CLogout.php" class="logout">
 					<i class="fas fa-sign-out-alt"></i>
 					<span class="text">Deslogar</span>
 				</a>
@@ -117,7 +117,7 @@ include('../Controller/CConexao.php');
 
 						</style>
 						<input type="text" placeholder="Nome" name="NomeLivro" id="NomeLivro" required maxlength="50" class="box" autocomplete="off" required>
-						<input type="text" placeholder="Autor" name="NomeAltor" id="NomeAltor" maxlength="50" class="box" autocomplete="off" required>
+						<input type="text" placeholder="Autor" name="NomeAutor" id="NomeAutor" maxlength="50" class="box" autocomplete="off" required>
 						<input type="text" placeholder="Edição" name="EdicaoLivro" id="EdicaoLivro" maxlength="50" class="box" autocomplete="off">
 						<input type="text" placeholder="Editora" name="EditoraLivro" id="EditoraLivro" maxlength="50" class="box" autocomplete="off">
 						<input type="text" placeholder="ISBN" name="IBSMLivro" id="IBSMLivro" maxlength="50" class="box" autocomplete="off">
@@ -205,13 +205,13 @@ include('../Controller/CConexao.php');
             livro.LocalLivro,
             livro.PrateleiraLivro,
             livro.ColunaLivro,
-            altor.NomeAltor
+            autor.NomeAutor
         FROM
             livro
         LEFT JOIN
             genero ON livro.Genero_idGenero = genero.idGenero
         LEFT JOIN
-            altor ON livro.Altor_idAltor = altor.idAltor
+            autor ON livro.Autor_idAutor = autor.idAutor
         LEFT JOIN
             idioma ON livro.Idioma_idIdioma = idioma.idIdioma";
 

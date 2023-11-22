@@ -104,6 +104,7 @@ $livrosRecomendados = $getlivro->obterLivrosRecomendados();
 			<label for="switch-mode" class="switch-mode"></label>
 			<a href="#" class="profile">
 				<img src="../img/adm.png">
+				
 			</a>
 		</nav>
 		<main>
@@ -162,7 +163,7 @@ $livrosRecomendados = $getlivro->obterLivrosRecomendados();
 
 							try {
 								// Consulta SQL para contar o número de alunos
-								$sql = "SELECT COUNT(*) as total FROM empestimo";
+								$sql = "SELECT COUNT(*) as total FROM emprestimo";
 								$stmt = $conn->prepare($sql);
 								$stmt->execute();
 								$result = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -188,7 +189,7 @@ $livrosRecomendados = $getlivro->obterLivrosRecomendados();
 					<span class="text">
 						<h3><?php
 							try {
-								$sql = "SELECT COUNT(*) as total FROM empestimo WHERE StatusEmprestimo = 1";
+								$sql = "SELECT COUNT(*) as total FROM emprestimo WHERE StatusEmprestimo = 1";
 								$stmt = $conn->prepare($sql);
 								$stmt->execute();
 								$result = $stmt->fetch(PDO::FETCH_ASSOC);

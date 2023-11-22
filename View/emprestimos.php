@@ -77,7 +77,7 @@ $conn = $conexao->getConnection();
 		</ul>
 		<ul class="side-menu">
 			<li>
-				<a href="index.php" class="logout">
+			<a href="../Controller/CLogout.php" class="logout">
 					<i class="fas fa-sign-out-alt"></i>
 					<span class="text">Deslogar</span>
 				</a>
@@ -113,7 +113,7 @@ $conn = $conexao->getConnection();
 				<div class="row">
 				<form action="../Router/emp_rotas.php" method="post">
 						<h3>Empréstimo de livros</h3>
-						<input type="text" placeholder="ID" name="idEmpestimo" id="idEmpestimo" required maxlength="50" class="box2" autocomplete="off" readonly>
+						<input type="text" placeholder="ID" name="idEmprestimo" id="idEmprestimo" required maxlength="50" class="box2" autocomplete="off" readonly>
 						<select id="Genero_idGenero" name="Genero_idGenero" class="box select-dark-mode" required>
 							<option value="">Selecione um gênero</option>
 							<?php

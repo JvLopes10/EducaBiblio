@@ -19,7 +19,7 @@ class CEmprestimoController {
             $conn = $conexao->getConnection();
 
             // Execute a inserção no banco de dados
-            $query = "INSERT INTO empestimo (DataEmprestimo, livro_idLivro, usuario_idUsuario, aluno_idAluno, Quantidade_emp) VALUES (:dataEmprestimo, :livroId, :usuarioId, :alunoId, :quantidade)";
+            $query = "INSERT INTO emprestimo (DataEmprestimo, livro_idLivro, usuario_idUsuario, aluno_idAluno, Quantidade_emp) VALUES (:dataEmprestimo, :livroId, :usuarioId, :alunoId, :quantidade)";
             $stmt = $conn->prepare($query);
             $stmt->bindParam(':dataEmprestimo', $dataEmprestimo);
             $stmt->bindParam(':livroId', $livroId);

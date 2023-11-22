@@ -42,14 +42,14 @@ class LivroController
             
 
 
-            // Insira os dados do Altor na tabela Altor
-            $sqlAltor = "INSERT INTO Altor (NomeAltor) VALUES (:NomeAltor)";
-            $stmtAltor = $conn->prepare($sqlAltor);
-            $stmtAltor->bindParam(':NomeAltor', $dadosLivro['NomeAltor']);
-            $stmtAltor->execute();
+            // Insira os dados do Autor na tabela Autor
+            $sqlAutor = "INSERT INTO Autor (NomeAutor) VALUES (:NomeAutor)";
+            $stmtAutor = $conn->prepare($sqlAutor);
+            $stmtAutor->bindParam(':NomeAutor', $dadosLivro['NomeAutor']);
+            $stmtAutor->execute();
 
-            // Obtenha o ID do Altor recém-inserido
-            $idAltor = $conn->lastInsertId();
+            // Obtenha o ID do Autor recém-inserido
+            $idAutor = $conn->lastInsertId();
 
             // Insira os dados do gênero na tabela Genero
             $sqlGenero = "INSERT INTO Genero (NomeGenero, DidaticoGenero) VALUES (:NomeGenero, :DidaticoGenero)";
@@ -62,15 +62,15 @@ class LivroController
             $idGenero = $conn->lastInsertId();
 
             // Insira os dados do livro na tabela Livro
-            $sqlLivro = "INSERT INTO Livro (NomeLivro, IBSMLivro, LocalLivro, PrateleiraLivro, ColunaLivro, Altor_idAltor, Genero_idGenero, Idioma_idIdioma, EditoraLivro, EdicaoLivro, CaminhoFotoLivro, QuantidadeLivros)
-                         VALUES (:NomeLivro, :IBSMLivro, :LocalLivro, :PrateleiraLivro, :ColunaLivro, :Altor_idAltor, :Genero_idGenero, :Idioma_idIdioma, :EditoraLivro, :EdicaoLivro, :CaminhoFotoLivro, :QuantidadeLivros)";
+            $sqlLivro = "INSERT INTO Livro (NomeLivro, IBSMLivro, LocalLivro, PrateleiraLivro, ColunaLivro, Autor_idAutor, Genero_idGenero, Idioma_idIdioma, EditoraLivro, EdicaoLivro, CaminhoFotoLivro, QuantidadeLivros)
+                         VALUES (:NomeLivro, :IBSMLivro, :LocalLivro, :PrateleiraLivro, :ColunaLivro, :Autor_idAutor, :Genero_idGenero, :Idioma_idIdioma, :EditoraLivro, :EdicaoLivro, :CaminhoFotoLivro, :QuantidadeLivros)";
             $stmtLivro = $conn->prepare($sqlLivro);
             $stmtLivro->bindParam(':NomeLivro', $dadosLivro['NomeLivro']);
             $stmtLivro->bindParam(':IBSMLivro', $dadosLivro['IBSMLivro']);
             $stmtLivro->bindParam(':LocalLivro', $dadosLivro['LocalLivro']);
             $stmtLivro->bindParam(':PrateleiraLivro', $dadosLivro['PrateleiraLivro']);
             $stmtLivro->bindParam(':ColunaLivro', $dadosLivro['ColunaLivro']);
-            $stmtLivro->bindParam(':Altor_idAltor', $idAltor);
+            $stmtLivro->bindParam(':Autor_idAutor', $idAutor);
             $stmtLivro->bindParam(':Genero_idGenero', $idGenero);
             $stmtLivro->bindParam(':Idioma_idIdioma', $dadosLivro['Idioma_idIdioma']);
             $stmtLivro->bindParam(':EditoraLivro', $dadosLivro['EditoraLivro']);

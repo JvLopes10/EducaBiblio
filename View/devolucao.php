@@ -78,7 +78,7 @@ $conn = $conexao->getConnection();
 		</ul>
 		<ul class="side-menu">
 			<li>
-				<a href="index.php" class="logout">
+			<a href="../Controller/CLogout.php" class="logout">
 					<i class="fas fa-sign-out-alt"></i>
 					<span class="text">Deslogar</span>
 				</a>
