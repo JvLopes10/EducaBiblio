@@ -283,6 +283,7 @@ include('../Controller/CConexao.php');
                     $('#NomeTurma').val(nomeTurma);
 
                     // Alterar o valor e o nome do botão de enviar para atualizar
+                    $('form').attr('action', '../Router/turmas2_rotas.php'); // Alterar o action do formulário
                     $('input[type="submit"][name="action"]').val('Atualizar');
                     $('input[type="submit"][name="action"]').attr('name', 'updateAction');
                 }
@@ -290,6 +291,7 @@ include('../Controller/CConexao.php');
         });
     });
 </script>
+
 </body>
 
 </html>

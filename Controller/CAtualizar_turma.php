@@ -1,37 +1,37 @@
-
-?>
 <?php
-include('../Controller/CConexao.php');
+require_once('../Controller/CConexao.php');
 
 class CAtualizar_turma {
-    private $pdo;
+    public function atualizarTurma($idTurma, $anoTurma, $nomeTurma, $inicio) {
+        try {
+            // Crie uma instância da classe de conexão
+            $conexao = new CConexao();
+            $conn = $conexao->getConnection();
 
-    public function __construct() {
-        $conexao = new CConexao();
-        $this->pdo = $conexao->getConnection();
-    }
+            // Construa a consulta SQL para atualizar a turma
+            $sql = "UPDATE turma SET AnoTurma = :AnoTurma, NomeTurma = :NomeTurma, AnodeInicio = :Inicio WHERE IdTurma = :IdTurma";
 
-    public function atualizarTurma() {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'Atualizar') {
-            $idTurma = $_POST['IdTurma'];
-            $anoTurma = $_POST['AnoTurma'];
-            $nomeTurma = $_POST['NomeTurma'];
-            $Inicio = $_POST['AnodeInicio'];
+            // Prepare a consulta
+            $stmt = $conn->prepare($sql);
 
-            $sql = "UPDATE turma SET AnoTurma = :AnoTurma, NomeTurma = :NomeTurma, AnodeInicio = :AnodeInicio WHERE IdTurma = :IdTurma";
-            $stmt = $this->pdo->prepare($sql);
+            // Associe os valores aos parâmetros da consulta
+            $stmt->bindParam(':AnoTurma', $anoTurma);
+            $stmt->bindParam(':NomeTurma', $nomeTurma);
+            $stmt->bindParam(':Inicio', $inicio);
+            $stmt->bindParam(':IdTurma', $idTurma);
 
-            $stmt->bindParam(':AnoTurma', $anoTurma, PDO::PARAM_STR);
-            $stmt->bindParam(':NomeTurma', $nomeTurma, PDO::PARAM_STR);
-            $stmt->bindParam(':AnodeInicio', $Inicio, PDO::PARAM_STR);
-            $stmt->bindParam(':IdTurma', $idTurma, PDO::PARAM_INT);
+            // Execute a consulta
+            $stmt->execute();
 
-            if ($stmt->execute()) {
-                header('Location: ../View/turma.php');
-                exit();
+            // Verifique se a atualização foi bem-sucedida
+            if ($stmt->rowCount() > 0) {
+                return true; // Atualização bem-sucedida
             } else {
-                echo 'Erro ao atualizar a turma no banco de dados.';
+                return false; // Falha na atualização
             }
+        } catch (PDOException $e) {
+            echo "Erro na atualização da turma: " . $e->getMessage();
+            return false; // Falha na atualização
         }
     }
 }

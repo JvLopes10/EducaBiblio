@@ -140,11 +140,7 @@ include('../Controller/CConexao.php');
 				<div class="row">
 				<form action="../Router/Rec_rotas.php" method="post" enctype="multipart/form-data">
 						<h3>Recomendações semanais</h3>
-						<select id="idRec" name="idRec" class="box select-dark-mode">
-							<option value="1">1</option>
-							<option value="2">2</option>
-							<option value="3">3</option>
-						</select>
+						<input type="text" id="idRec" name="idRec" placeholder="ID" class="box3 select-dark-mode" autocomplete="off" readonly>							
 						<input type="text" placeholder="Livro" name="LivroRec" id="LivroRec" required maxlength="50" class="box" autocomplete="off" required>
 						<input type="text" placeholder="Autor" name="AutorRec" id="AutorRec" required maxlength="50" class="box" autocomplete="off" required>
 						<input type="text" placeholder="Categoria" name="CatRec" id="CatRec" required maxlength="50" class="box" autocomplete="off" required>
@@ -270,7 +266,7 @@ include('../Controller/CConexao.php');
                     var categoria = $(this).find('td:eq(3)').text();
 
                     // Preencher os campos do formulário com os dados obtidos
-                    $('#edit-id').val(id);
+                    $('#idRec').val(id);
                     $('#LivroRec').val(livro);
                     $('#AutorRec').val(autor);
                     $('#CatRec').val(categoria);
