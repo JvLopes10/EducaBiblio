@@ -287,7 +287,7 @@ $conn = $conexao->getConnection();
 									<i class="fas fa-envelope"></i>
 								</button></center>
 							<div class="popup2" id="popup2">
-								<img src="/img/email.png">
+								<img src="../img/email.png">
 								<form action="https://formsubmit.co/karla.lima17@aluno.ce.gov.br" method="POST">
 								<h2 class="title">E-mail</h2>
 

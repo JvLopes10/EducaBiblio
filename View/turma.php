@@ -142,8 +142,8 @@ include('../Controller/CConexao.php');
 				<div class="row">
 					<form action="../Router/turma_rotas.php" method="post">
 						<h3>Cadastro de Turmas</h3>
-						<input type="text" placeholder="ID" name="IdTurma" id="IdTurma" required maxlength="50" class="box3" autocomplete="off" readonly>
-						<input type="text" placeholder="Ano de inicio" name="AnodeInicio" id="AnodeInicio" required maxlength="50" class="box" autocomplete="off">
+						<input type="number" placeholder="ID" name="IdTurma" id="IdTurma" required maxlength="50" class="box3" autocomplete="off" readonly>
+						<input type="Number" placeholder="Ano de inicio" name="AnodeInicio" id="AnodeInicio" required maxlength="50" class="box" autocomplete="off">
 						<input type="text" placeholder="Série" name="AnoTurma" id="AnoTurma" required maxlength="50" class="box" autocomplete="off" required>
 						<input type="text" placeholder="Turma" name="NomeTurma" id="NomeTurma" required maxlength="50" class="box" autocomplete="off">
 
