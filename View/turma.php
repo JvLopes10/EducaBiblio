@@ -173,7 +173,7 @@ include('../Controller/CConexao.php');
 					turma.IdTurma
 				FROM turma";
 
-		$result = $conn->query($sql);
+		$result = $conn->query($sql); 	
 
 		if ($result === false) {
 			// Use errorInfo para obter informações sobre o erro

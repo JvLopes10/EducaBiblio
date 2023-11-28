@@ -24,7 +24,9 @@ try {
                 header('Location: ../View/turma.php');
                 exit();
             } else {
+              //  header('Location: ../Controller/CAtualizar_turma.php');
                  echo 'Erro ao atualizar a turma.';
+                 var_dump($_POST); 
             }
         } else {
             echo 'A classe CAtualizar_turma não foi encontrada.';
@@ -34,5 +36,4 @@ try {
     echo "Erro na atualização do usuário: " . $e->getMessage();
     return false;
 }
-var_dump($_POST); 
 ?>
