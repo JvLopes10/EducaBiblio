@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Tempo de geração: 28-Nov-2023 às 12:58
+-- Tempo de geração: 30-Nov-2023 às 11:40
 -- Versão do servidor: 8.0.31
 -- versão do PHP: 8.0.26
 
@@ -49,7 +49,7 @@ CREATE TABLE IF NOT EXISTS `autor` (
   `idAutor` int NOT NULL AUTO_INCREMENT,
   `NomeAutor` varchar(100) NOT NULL,
   PRIMARY KEY (`idAutor`)
-) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8mb3;
 
 -- --------------------------------------------------------
 
@@ -102,7 +102,7 @@ CREATE TABLE IF NOT EXISTS `genero` (
   `NomeGenero` varchar(50) NOT NULL,
   `DidaticoGenero` varchar(45) NOT NULL,
   PRIMARY KEY (`idGenero`)
-) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8mb3;
 
 -- --------------------------------------------------------
 
@@ -209,21 +209,21 @@ CREATE TABLE IF NOT EXISTS `turma` (
 --
 
 INSERT INTO `turma` (`IdTurma`, `AnoTurma`, `NomeTurma`, `AnodeInicio`) VALUES
-(1, '1', 'Administração', 2023),
-(18, '1', 'Desenho da Construção Civil', 2023),
-(19, '1', 'Desenvolvimento de Sistemas', 2023),
-(20, '1', 'Enfermagem', 2023),
-(21, '2', 'Adminstração', 2022),
-(22, '2', 'Desenho da Construção Civil', 2022),
-(23, '2', 'Desenvolvimento de Sistemas', 2022),
-(24, '2', 'Enfermagem', 2022),
-(25, '3', 'Administração', 2021),
-(26, '3', 'Desenho da Construção Civil', 2021),
-(27, '3', 'Finanças', 2021),
-(28, '3', 'Informática', 2021),
-(29, '1', 'Administração', 2024),
-(30, '1', 'Desenho da Construção Civil', 2024),
-(31, '1', 'Redes de Computadores ', 2024);
+(2023, '1', 'Administração', 1),
+(2023, '1', 'Desenho da Construção Civil', 18),
+(2023, '1', 'Desenvolvimento de Sistemas', 19),
+(2023, '1', 'Enfermagem', 20),
+(2022, '2', 'Adminstração', 21),
+(2022, '2', 'Desenho da Construção Civil', 22),
+(2022, '2', 'Desenvolvimento de Sistemas', 23),
+(2022, '2', 'Enfermagem', 24),
+(2021, '3', 'Administração', 25),
+(2021, '3', 'Desenho da Construção Civil', 26),
+(2021, '3', 'Finanças', 27),
+(2021, '3', 'Informática', 28),
+(2024, '1', 'Administração', 29),
+(2024, '1', 'Desenho da Construção Civil', 30),
+(2024, '1', 'Redes de Computadores ', 31);
 
 -- --------------------------------------------------------
 

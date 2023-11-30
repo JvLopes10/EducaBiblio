@@ -27,9 +27,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Chame o método para cadastrar o livro, passando os dados do livro
         $livroController->cadastrarLivro($dadosLivro);
     }
+    var_dump($dadosLivro);
     
-// header("Location: ../View/livros.php");
+//header("Location: ../View/livros.php");
 }
-
- header("Location: ../Controller/CCad_livro.php");
+ //header("Location: ../Controller/CCad_livro.php");
 ?>

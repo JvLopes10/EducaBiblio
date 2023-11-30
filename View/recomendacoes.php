@@ -153,9 +153,7 @@ include('../Controller/CConexao.php');
 				<div class="table-data">
 					<div class="order">
 						<div class="head">
-							<h3>Tabela de recomendações</h3>
-							<button class="pdf-button">
-								<i class="fas fa-file-pdf"></i></button>
+							<h3><br>Tabela de recomendações<br></h3>
 						</div>
 						<table>
 							

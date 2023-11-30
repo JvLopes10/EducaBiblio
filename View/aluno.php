@@ -188,167 +188,84 @@ include('../Controller/CConexao.php');
 
 						</div>
 						<table>
-							<thead>
-								<tr>
-									<th>
-										<center>Nome</center>
-									</th>
-									<th>
-										<center>ID</center>
-									</th>
-									<th>
-										<center>E-mail</center>
-									</th>
-									<th>
-										<center>Tipo</center>
-									</th>
-									<th>
-										<center>Turma</center>
-									</th>
-									<th>
-										<center>Editar</center>
-									</th>
-									<th>
-										<center>Excluir</center>
-									</th>
-									<th>
-										<center>Histórico</center>
-									</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td>
-										<center>Maria Raquel</center>
-									</td>
-									<td>
-										<center>1</center>
-									</td>
-									<td>
-										<center>maria.raquel@aluno.ce.gov.br</center>
-									</td>
-									<td>
-										<center>Estudante</center>
-									</td>
-									<td>
-										<center>3º DCC</center>
-									</td>
-									<td>
-										<center><button class="edit-button" id="edit-button" aria-label="botão editar">
-												<i class="fas fa-pencil-alt"></i>
-											</button></center>
-									</td>
-									<td>
-										<div class="container">
-											<center><button class="delete-button" type="submit"
-													onclick="handlePopup(true)">
-													<i class="fas fa-trash-alt"></i>
-												</button></center>
-											<div class="popup" id="popup">
-												<img src="../img/decisao.png" alt ="Imagem com ponto de interrogação indicando dous caminhos a serem seguidos">
 
-												<h2 class="title">Aviso!</h2>
+				<?php
+		$conexao = new CConexao();
+		$conn = $conexao->getConnection();
 
-												<p class="desc">Deseja mesmo excluir?</p>
+		// Consulta para obter os dados da tabela de usuários
+		$sql = "SELECT
+					aluno.NomeAluno,
+					aluno.idAluno,
+					aluno.Turma_idTurma,
+					aluno.EmailAluno
+				FROM aluno";
 
-												<button class="close-popup-button" type="submit" onclick="handlePopup(false)" aria-label="botão fechar">
-													Fechar
-												</button>
-												<button class="close-popup-button" aria-label="botão excluir">
-													Excluir
-												</button>
-											</div>
-										</div>
-					</div>
-					</td>
-					<td>
-						<center><button class="historico-button" aria-label="botão histórica">
-								<i class="fas fa-history"></i>
-							</button></center>
-					</td>
-					</tr>
-					<tr>
-						<td>
-							<center>Paulo Jefferson</center>
-						</td>
-						<td>
-							<center>2</center>
-						</td>
-						<td>
-							<center>paulo.jefferson@aluno.ce.gov.br</center>
-						</td>
-						<td>
-							<center>Estudante</center>
-						</td>
-						<td>
-							<center>3º INF</center>
-						</td>
-						<td>
-							<center><button class="edit-button" aria-label="botão editar">
-									<i class="fas fa-pencil-alt"></i>
-								</button></center>
-						</td>
-						<td>
-							<div class="container"></div>
-							<center><button class="delete-button" type="submit" onclick="handlePopup(true)" aria-label="botão excluir">
-									<i class="fas fa-trash-alt"></i>
-								</button></center>
-							<div class="popup" id="popup">
-								<img src="../img/decisao.png" alt ="Imagem com ponto de interrogação indicando dous caminhos a serem seguidos">
+		$result = $conn->query($sql);
 
-								<h2 class="title">Aviso!</h2>
+		if ($result === false) {
+			// Use errorInfo para obter informações sobre o erro
+			$errorInfo = $conn->errorInfo();
+			echo "Erro na consulta SQL: " . $errorInfo[2];
+		} else {
+			if ($result->rowCount() > 0) {
+				$user = $result->fetchAll(PDO::FETCH_ASSOC);
+				$UsuarioPorPagina = 4;
+				$paginaAtual = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
+				$indiceInicial = ($paginaAtual - 1) * $UsuarioPorPagina;
+				$UsuarioExibidos = array_slice($user, $indiceInicial, $UsuarioPorPagina);
 
-								<p class="desc">Deseja mesmo excluir?</p>
+				// Exibir a tabela de usuários
+				echo "<table>";
+				echo "<thead>";
+				echo "<tr>";
+				echo "<th><center>Nome</center></th>";
+				echo "<th><center>ID</center></th>";
+				echo "<th><center>Email</center></th>";
+				echo "<th><center>tipo</center></th>";
+				echo "<th><center>turma</center></th>";
+				echo "<th><center>Editar</center></th>";
+				echo "<th><center>Excluir</center></th>";
+				echo "<th><center>historico</center></th>";
+				echo "</tr>";
+				echo "</thead>";
+				echo "<tbody>";
 
-								<button class="close-popup-button" type="submit" onclick="handlePopup(false)" aria-label="botão fechar">
-									Fechar
-								</button>
-								<button class="close-popup-button" aria-label="botão excluir">
-									Excluir
-								</button>
-							</div>
-				</div>
-				</div>
-				</td>
-				<td>
-					<center><button class="historico-button" aria-label="botão histórico">
-							<i class="fas fa-history"></i>
-						</button></center>
-				</td>
-				</tr>
-				<tr>
-					<td>
-						<center>Maria Isabel</center>
-					</td>
-					<td>
-						<center>3</center>
-					</td>
-					<td>
-						<center>maria.isabel@aluno.ce.gov.br</center>
-					</td>
-					<td>
-						<center>Estudante</center>
-					</td>
-					<td>
-						<center>3º INF</center>
-					</td>
-					<td>
-						<center><button class="edit-button" aria-label="botão editar">
-								<i class="fas fa-pencil-alt"></i>
-							</button></center>
-					</td>
-					<td>
-						<div class="container">
-							<center><button class="delete-button" type="submit" onclick="handlePopup(true)" aria-label="botão excluir">
-									<i class="fas fa-trash-alt"></i>
-								</button></center>
-					</td>
-					<td>
-						<center><button class="historico-button" aria-label="botão histórico">
-								<i class="fas fa-history"></i>
-							</button></center>
-					</td>
-				</tr>
+				foreach ($UsuarioExibidos as $row) {
+					echo "<tr>";
+					echo "<td><center>" . $row["NomeAluno"] . "</center></td>";
+					echo "<td><center>" . $row["idAluno"] . "</center></td>";
+					echo "<td><center>" . $row["EmailAluno"] . "</center></td>"; 
+					echo "<td><center>" . $row["Turma_idTurma"] . "</center></td>";
+					
+					echo "<td><center><button class='edit-button' data-id='$row[idUsuario]'><i class='fas fa-pencil-alt'></i></button></center></td>";
+            		echo "<td><div class='container'><center><button class='delete-button' type='button' onclick='handlePopup(true)' aria-label='botão excluir'><i class='fas fa-trash-alt'></i></button></center><div class='popup' id='popup'><img src='../img/decisao.png' aria-label='popup decisão'><h2 class='title'>Aviso!</h2><p class='desc'>Deseja mesmo excluir?</p><button class='close-popup-button' type='button' onclick='handlePopup(false)'>Fechar</button><a href='../Controller/CExcluir_usuario.php?id={$row["idUsuario"]}'><button class='close-popup-button'>Excluir</button></a></div></div></div></td>";
+					echo "<td><center><button class='historico-button' aria-label='botão histórico'><i class='fas fa-history'></i></button></center></td>";
+					echo "</tr>";
+				}
+
+				echo "</tbody>";
+				echo "</table>";
+
+				// Adiciona links de paginação
+				echo "<div class='pagination'>";
+				$totalUser = count($user);
+				$totalPaginas = ceil($totalUser / $UsuarioPorPagina);
+				for ($i = 1; $i <= $totalPaginas; $i++) {
+					$classeAtiva = ($i === $paginaAtual) ? "active" : "";
+					echo "<a class='page-link $classeAtiva' href='usuarios.php?pagina=$i'>$i</a>";
+				}
+				echo "</div>";
+
+				// Botão Fechar do popup fora da tabela
+				
+			} else {
+				echo "<p>Nenhum usuário encontrado.</p>";
+			}
+		}
+
+		$conn = null; // Fecha a conexão
+	?>
 				</tbody>
 				</table>
 				</div>
