@@ -208,7 +208,8 @@ include('../Controller/CConexao.php');
 					echo "<td><center>" . $row["NomeTurma"] . "</center></td>";
 					echo "<td><center>" . $row["AnodeInicio"] . "</center></td>";
 					echo "<td><center><button class='edit-button' data-id='$row[IdTurma]'><i class='fas fa-pencil-alt'></i></button></center></td>";
-					echo "<td><div class='container'><center><button class='delete-button' type='button' onclick='handlePopup(true)' aria-label='botão excluir'><i class='fas fa-trash-alt'></i></button></center><div class='popup' id='popup'><img src='../img/decisao.png' aria-label='popup decisão'><h2 class='title'>Aviso!</h2><p class='desc'>Deseja mesmo excluir?</p><button class='close-popup-button' type='button' onclick='handlePopup(false)'>Fechar</button><a href='../Controller/CExcluir_usuario.php?id={$row["AnodeInicio"]}'><button class='close-popup-button'>Excluir</button></a></div></div></div></td>";
+					echo "<td><div class='container'><center><button class='delete-button' type='button' onclick='handlePopup(true, {$row["AnodeInicio"]})' aria-label='botão excluir'><i class='fas fa-trash-alt'></i></button></center><div class='popup' id='popup'><img src='../img/decisao.png' aria-label='popup decisão'><h2 class='title'>Aviso!</h2><p class='desc'>Deseja mesmo excluir?</p><button class='close-popup-button' type='button' onclick='handlePopup(false)'>Fechar</button><button class='close-popup-button'>Excluir</button></a></div></div></div></td>";
+
 					echo "</tr>";
 				}
 
@@ -290,7 +291,41 @@ include('../Controller/CConexao.php');
             });
         });
     });
-</script>
+	</script>
+	<script>
+		function handlePopup(show, idTurma) {
+    var popup = document.getElementById('popup');
+    if (show) {
+        popup.style.display = 'block';
+        var deleteButton = document.querySelector('.close-popup-button[href*="CExcluir_usuario.php"]');
+        
+        // Configurar o link do botão 'Excluir' no popup para excluir a turma correta
+        deleteButton.href = `../Controller/CExcluir_usuario.php?id=${idTurma}`;
+        deleteButton.addEventListener('click', function(event) {
+            event.preventDefault(); // Impede o comportamento padrão do link
+            excluirTurma(idTurma); // Chama a função para excluir a turma
+        });
+    } else {
+        popup.style.display = 'none';
+    }
+}
+
+// Esta função executa a exclusão da turma
+function excluirTurma(idTurma) {
+    fetch(`../Controller/CExcluir_usuario.php?id=${idTurma}`, {
+        method: 'DELETE' // Método a ser utilizado (pode variar conforme a sua implementação no backend)
+    })
+    .then(response => {
+        // Lógica após a exclusão (por exemplo, atualizar a interface)
+        // Você pode recarregar a página ou atualizar a tabela de turmas, por exemplo
+        console.log('Turma excluída com sucesso!');
+    })
+    .catch(error => {
+        console.error('Erro ao excluir a turma:', error);
+    });
+}
+
+	</script>
 
 </body>
 

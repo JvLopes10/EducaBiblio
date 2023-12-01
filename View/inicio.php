@@ -14,7 +14,7 @@ $livrosRecomendados = $getlivro->obterLivrosRecomendados();
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<script src="../ArquivosExternos/icons.js"></script>
-	<link rel="shortcut icon" href="../img/icon.png" type="image/x-icon" />
+	<link rel="shortcut icon" href="../img/icon.png" type="image/x-icon" alt="icon do site"/>
 	<link rel="stylesheet" href="../CSS/style.css">
 	<title>EducaBiblio</title>
 </head>

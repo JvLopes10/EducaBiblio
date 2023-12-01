@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Tempo de geração: 30-Nov-2023 às 11:40
+-- Tempo de geração: 01-Dez-2023 às 13:52
 -- Versão do servidor: 8.0.31
 -- versão do PHP: 8.0.26
 
@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS `aluno` (
   `Turma_idTurma` int NOT NULL,
   PRIMARY KEY (`idAluno`),
   KEY `fk_Aluno_Turma1_idx` (`Turma_idTurma`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb3;
 
 -- --------------------------------------------------------
 
@@ -49,7 +49,7 @@ CREATE TABLE IF NOT EXISTS `autor` (
   `idAutor` int NOT NULL AUTO_INCREMENT,
   `NomeAutor` varchar(100) NOT NULL,
   PRIMARY KEY (`idAutor`)
-) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8mb3;
 
 -- --------------------------------------------------------
 
@@ -102,7 +102,7 @@ CREATE TABLE IF NOT EXISTS `genero` (
   `NomeGenero` varchar(50) NOT NULL,
   `DidaticoGenero` varchar(45) NOT NULL,
   PRIMARY KEY (`idGenero`)
-) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8mb3;
 
 -- --------------------------------------------------------
 
@@ -116,6 +116,15 @@ CREATE TABLE IF NOT EXISTS `idioma` (
   `Idioma` varchar(50) NOT NULL,
   PRIMARY KEY (`idIdioma`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb3;
+
+--
+-- Extraindo dados da tabela `idioma`
+--
+
+INSERT INTO `idioma` (`idIdioma`, `Idioma`) VALUES
+(1, 'Português'),
+(2, 'Inglês'),
+(3, 'Espanhol');
 
 -- --------------------------------------------------------
 
@@ -131,7 +140,7 @@ CREATE TABLE IF NOT EXISTS `livro` (
   `LocalLivro` varchar(250) DEFAULT NULL,
   `PrateleiraLivro` varchar(100) DEFAULT NULL,
   `ColunaLivro` varchar(100) DEFAULT NULL,
-  `Autor_idAutor` int NOT NULL,
+  `autor_idAutor` int NOT NULL,
   `Genero_idGenero` int NOT NULL,
   `Idioma_idIdioma` int NOT NULL,
   `FotoLivro` blob,
@@ -140,7 +149,7 @@ CREATE TABLE IF NOT EXISTS `livro` (
   `CaminhoFotoLivro` varchar(255) DEFAULT NULL,
   `Quantidadelivros` int NOT NULL,
   PRIMARY KEY (`idLivro`),
-  KEY `fk_Livro_Altor_idx` (`Autor_idAutor`),
+  KEY `fk_Livro_Altor_idx` (`autor_idAutor`),
   KEY `fk_Livro_Genero1_idx` (`Genero_idGenero`),
   KEY `fk_Livro_Idioma1_idx` (`Idioma_idIdioma`)
 ) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb3;
@@ -279,7 +288,7 @@ ALTER TABLE `emprestimo`
 -- Limitadores para a tabela `livro`
 --
 ALTER TABLE `livro`
-  ADD CONSTRAINT `fk_Livro_Altor` FOREIGN KEY (`Autor_idAutor`) REFERENCES `autor` (`idAutor`),
+  ADD CONSTRAINT `fk_Livro_Altor` FOREIGN KEY (`autor_idAutor`) REFERENCES `autor` (`idAutor`),
   ADD CONSTRAINT `fk_Livro_Genero1` FOREIGN KEY (`Genero_idGenero`) REFERENCES `genero` (`idGenero`),
   ADD CONSTRAINT `fk_Livro_Idioma1` FOREIGN KEY (`Idioma_idIdioma`) REFERENCES `idioma` (`idIdioma`);
 COMMIT;
