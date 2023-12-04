@@ -194,12 +194,22 @@ include('../Controller/CConexao.php');
 		$conn = $conexao->getConnection();
 
 		// Consulta para obter os dados da tabela de usuários
-		$sql = "SELECT
-					aluno.NomeAluno,
-					aluno.idAluno,
-					aluno.Turma_idTurma,
-					aluno.EmailAluno
-				FROM aluno";
+		$sql = "SELECT 
+            aluno.NomeAluno,
+            aluno.idAluno,
+            aluno.Turma_idTurma,
+            aluno.EmailAluno,
+            'aluno' AS tipo
+        FROM aluno
+        UNION
+        SELECT
+            prof.NomeProf AS NomeAluno,
+            prof.idProf AS idAluno,
+            NULL AS Turma_idTurma,
+            prof.EmailProf AS EmailAluno,
+            'prof' AS tipo
+        FROM prof";
+
 
 		$result = $conn->query($sql);
 
@@ -236,13 +246,42 @@ include('../Controller/CConexao.php');
 					echo "<td><center>" . $row["NomeAluno"] . "</center></td>";
 					echo "<td><center>" . $row["idAluno"] . "</center></td>";
 					echo "<td><center>" . $row["EmailAluno"] . "</center></td>"; 
-					echo "<td><center>" . $row["Turma_idTurma"] . "</center></td>";
-					
-					echo "<td><center><button class='edit-button' data-id='$row[idUsuario]'><i class='fas fa-pencil-alt'></i></button></center></td>";
-            		echo "<td><div class='container'><center><button class='delete-button' type='button' onclick='handlePopup(true)' aria-label='botão excluir'><i class='fas fa-trash-alt'></i></button></center><div class='popup' id='popup'><img src='../img/decisao.png' aria-label='popup decisão'><h2 class='title'>Aviso!</h2><p class='desc'>Deseja mesmo excluir?</p><button class='close-popup-button' type='button' onclick='handlePopup(false)'>Fechar</button><a href='../Controller/CExcluir_usuario.php?id={$row["idUsuario"]}'><button class='close-popup-button'>Excluir</button></a></div></div></div></td>";
-					echo "<td><center><button class='historico-button' aria-label='botão histórico'><i class='fas fa-history'></i></button></center></td>";
+					echo "<td><center>" . ucfirst($row["tipo"]) . "</center></td>"; // Mostra se é aluno ou professor
+					echo "<td><center>" . ($row["Turma_idTurma"] ? $row["Turma_idTurma"] : "Não se aplica") . "</center></td>";
+				
+					// Botão de edição
+					echo "<td><center>";
+					if (array_key_exists('idAluno', $row)) {
+						echo "<button class='edit-button' data-id='" . $row["idAluno"] . "'><i class='fas fa-pencil-alt'></i></button>";
+					}
+					if (array_key_exists('idProf', $row)) {
+						echo "<button class='edit-button' data-id='" . $row["idProf"] . "'><i class='fas fa-pencil-alt'></i></button>";
+					}
+					echo "</center></td>";
+				
+					// Botão de exclusão
+					echo "<td><center>";
+					if (array_key_exists('idAluno', $row)) {
+						echo "<button class='delete-button' data-id='" . $row["idAluno"] . "' onclick='handleDelete(" . $row["idAluno"] . ")'><i class='fas fa-trash-alt'></i></button>";
+					}
+					if (array_key_exists('idProf', $row)) {
+						echo "<button class='delete-button' data-id='" . $row["idProf"] . "' onclick='handleDelete(" . $row["idProf"] . ")'><i class='fas fa-trash-alt'></i></button>";
+					}
+					echo "</center></td>";
+				
+					// Botão de histórico
+					echo "<td><center>";
+					if (array_key_exists('idAluno', $row)) {
+						echo "<button class='historico-button' data-id='" . $row["idAluno"] . "'><i class='fas fa-history'></i></button>";
+					}
+					if (array_key_exists('idProf', $row)) {
+						echo "<button class='historico-button' data-id='" . $row["idProf"] . "'><i class='fas fa-history'></i></button>";
+					}
+					echo "</center></td>";
+				
 					echo "</tr>";
 				}
+				
 
 				echo "</tbody>";
 				echo "</table>";
