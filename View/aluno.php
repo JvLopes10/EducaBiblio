@@ -326,6 +326,53 @@ include('../Controller/CConexao.php');
 		$('#turmaTable').DataTable(); // Inicializa o DataTables para a tabela de turma
 	});
 </script>
+<!-- Exemplo de como incluir o jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // Capturar clique no botão de edição
+        $('.edit-button').click(function() {
+            // Obter o ID do item a ser editado
+            var id = $(this).data('id');
+
+            // Encontrar os dados correspondentes na tabela de usuários e preencher o formulário
+            var row = $(this).closest('tr'); // Obter a linha (tr) mais próxima do botão clicado
+
+            var nome = row.find('td:eq(0)').text().trim(); // Pegar o nome da primeira coluna da linha
+            var email = row.find('td:eq(2)').text().trim(); // Pegar o email da terceira coluna da linha
+            var tipo = row.find('td:eq(3)').text().trim(); // Pegar o tipo da quarta coluna da linha
+            var turma = row.find('td:eq(4)').text().trim(); // Pegar a turma da quinta coluna da linha
+
+            // Preencher os campos do formulário com os dados obtidos
+            $('#id').val(id);
+            $('#NomeAluno').val(nome);
+            $('#EmailAluno').val(email);
+
+            // Preencher o campo de escolha (Aluno/Professor) de acordo com o tipo de usuário
+            if (tipo === 'Aluno') {
+                $('#escolha').val('Aluno');
+                $('#Turma_idTurma').val(turma);
+                $('#NomeProf').val('');
+                $('#EmailProf').val('');
+                $('#MateriaProf').val('');
+            } else if (tipo === 'Professor') {
+                $('#escolha').val('Professor');
+                $('#Turma_idTurma').val('');
+                $('#NomeProf').val(nome);
+                $('#EmailProf').val(email);
+                $('#MateriaProf').val(turma);
+            }
+        });
+    });
+</script>
+
+
+
+
+
+
+
+
 </body>
 
 </html>

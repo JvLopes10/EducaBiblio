@@ -9,7 +9,7 @@ function getTurmasFromDB() {
     $conn->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
 
     // Consulta para buscar as turmas no banco de dados, incluindo o ano
-    $query = "SELECT AnodeInicio, NomeTurma, AnoTurma FROM turma"; // Substitua 'turma' pelo nome da sua tabela de turmas.
+    $query = "SELECT idTurma, AnodeInicio, NomeTurma, AnoTurma FROM turma"; // Substitua 'turma' pelo nome da sua tabela de turmas.
 
     $result = $conn->query($query);
 
@@ -21,7 +21,8 @@ function getTurmasFromDB() {
     $turmas = array();
 
     while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
-        $idTurma = $row['AnodeInicio'];
+        $idTurma = $row['idTurma'];
+        $AnodeInicio = $row['AnodeInicio'];
         $nomeTurma = $row['NomeTurma'];
         $anoTurma = $row['AnoTurma'];
         $nomeAnoTurma = "$anoTurma º $nomeTurma";

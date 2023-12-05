@@ -150,7 +150,7 @@ include('../Controller/CConexao.php');
 
 						<input type="file" name="FotoUsuario" id="FotoUsuario" class="box">
 
-						<center><input type="submit" value="Enviar" class="inline-btn" name="Editar"></center>
+						<center><input type="submit" value="Enviar" class="inline-btn" name="cadastrar"></center>
 					</form>
 				</div>
 			</section>
@@ -266,34 +266,53 @@ include('../Controller/CConexao.php');
 <script src="../JS/popup.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-<script>
+	<script>
+		$(document).ready(function() {
+			// Capturar clique no botão de edição
+			$('.edit-button').click(function() {
+				// Obter o ID do item a ser editado
+				var id = $(this).data('id');
+
+				// Encontrar os dados correspondentes na tabela de usuários e preencher o formulário
+				$('table tbody tr').each(function() {
+					var rowId = $(this).find('td:eq(1)').text(); // Considerando que o ID está na segunda coluna
+					if (rowId == id) {
+						var nome = $(this).find('td:eq(0)').text();
+						var usuario = $(this).find('td:eq(2)').text();
+						var email = $(this).find('td:eq(3)').text();
+						// A coluna de foto pode ser mais complexa para lidar diretamente assim
+
+						// Preencher os campos do formulário com os dados obtidos
+						$('#idUsuario').val(id);
+						$('#NomeUsuario').val(nome);
+						$('#UserUsuario').val(usuario);
+						$('#EmailUsuario').val(email);
+						// O campo de foto pode exigir uma manipulação diferente, dependendo da lógica usada para armazenamento/manipulação de imagens
+						// ...
+					}
+				});
+			});
+		});
+	</script>
+	 <script> 
     $(document).ready(function() {
-        // Capturar clique no botão de edição
-        $('.edit-button').click(function() {
-            // Obter o ID do item a ser editado
-            var id = $(this).data('id');
+        // Capturar clique no botão de exclusão
+        $('.delete-button').click(function() {
+            // Obter o ID do item a ser excluído
+            var id = $(this).closest('tr').find('td:eq(1)').text(); // Considerando que o ID está na segunda coluna
 
-            // Encontrar os dados correspondentes na tabela de usuários e preencher o formulário
-            $('table tbody tr').each(function() {
-                var rowId = $(this).find('td:eq(1)').text(); // Considerando que o ID está na segunda coluna
-                if (rowId == id) {
-                    var nome = $(this).find('td:eq(0)').text();
-                    var usuario = $(this).find('td:eq(2)').text();
-                    var email = $(this).find('td:eq(3)').text();
-                    // A coluna de foto pode ser mais complexa para lidar diretamente assim
+            // Mostrar o popup de confirmação
+            handlePopup(true);
 
-                    // Preencher os campos do formulário com os dados obtidos
-                    $('#idUsuario').val(id);
-                    $('#NomeUsuario').val(nome);
-                    $('#UserUsuario').val(usuario);
-                    $('#EmailUsuario').val(email);
-                    // O campo de foto pode exigir uma manipulação diferente, dependendo da lógica usada para armazenamento/manipulação de imagens
-                    // ...
-                }
-            });
+            // Preencher o link de exclusão com o ID correto
+            var linkExclusao = '../Controller/CExcluir_usuario.php?id=' + id;
+            $('#popup a').attr('href', linkExclusao);
         });
     });
+ 
+    
 </script>
+
 </body>
 
 </html>
