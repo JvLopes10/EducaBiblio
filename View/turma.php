@@ -145,7 +145,7 @@ include('../Controller/CConexao.php');
 					<form action="../Router/turma_rotas.php" method="post">
 						<h3>Cadastro de Turmas</h3>
 						<input type="number" placeholder="ID" name="IdTurma" id="IdTurma" required maxlength="50" class="box3" autocomplete="off" readonly>
-						<input type="Number" placeholder="Ano de inicio" name="AnodeInicio" id="AnodeInicio" required maxlength="50" class="box" autocomplete="off">
+						<input type="Number" placeholder="Ano de início" name="AnodeInicio" id="AnodeInicio" required maxlength="50" class="box" autocomplete="off">
 						<input type="text" placeholder="Série" name="AnoTurma" id="AnoTurma" required maxlength="50" class="box" autocomplete="off" required>
 						<input type="text" placeholder="Turma" name="NomeTurma" id="NomeTurma" required maxlength="50" class="box" autocomplete="off">
 
@@ -153,10 +153,21 @@ include('../Controller/CConexao.php');
 					</form>
 				</div>
 			</section>
+			<style>
+				/* Esconde as setas para campos de entrada numérica */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type=number] {
+  -moz-appearance: textfield; /* Firefox */
+}
+
 
 			<style>
 			.searchInput {
-  width: 25% !important;
+  width: 20% !important;
   height: 30px;
   background-color: #f2f2f2;
   border: 1px solid #ccc;
