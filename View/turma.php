@@ -43,11 +43,6 @@ include('../Controller/CConexao.php');
 		color: #fff;
 	}
 
-/* Estilos para o campo de pesquisa */
-.searchInput {
-  width: 25%; /* Reduz a largura para 75% do tamanho original */
-}
-
 
 </style>
 
@@ -159,12 +154,22 @@ include('../Controller/CConexao.php');
 				</div>
 			</section>
 
+			<style>
+			.searchInput {
+  width: 25% !important;
+  height: 30px;
+  background-color: #f2f2f2;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 5px;
+}
+</style>
 			<main>
 				<div class="table-data">
 					<div class="order">
 						<div class="head">
-							<input type="text" id="searchInput" class="searchInput" placeholder="Pesquisar...">
 							<h3>Tabela de turmas</h3>
+							<input type="text" id="searchInput" class="searchInput" placeholder="Pesquisar...">
 							<button class="pdf-button">
 								<i class="fas fa-file-pdf"></i></button>
 
@@ -333,7 +338,8 @@ include('../Controller/CConexao.php');
 				console.error('Erro ao excluir a turma:', error);
 			});
 	}
-</script><script>
+</script>
+<script>
     $(document).ready(function() {
         $('.sortable').click(function() {
             const column = $(this).data('column');

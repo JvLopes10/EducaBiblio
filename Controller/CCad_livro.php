@@ -51,19 +51,9 @@ class LivroController
             // Obtenha o ID do Autor recém-inserido
             $idAutor = $conn->lastInsertId();
 
-            // Insira os dados do gênero na tabela Genero
-            $sqlGenero = "INSERT INTO Genero (NomeGenero, DidaticoGenero) VALUES (:NomeGenero, :DidaticoGenero)";
-            $stmtGenero = $conn->prepare($sqlGenero);
-            $stmtGenero->bindParam(':NomeGenero', $dadosLivro['NomeGenero']);
-            $stmtGenero->bindParam(':DidaticoGenero', $dadosLivro['DidaticoGenero']);
-            $stmtGenero->execute();
-
-            // Obtenha o ID do gênero recém-inserido
-            $idGenero = $conn->lastInsertId();
-
             // Insira os dados do livro na tabela Livro
-            $sqlLivro = "INSERT INTO Livro (NomeLivro, IBSMLivro, LocalLivro, PrateleiraLivro, ColunaLivro, Autor_idAutor, Genero_idGenero, Idioma_idIdioma, EditoraLivro, EdicaoLivro, CaminhoFotoLivro, QuantidadeLivros)
-                         VALUES (:NomeLivro, :IBSMLivro, :LocalLivro, :PrateleiraLivro, :ColunaLivro, :Autor_idAutor, :Genero_idGenero, :Idioma_idIdioma, :EditoraLivro, :EdicaoLivro, :CaminhoFotoLivro, :QuantidadeLivros)";
+            $sqlLivro = "INSERT INTO Livro (NomeLivro, IBSMLivro, LocalLivro, PrateleiraLivro, ColunaLivro, Autor_idAutor, Genero_idGenero, Idioma_idIdioma, EditoraLivro, EdicaoLivro, CaminhoFotoLivro, QuantidadeLivros, DidaticoLivro)
+                         VALUES (:NomeLivro, :IBSMLivro, :LocalLivro, :PrateleiraLivro, :ColunaLivro, :Autor_idAutor, :Genero_idGenero, :Idioma_idIdioma, :EditoraLivro, :EdicaoLivro, :CaminhoFotoLivro, :QuantidadeLivros, :DidaticoLivro)";
             $stmtLivro = $conn->prepare($sqlLivro);
             $stmtLivro->bindParam(':NomeLivro', $dadosLivro['NomeLivro']);
             $stmtLivro->bindParam(':IBSMLivro', $dadosLivro['IBSMLivro']);
@@ -71,11 +61,13 @@ class LivroController
             $stmtLivro->bindParam(':PrateleiraLivro', $dadosLivro['PrateleiraLivro']);
             $stmtLivro->bindParam(':ColunaLivro', $dadosLivro['ColunaLivro']);
             $stmtLivro->bindParam(':Autor_idAutor', $idAutor);
-            $stmtLivro->bindParam(':Genero_idGenero', $idGenero);
             $stmtLivro->bindParam(':Idioma_idIdioma', $dadosLivro['Idioma_idIdioma']);
+            $stmtLivro->bindParam(':Genero_idGenero', $dadosLivro['Genero_idGenero']);
             $stmtLivro->bindParam(':EditoraLivro', $dadosLivro['EditoraLivro']);
             $stmtLivro->bindParam(':EdicaoLivro', $dadosLivro['EdicaoLivro']);
             $stmtLivro->bindParam(':CaminhoFotoLivro', $dadosLivro['CaminhoFotoLivro']);
+            $stmtLivro->bindParam(':QuantidadeLivros', $dadosLivro['QuantidadeLivros']);
+            $stmtLivro->bindParam(':DidaticoLivro', $dadosLivro['DidaticoLivro']);
             $stmtLivro->execute();
 
             // Finalize a transação

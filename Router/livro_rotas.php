@@ -12,9 +12,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'ColunaLivro' => $_POST['ColunaLivro'],
             'NomeAutor' => $_POST['NomeAutor'],
             'QuantidadeLivros' => $_POST['QuantidadeLivros'],
+            'DidaticoLivro' => isset($_POST['DidaticoLivro']) ? $_POST['DidaticoLivro'] : null,
             'FotoLivro' => $_FILES['FotoLivro'],  // Use $_FILES para campos de arquivo
-            'DidaticoGenero' => $_POST['DidaticoGenero'],
-            'NomeGenero' => $_POST['NomeGenero'],
+           
+            'Genero_idGenero' => $_POST['Genero_idGenero'],
             'Idioma_idIdioma' => $_POST['Idioma_idIdioma'],
             'EditoraLivro' => $_POST['EditoraLivro'],
             'EdicaoLivro' => $_POST['EdicaoLivro'],
@@ -29,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     var_dump($dadosLivro);
     
-//header("Location: ../View/livros.php");
+    header("Location: ../View/livros.php");
 }
- //header("Location: ../Controller/CCad_livro.php");
+//header("Location: ../Controller/CCad_livro.php");
 ?>

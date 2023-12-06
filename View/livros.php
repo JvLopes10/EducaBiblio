@@ -122,16 +122,16 @@ include('../Controller/CConexao.php');
 						<input type="text" placeholder="Editora" name="EditoraLivro" id="EditoraLivro" maxlength="50" class="box" autocomplete="off">
 						<input type="text" placeholder="ISBN" name="IBSMLivro" id="IBSMLivro" maxlength="50" class="box" autocomplete="off">
 
-						<select name="NomeGenero" id="NomeGenero" class="box select-dark-mode" required>
-							<option value="Autoajuda">Autoajuda</option>
-							<option value="Biografia">Biografia</option>
-							<option value="Clássico">Clássico</option>
-							<option value="Conto">Conto</option>
-							<option value="Fantasia">Fantasia</option>
-							<option value="Ficção científica">Ficção científica</option>
-							<option value="Poesia">Poesia</option>
-							<option value="Romance">Romance</option>
-							<option value="Outro">Outro</option>
+						<select name="Genero_idGenero" id="Genero_idGenero" class="box select-dark-mode" required>
+							<option value="1">Autoajuda</option>
+							<option value="2">Biografia</option>
+							<option value="3">Clássico</option>
+							<option value="4">Conto</option>
+							<option value="5">Fantasia</option>
+							<option value="6">Ficção científica</option>
+							<option value="7">Poesia</option>
+							<option value="8">Romance</option>
+							<option value="9">Outro</option>
 						</select>
 						<select name="Idioma_idIdioma" id="Idioma_idIdioma" class="box select-dark-mode">
 							<option value="1">Português</option>
@@ -139,7 +139,7 @@ include('../Controller/CConexao.php');
 							<option value="3">Espanhol</option>
 						</select>
 
-						<select name="DidaticoGenero" id="DidaticoGenero" class="box select-dark-mode">
+						<select name="DidaticoLivro" id="DidaticoLivro" class="box select-dark-mode">
 							<option value="Sim">Material didático</option>
 							<option value="Não">Material não didático</option>
 						</select>
@@ -263,7 +263,7 @@ include('../Controller/CConexao.php');
 										echo "<p class='desc'><b>✧ Coluna: </b>" . $row["ColunaLivro"] . "</p>";
 										echo "<button class='close-popup1-button' type='button' onclick='handlePopup1(false)'>Fechar</button></div></div></div></td>";
 										echo "<td><center><button class='edit-button'><i class='fas fa-pencil-alt'></i></button></center></td>";
-										echo "<td><div class='container'><center><button class='delete-button' type='button' onclick='handlePopup(true)' aria-label='botão excluir'><i class='fas fa-trash-alt'></i></button></center><div class='popup' id='popup'><img src='../img/decisao.png' aria-label='popup decisão'><h2 class='title'>Aviso!</h2><p class='desc'>Deseja mesmo excluir?</p><button class='close-popup-button' type='button' onclick='handlePopup(false)'>Fechar</button><button class='close-popup-button'>Excluir</button></div></div></div></td>";
+										echo "<td><div class='container'><center><button class='delete-button' type='button' onclick='handlePopup(true)' aria-label='botão excluir'><i class='fas fa-trash-alt'></i></button></center><div class='popup' id='popup'><img src='../img/decisao.png' aria-label='popup decisão'><h2 class='title'>Aviso!</h2><p class='desc'>Deseja mesmo excluir?</p><button class='close-popup-button' type='button' onclick='handlePopup(false)'>Fechar</button><a href='../Controller/CExcluir_usuario.php?id={$row["idLivro"]}'><button class='close-popup-button'>Excluir</button></a></div></div></div></td>";
 										echo "</tr>";
 									}
 
@@ -311,6 +311,53 @@ include('../Controller/CConexao.php');
 <script src="../JS/script.js"></script>
 <script src="../JS/popup.js"></script>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // Capturar clique no botão de edição
+        $('.edit-button').click(function() {
+            // Obter o ID do item a ser editado
+            var id = $(this).closest('tr').find('td:eq(1)').text(); // Considerando que o ID está na segunda coluna
+
+            // Encontrar os dados correspondentes na tabela de livros e preencher o formulário
+            $('table tbody tr').each(function() {
+                var rowId = $(this).find('td:eq(1)').text(); // Considerando que o ID está na segunda coluna
+                if (rowId == id) {
+                    var nomeLivro = $(this).find('td:eq(0)').text();
+                    var editoraLivro = $(this).find('td:eq(2)').text();
+                    var ibsmLivro = $(this).find('td:eq(3)').text();
+                    // A coluna de foto pode ser mais complexa para lidar diretamente assim
+
+                    // Preencher os campos do formulário com os dados obtidos
+                    $('#id').val(id);
+                    $('#NomeLivro').val(nomeLivro);
+                    $('#EditoraLivro').val(editoraLivro);
+                    $('#IBSMLivro').val(ibsmLivro);
+                    // O campo de foto pode exigir uma manipulação diferente, dependendo da lógica usada para armazenamento/manipulação de imagens
+                    // ...
+                }
+            });
+        });
+    });
+</script>
+<script> 
+    $(document).ready(function() {
+        // Capturar clique no botão de exclusão
+        $('.delete-button').click(function() {
+            // Obter o ID do item a ser excluído
+            var id = $(this).closest('tr').find('td:eq(1)').text(); // Considerando que o ID está na segunda coluna
+
+            // Mostrar o popup de confirmação
+            handlePopup(true);
+
+            // Preencher o link de exclusão com o ID correto
+            var linkExclusao = '../Controller/CExcluir_usuario.php?id=' + id;
+            $('#popup a').attr('href', linkExclusao);
+        });
+    });
+ 
+    
+</script>
 </body>
 
 </html>
