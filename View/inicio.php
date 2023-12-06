@@ -1,5 +1,6 @@
 <?php
 include('../Controller/CConexao.php');
+include('../Controller/CLog_usu.php');
 require '../Controller/CGet_rec.php';
 $conexao = new CConexao();
 $conn = $conexao->getConnection();
@@ -103,7 +104,21 @@ $livrosRecomendados = $getlivro->obterLivrosRecomendados();
 			<input type="checkbox" id="switch-mode" hidden>
 			<label for="switch-mode" class="switch-mode"></label>
 			<a href="#" class="profile">
-				<img src="../img/adm.png">
+			<?php
+// Inicializa a variável do caminho da imagem do usuário
+$caminhoImagemUsuario = isset($_SESSION['caminhoImagemUsuario']) ? $_SESSION['caminhoImagemUsuario'] : '';
+
+if (isset($_SESSION['usuario_logado']) && $_SESSION['usuario_logado'] === true && !empty($caminhoImagemUsuario)) {
+    // Se o usuário está logado e o caminho da imagem do usuário não está vazio, exibe a imagem do usuário
+    echo '<img src="' . $caminhoImagemUsuario . '" alt="Imagem do usuário">';
+} else {
+    // Se o usuário não está logado ou o caminho da imagem do usuário está vazio, exibe a imagem padrão
+    echo '<img src="../img/adm.png" alt="Imagem Padrão">';
+}
+?>
+
+</a>
+
 				
 			</a>
 		</nav>

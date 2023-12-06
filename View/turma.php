@@ -165,7 +165,7 @@ input[type=number] {
 }
 
 
-			<style>
+			
 			.searchInput {
   width: 20% !important;
   height: 30px;
@@ -233,8 +233,7 @@ input[type=number] {
 										echo "<td><center>" . $row["NomeTurma"] . "</center></td>";
 										echo "<td><center>" . $row["AnodeInicio"] . "</center></td>";
 										echo "<td><center><button class='edit-button' data-id='$row[IdTurma]'><i class='fas fa-pencil-alt'></i></button></center></td>";
-										echo "<td><div class='container'><center><button class='delete-button' type='button' onclick='handlePopup(true, {$row["AnodeInicio"]})' aria-label='botão excluir'><i class='fas fa-trash-alt'></i></button></center><div class='popup' id='popup'><img src='../img/decisao.png' aria-label='popup decisão'><h2 class='title'>Aviso!</h2><p class='desc'>Deseja mesmo excluir?</p><button class='close-popup-button' type='button' onclick='handlePopup(false)'>Fechar</button><button class='close-popup-button'>Excluir</button></a></div></div></div></td>";
-
+										echo "<td><div class='container'><center><button class='delete-button' type='button' onclick='handlePopup(true)' aria-label='botão excluir'><i class='fas fa-trash-alt'></i></button></center><div class='popup' id='popup'><img src='../img/decisao.png' aria-label='popup decisão'><h2 class='title'>Aviso!</h2><p class='desc'>Deseja mesmo excluir?</p><button class='close-popup-button' type='button' onclick='handlePopup(false)'>Fechar</button><a href='../Controller/CExcluir_usuario.php?id={$row["IdTurma"]}'><button class='close-popup-button'>Excluir</button></a></div></div></div></td>";
 										echo "</tr>";
 									}
 
@@ -392,6 +391,24 @@ input[type=number] {
 			$(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
 		});
 	});
+</script>
+<script> 
+    $(document).ready(function() {
+        // Capturar clique no botão de exclusão
+        $('.delete-button').click(function() {
+            // Obter o ID do item a ser excluído
+            var id = $(this).closest('tr').find('td:eq(1)').text(); // Considerando que o ID está na segunda coluna
+
+            // Mostrar o popup de confirmação
+            handlePopup(true);
+
+            // Preencher o link de exclusão com o ID correto
+            var linkExclusao = '../Controller/CExcluir_usuario.php?id=' + id;
+            $('#popup a').attr('href', linkExclusao);
+        });
+    });
+ 
+    
 </script>
 </body>
 

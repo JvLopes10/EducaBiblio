@@ -351,7 +351,7 @@ include('../Controller/CConexao.php');
             handlePopup(true);
 
             // Preencher o link de exclusão com o ID correto
-            var linkExclusao = '../Controller/CExcluir_usuario.php?id=' + id;
+            var linkExclusao = '../Controller/CExcluir_livros.php?id=' + id;
             $('#popup a').attr('href', linkExclusao);
         });
     });

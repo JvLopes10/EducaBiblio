@@ -154,11 +154,34 @@ include('../Controller/CConexao.php');
 					</form>
 				</div>
 			</section>
+			<style>
+				/* Esconde as setas para campos de entrada numérica */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type=number] {
+  -moz-appearance: textfield; /* Firefox */
+}
+
+
+			
+			.searchInput {
+  width: 20% !important;
+  height: 30px;
+  background-color: #f2f2f2;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 5px;
+}
+</style>
 			<main>
 				<div class="table-data">
 					<div class="order">
 						<div class="head">
 							<h3>Tabela de usuários</h3>
+							<input type="text" id="searchInput" class="searchInput" placeholder="Pesquisar...">
 							<button class="pdf-button">
 								<i class="fas fa-file-pdf"></i></button>
 
@@ -311,6 +334,16 @@ include('../Controller/CConexao.php');
     });
  
     
+</script>
+
+<script>
+	$('#searchInput').on('keyup', function() {
+		const value = $(this).val().toLowerCase();
+
+		$('table tbody tr').filter(function() {
+			$(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+		});
+	});
 </script>
 
 </body>
