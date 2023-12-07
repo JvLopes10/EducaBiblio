@@ -14,23 +14,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'QuantidadeLivros' => $_POST['QuantidadeLivros'],
             'DidaticoLivro' => isset($_POST['DidaticoLivro']) ? $_POST['DidaticoLivro'] : null,
             'FotoLivro' => $_FILES['FotoLivro'],  // Use $_FILES para campos de arquivo
-           
+
             'Genero_idGenero' => $_POST['Genero_idGenero'],
             'Idioma_idIdioma' => $_POST['Idioma_idIdioma'],
             'EditoraLivro' => $_POST['EditoraLivro'],
             'EdicaoLivro' => $_POST['EdicaoLivro'],
             // Outros campos do livro que você deseja obter do formulário
-        ];
+        ]; 
+        
+        // Validar e mover o arquivo de upload para um diretório seguro
+        $caminhoDestino = '../img/livros';
+        $nomeArquivo = $_FILES['FotoLivro']['name'];
+        $caminhoArquivo = $caminhoDestino . '/' . $nomeArquivo;
+
+        move_uploaded_file($_FILES['FotoLivro']['tmp_name'], $caminhoArquivo);
+
+        // Adicione o caminho do arquivo aos dados do livro
+        $dadosLivro['FotoLivro'] = $caminhoArquivo;
 
         // Crie uma instância do controlador de livros
         $livroController = new LivroController();
 
         // Chame o método para cadastrar o livro, passando os dados do livro
         $livroController->cadastrarLivro($dadosLivro);
+        header("Location: ../View/livros.php");
+        exit(); // Termina o script após o redirecionamento
     }
-    var_dump($dadosLivro);
-    
-    header("Location: ../View/livros.php");
 }
-//header("Location: ../Controller/CCad_livro.php");
-?>
+
+// Redirecionamento padrão se a condição acima não for atendida
+header("Location: ../View/livros.php");
+exit(); // Termina o script após o redirecionamento
