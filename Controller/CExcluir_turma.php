@@ -3,7 +3,7 @@
 
 // Verifica se o ID do usuário foi enviado via parâmetro GET
 if (isset($_GET['id'])) {
-    $idTurma = $_GET['id'];
+    $IdTurma = $_GET['id'];
 
     // Aqui você deve incluir o arquivo que contém a classe de conexão
     require_once('CConexao.php');
@@ -14,9 +14,9 @@ if (isset($_GET['id'])) {
         $conn = $conexao->getConnection();
 
         // Prepara a consulta SQL para excluir o usuário com o ID fornecido
-        $sql = "DELETE FROM livro WHERE idTurma  = :idTurma";
+        $sql = "DELETE FROM livro WHERE IdTurma  = :IdTurma";
         $stmt = $conn->prepare($sql);
-        $stmt->bindParam(':idTurma', $idTurma);
+        $stmt->bindParam(':IdTurma', $IdTurma);
         
         // Executa a consulta para excluir o usuário
         $stmt->execute();

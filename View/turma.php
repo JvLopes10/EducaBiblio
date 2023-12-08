@@ -147,7 +147,7 @@ include('../Controller/CConexao.php');
 						<input type="number" placeholder="ID" name="IdTurma" id="IdTurma" required maxlength="50" class="box3" autocomplete="off" readonly>
 						<input type="Number" placeholder="Ano de início" name="AnodeInicio" id="AnodeInicio" required maxlength="50" class="box" autocomplete="off">
 						<input type="text" placeholder="Série" name="AnoTurma" id="AnoTurma" required maxlength="50" class="box" autocomplete="off" required>
-						<input type="text" placeholder="Turma" name="NomeTurma" id="NomeTurma" required maxlength="50" class="box" autocomplete="off">
+						<input type="text" placeholder="Turma" name="NomeTurma" id="NomeTurma"  maxlength="50" class="box" autocomplete="off">
 
 						<center><input type="submit" value="Enviar" class="inline-btn" name="action"></center>
 					</form>
@@ -233,8 +233,7 @@ input[type=number] {
 										echo "<td><center>" . $row["NomeTurma"] . "</center></td>";
 										echo "<td><center>" . $row["AnodeInicio"] . "</center></td>";
 										echo "<td><center><button class='edit-button' data-id='$row[IdTurma]'><i class='fas fa-pencil-alt'></i></button></center></td>";
-										echo "<td><div class='container'><center><button class='delete-button' type='button' onclick='handlePopup(true)' aria-label='botão excluir'><i class='fas fa-trash-alt'></i></button></center><div class='popup' id='popup'><img src='../img/decisao.png' aria-label='popup decisão'><h2 class='title'>Aviso!</h2><p class='desc'>Deseja mesmo excluir?</p><button class='close-popup-button' type='button' onclick='handlePopup(false)'>Fechar</button><a href='../Controller/CExcluir_usuario.php?id={$row["IdTurma"]}'><button class='close-popup-button'>Excluir</button></a></div></div></div></td>";
-										echo "</tr>";
+										echo "<td><div class='container'><center><button class='delete-button' type='button' onclick='handlePopup(true)' aria-label='botão excluir'><i class='fas fa-trash-alt'></i></button></center><div class='popup' id='popup'><img src='../img/decisao.png' aria-label='popup decisão'><h2 class='title'>Aviso!</h2><p class='desc'>Deseja mesmo excluir?</p><button class='close-popup-button' type='button' onclick='handlePopup(false)'>Fechar</button><a href='../Controller/CExcluir_turma.php?id={$row["IdTurma"]}'><button class='close-popup-button'>Excluir</button></a></div></div></div></td>";echo "</tr>";
 									}
 
 									echo "</tbody>";
@@ -317,39 +316,6 @@ input[type=number] {
 	});
 </script>
 <script>
-	function handlePopup(show, idTurma) {
-		var popup = document.getElementById('popup');
-		if (show) {
-			popup.style.display = 'block';
-			var deleteButton = document.querySelector('.close-popup-button[href*="CExcluir_usuario.php"]');
-
-			// Configurar o link do botão 'Excluir' no popup para excluir a turma correta
-			deleteButton.href = `../Controller/CExcluir_usuario.php?id=${idTurma}`;
-			deleteButton.addEventListener('click', function(event) {
-				event.preventDefault(); // Impede o comportamento padrão do link
-				excluirTurma(idTurma); // Chama a função para excluir a turma
-			});
-		} else {
-			popup.style.display = 'none';
-		}
-	}
-
-	// Esta função executa a exclusão da turma
-	function excluirTurma(idTurma) {
-		fetch(`../Controller/CExcluir_usuario.php?id=${idTurma}`, {
-				method: 'DELETE' // Método a ser utilizado (pode variar conforme a sua implementação no backend)
-			})
-			.then(response => {
-				// Lógica após a exclusão (por exemplo, atualizar a interface)
-				// Você pode recarregar a página ou atualizar a tabela de turmas, por exemplo
-				console.log('Turma excluída com sucesso!');
-			})
-			.catch(error => {
-				console.error('Erro ao excluir a turma:', error);
-			});
-	}
-</script>
-<script>
     $(document).ready(function() {
         $('.sortable').click(function() {
             const column = $(this).data('column');
@@ -392,23 +358,21 @@ input[type=number] {
 		});
 	});
 </script>
-<script> 
-    $(document).ready(function() {
-        // Capturar clique no botão de exclusão
-        $('.delete-button').click(function() {
-            // Obter o ID do item a ser excluído
-            var id = $(this).closest('tr').find('td:eq(1)').text(); // Considerando que o ID está na segunda coluna
+<script>
+	$(document).ready(function() {
+		// Capturar clique no botão de exclusão
+		$('.delete-button').click(function() {
+			// Obter o ID do item a ser excluído
+			var id = $(this).closest('tr').find('td:eq(0)').text(); // Considerando que o ID está na primeira coluna
 
-            // Mostrar o popup de confirmação
-            handlePopup(true);
+			// Mostrar o popup de confirmação
+			handlePopup(true);
 
-            // Preencher o link de exclusão com o ID correto
-            var linkExclusao = '../Controller/CExcluir_usuario.php?id=' + id;
-            $('#popup a').attr('href', linkExclusao);
-        });
-    });
- 
-    
+			// Preencher o link de exclusão com o ID correto
+			var linkExclusao = '../Controller/CExcluir_turma.php?id=' + id;
+			$('#popup a').attr('href', linkExclusao);
+		});
+	});
 </script>
 </body>
 
