@@ -24,14 +24,14 @@ if (isset($_GET['id'])) {
         // Verifica se a exclusão foi realizada com sucesso
         if ($stmt->rowCount() > 0) {
             // Redireciona de volta para a página de usuários após a exclusão
-            header("Location: ../view/usuarios.php");
+            header("Location: ../view/livros.php");
             exit();
         } else {
-            echo "Falha ao excluir o usuário.";
+            echo "Falha ao excluir o livro.";
             header("Location: ../view/livros.php");
         }
     } catch (PDOException $e) {
-        echo "Erro na exclusão do usuário: " . $e->getMessage();
+        echo "Erro na exclusão do livro: " . $e->getMessage();
     }
 } else {
     // Se o ID não foi fornecido, exibe uma mensagem de erro ou redireciona para outra página

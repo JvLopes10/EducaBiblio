@@ -15,6 +15,35 @@ include('../Controller/CConexao.php');
 
 	<title>EducaBiblio</title>
 </head>
+<style>
+	.pagination {
+		text-align: center;
+		margin-top: 15px;
+
+	}
+
+	.page-link {
+		display: inline-block;
+		padding: 5px 10px;
+		margin: 2px;
+		border: 1px solid #333;
+		background-color: #fff;
+		color: #333;
+		text-decoration: none;
+		border-radius: 5px;
+		transition: background-color 0.3s, color 0.3s;
+	}
+
+	.page-link.active {
+		background-color: #333;
+		color: #fff;
+	}
+
+	.page-link:hover {
+		background-color: #333;
+		color: #fff;
+	}
+</style>
 
 <body>
 
@@ -75,7 +104,7 @@ include('../Controller/CConexao.php');
 		</ul>
 		<ul class="side-menu">
 			<li>
-			<a href="../Controller/CLogout.php" class="logout">
+				<a href="../Controller/CLogout.php" class="logout">
 					<i class="fas fa-sign-out-alt"></i>
 					<span class="text">Deslogar</span>
 				</a>
@@ -120,7 +149,7 @@ include('../Controller/CConexao.php');
 						<input type="text" placeholder="Autor" name="NomeAutor" id="NomeAutor" maxlength="50" class="box" autocomplete="off" required>
 						<input type="text" placeholder="Edição" name="EdicaoLivro" id="EdicaoLivro" maxlength="50" class="box" autocomplete="off">
 						<input type="text" placeholder="Editora" name="EditoraLivro" id="EditoraLivro" maxlength="50" class="box" autocomplete="off">
-						<input type="text" placeholder="ISBN" name="IBSMLivro" id="IBSMLivro" maxlength="50" class="box" autocomplete="off">
+						<input type="text" placeholder="ISBN/CDD" name="IBSMLivro" id="IBSMLivro" maxlength="50" class="box" autocomplete="off">
 
 						<select name="Genero_idGenero" id="Genero_idGenero" class="box select-dark-mode" required>
 							<option value="1">Autoajuda</option>
@@ -178,11 +207,37 @@ include('../Controller/CConexao.php');
 					</form>
 				</div>
 			</section>
+			<style>
+				/* Esconde as setas para campos de entrada numérica */
+				input[type=number]::-webkit-inner-spin-button,
+				input[type=number]::-webkit-outer-spin-button {
+					-webkit-appearance: none;
+					margin: 0;
+				}
+
+				input[type=number] {
+					-moz-appearance: textfield;
+					/* Firefox */
+				}
+
+
+
+				.searchInput {
+					width: 20% !important;
+					height: 30px;
+					background-color: #f2f2f2;
+					border: 1px solid #ccc;
+					border-radius: 5px;
+					padding: 5px;
+				}
+			</style>
 			<main>
 				<div class="table-data">
 					<div class="order">
 						<div class="head">
 							<h3>Tabela de livros</h3>
+							<input type="text" id="searchInput" class="searchInput" placeholder="Pesquisar...">
+
 							<button class="pdf-button">
 								<i class="fas fa-file-pdf"></i></button>
 
@@ -235,7 +290,7 @@ include('../Controller/CConexao.php');
 									echo "<th><center>Nome</center></th>";
 									echo "<th><center>ID</center></th>";
 									echo "<th><center>Editora</center></th>";
-									echo "<th><center>ISBN</center></th>";
+									echo "<th><center>ISBN/CDD</center></th>";
 									echo "<th><center>Gênero</center></th>";
 									echo "<th><center>Idioma</center></th>";
 									echo "<th><center>Quantidade</center></th>";
@@ -263,7 +318,7 @@ include('../Controller/CConexao.php');
 										echo "<p class='desc'><b>✧ Coluna: </b>" . $row["ColunaLivro"] . "</p>";
 										echo "<button class='close-popup1-button' type='button' onclick='handlePopup1(false)'>Fechar</button></div></div></div></td>";
 										echo "<td><center><button class='edit-button'><i class='fas fa-pencil-alt'></i></button></center></td>";
-										echo "<td><div class='container'><center><button class='delete-button' type='button' onclick='handlePopup(true)' aria-label='botão excluir'><i class='fas fa-trash-alt'></i></button></center><div class='popup' id='popup'><img src='../img/decisao.png' aria-label='popup decisão'><h2 class='title'>Aviso!</h2><p class='desc'>Deseja mesmo excluir?</p><button class='close-popup-button' type='button' onclick='handlePopup(false)'>Fechar</button><a href='../Controller/CExcluir_usuario.php?id={$row["idLivro"]}'><button class='close-popup-button'>Excluir</button></a></div></div></div></td>";
+										echo "<td><div class='container'><center><button class='delete-button' type='button' onclick='handlePopup(true)' aria-label='botão excluir'><i class='fas fa-trash-alt'></i></button></center><div class='popup' id='popup'><img src='../img/decisao.png' aria-label='popup decisão'><h2 class='title'>Aviso!</h2><p class='desc'>Deseja mesmo excluir?</p><button class='close-popup-button' type='button' onclick='handlePopup(false)'>Fechar</button><a href='../Controller/CExcluir_livros.php?id={$row["idLivro"]}'><button class='close-popup-button'>Excluir</button></a></div></div></div></td>";
 										echo "</tr>";
 									}
 
@@ -313,51 +368,60 @@ include('../Controller/CConexao.php');
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    $(document).ready(function() {
-        // Capturar clique no botão de edição
-        $('.edit-button').click(function() {
-            // Obter o ID do item a ser editado
-            var id = $(this).closest('tr').find('td:eq(1)').text(); // Considerando que o ID está na segunda coluna
+	$(document).ready(function() {
+		// Capturar clique no botão de edição
+		$('.edit-button').click(function() {
+			// Obter o ID do item a ser editado
+			var id = $(this).closest('tr').find('td:eq(1)').text(); // Considerando que o ID está na segunda coluna
 
-            // Encontrar os dados correspondentes na tabela de livros e preencher o formulário
-            $('table tbody tr').each(function() {
-                var rowId = $(this).find('td:eq(1)').text(); // Considerando que o ID está na segunda coluna
-                if (rowId == id) {
-                    var nomeLivro = $(this).find('td:eq(0)').text();
-                    var editoraLivro = $(this).find('td:eq(2)').text();
-                    var ibsmLivro = $(this).find('td:eq(3)').text();
-                    // A coluna de foto pode ser mais complexa para lidar diretamente assim
+			// Encontrar os dados correspondentes na tabela de livros e preencher o formulário
+			$('table tbody tr').each(function() {
+				var rowId = $(this).find('td:eq(1)').text(); // Considerando que o ID está na segunda coluna
+				if (rowId == id) {
+					var nomeLivro = $(this).find('td:eq(0)').text();
+					var editoraLivro = $(this).find('td:eq(2)').text();
+					var ibsmLivro = $(this).find('td:eq(3)').text();
+					// A coluna de foto pode ser mais complexa para lidar diretamente assim
 
-                    // Preencher os campos do formulário com os dados obtidos
-                    $('#id').val(id);
-                    $('#NomeLivro').val(nomeLivro);
-                    $('#EditoraLivro').val(editoraLivro);
-                    $('#IBSMLivro').val(ibsmLivro);
-                    // O campo de foto pode exigir uma manipulação diferente, dependendo da lógica usada para armazenamento/manipulação de imagens
-                    // ...
-                }
-            });
-        });
-    });
+					// Preencher os campos do formulário com os dados obtidos
+					$('#id').val(id);
+					$('#NomeLivro').val(nomeLivro);
+					$('#EditoraLivro').val(editoraLivro);
+					$('#IBSMLivro').val(ibsmLivro);
+					// O campo de foto pode exigir uma manipulação diferente, dependendo da lógica usada para armazenamento/manipulação de imagens
+					// ...
+				}
+			});
+		});
+	});
 </script>
-<script> 
-    $(document).ready(function() {
-        // Capturar clique no botão de exclusão
-        $('.delete-button').click(function() {
-            // Obter o ID do item a ser excluído
-            var id = $(this).closest('tr').find('td:eq(1)').text(); // Considerando que o ID está na segunda coluna
+<script>
+	$(document).ready(function() {
+		// Capturar clique no botão de exclusão
+		$('.delete-button').click(function() {
+			// Obter o ID do item a ser excluído
+			var id = $(this).closest('tr').find('td:eq(1)').text(); // Considerando que o ID está na segunda coluna
 
-            // Mostrar o popup de confirmação
-            handlePopup(true);
+			// Mostrar o popup de confirmação
+			handlePopup(true);
 
-            // Preencher o link de exclusão com o ID correto
-            var linkExclusao = '../Controller/CExcluir_livros.php?id=' + id;
-            $('#popup a').attr('href', linkExclusao);
-        });
-    });
- 
-    
+			// Preencher o link de exclusão com o ID correto
+			var linkExclusao = '../Controller/CExcluir_livros.php?id=' + id;
+			$('#popup a').attr('href', linkExclusao);
+		});
+	});
 </script>
+
+<script>
+	$('#searchInput').on('keyup', function() {
+		const value = $(this).val().toLowerCase();
+
+		$('table tbody tr').filter(function() {
+			$(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+		});
+	});
+</script>
+
 </body>
 
 </html>
