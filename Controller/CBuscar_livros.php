@@ -4,7 +4,6 @@ include 'CConexao.php';
 if (isset($_GET['generoId'])) {
     $generoId = $_GET['generoId'];
     
-    // Crie uma instância da classe CConexao para obter a conexão com o banco de dados.
     $conexao = new CConexao();
     $conn = $conexao->getConnection();
 
@@ -13,11 +12,15 @@ if (isset($_GET['generoId'])) {
     $stmt->bindParam(':generoId', $generoId, PDO::PARAM_INT);
     $stmt->execute();
 
+    $livros = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
     $options = "<option value=''>Selecione um livro</option>";
-    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-        $options .= "<option value='" . $row['idLivro'] . "'>" . $row['NomeLivro'] . "</option>";
+    foreach ($livros as $livro) {
+        $options .= "<option value='" . $livro['idLivro'] . "'>" . $livro['NomeLivro'] . "</option>";
     }
 
     echo $options;
+} else {
+    echo "<option value=''>Gênero inválido</option>";
 }
 ?>

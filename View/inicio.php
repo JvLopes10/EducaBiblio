@@ -19,7 +19,35 @@ $livrosRecomendados = $getlivro->obterLivrosRecomendados();
 	<link rel="stylesheet" href="../CSS/style.css">
 	<title>EducaBiblio</title>
 </head>
+<style>
+	.pagination {
+		text-align: center;
+		margin-top: 15px;
 
+	}
+
+	.page-link {
+		display: inline-block;
+		padding: 5px 10px;
+		margin: 2px;
+		border: 1px solid #333;
+		background-color: #fff;
+		color: #333;
+		text-decoration: none;
+		border-radius: 5px;
+		transition: background-color 0.3s, color 0.3s;
+	}
+
+	.page-link.active {
+		background-color: #333;
+		color: #fff;
+	}
+
+	.page-link:hover {
+		background-color: #333;
+		color: #fff;
+	}
+</style>
 <body>
 	<section id="sidebar" class="page-transition">
 		<a href="#" class="brand">
@@ -256,111 +284,129 @@ if (isset($_SESSION['usuario_logado']) && $_SESSION['usuario_logado'] === true &
 				</div>
 			</section>
 
+			<style>
+				/* Esconde as setas para campos de entrada numérica */
+				input[type=number]::-webkit-inner-spin-button,
+				input[type=number]::-webkit-outer-spin-button {
+					-webkit-appearance: none;
+					margin: 0;
+				}
 
+				input[type=number] {
+					-moz-appearance: textfield;
+					/* Firefox */
+				}
+
+
+
+				.searchInput {
+					width: 20% !important;
+					height: 30px;
+					background-color: #f2f2f2;
+					border: 1px solid #ccc;
+					border-radius: 5px;
+					padding: 5px;
+				}
+			</style>
 			<div class="table-data">
 				<div class="order">
 					<div class="head">
 						<h3>Histórico de empréstimos</h3>
+						<input type="text" id="searchInput" class="searchInput" placeholder="Pesquisar...">
+							
 						<button class="pdf-button">
 							<i class="fas fa-file-pdf"></i></button>
 					</div>
-					<table>
-						<thead>
-							<tr>
-								<th>
-									<center>Estudante</center>
-								</th>
-								<th>
-									<center>ID</center>
-								</th>
-								<th>
-									<center>Turma</center>
-								</th>
-								<th>
-									<center>Data do empréstimo</center>
-								</th>
-								<th>
-									<center>Data de devolução</center>
-								</th>
-								<th>
-									<center>Data em que foi devolvido</center>
-								</th>
-								<th>
-									<center>Estado</center>
-								</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td>
-									<center>Maria Raquel</center>
-								</td>
-								<td>
-									<center>1</center>
-								</td>
-								<td>
-									<center>3º</center>
-								</td>
-								<td>
-									<center>29/07/2023</center>
-								</td>
-								<td>
-									<center>23/08/2023</center>
-								</td>
-								<td>
-									<center>22/08/2023</center>
-								</td>
-								<td>
-									<center><span class="status completed">Devolvido</span></center>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<center>Paulo Jefferson</center>
-								</td>
-								<td>
-									<center>2</center>
-								</td>
-								<td>
-									<center>3º</center>
-								</td>
-								<td>
-									<center>29/07/2023</center>
-								</td>
-								<td>
-									<center>23/08/2023</center>
-								</td>
-								<td>
-									<center>-</center>
-								</td>
-								<td>
-									<center><span class="status pending">Pendente</span></center>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<center>Maria Isabel</center>
-								</td>
-								<td>
-									<center>3</center>
-								</td>
-								<td>
-									<center>3º</center>
-								</td>
-								<td>
-									<center>23/08/2023</center>
-								</td>
-								<td>
-									<center>15/10/2023</center>
-								</td>
-								<td>
-									<center>-</center>
-								</td>
-								<td>
-									<center><span class="status process">Dentro do prazo</span></center>
-								</td>
-							</tr>
-						</tbody>
+					<table><?php	
+
+$conexao = new CConexao();
+$conn = $conexao->getConnection();
+
+// Definir o número de registros por página
+$registrosPorPagina = 4;
+
+// Determinar a página atual
+$paginaAtual = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
+$indiceInicial = ($paginaAtual - 1) * $registrosPorPagina;
+
+// Consulta para obter os dados de empréstimo paginados
+$sql = "SELECT
+            emprestimo.idEmprestimo,
+            aluno.NomeAluno AS Estudante,
+            DATE_FORMAT(emprestimo.DataEmprestimo, '%d/%m/%Y') AS DataEmprestimoFormatada,
+            IFNULL(DATE_FORMAT(devolucao.DataDevolucao, '%d/%m/%Y'), '--/--/----') AS DataDevolucaoFormatada,
+            IFNULL(DATE_FORMAT(devolucao.DataDevolvida, '%d/%m/%Y'), '--/--/----') AS DataDevolvidaFormatada,
+            CASE
+                WHEN emprestimo.StatusEmprestimo = 0 THEN 'Dentro do prazo'
+                WHEN emprestimo.StatusEmprestimo = 1 THEN 'Pendente'
+                WHEN emprestimo.StatusEmprestimo = 2 THEN 'Devolvido'
+                ELSE 'Status não definido'
+            END AS Estado
+        FROM emprestimo
+        LEFT JOIN aluno ON emprestimo.aluno_idAluno = aluno.idAluno
+        LEFT JOIN devolucao ON emprestimo.idEmprestimo = devolucao.emprestimo_idEmprestimo
+        LIMIT $indiceInicial, $registrosPorPagina";
+
+$result = $conn->query($sql);
+
+if ($result === false) {
+    // Use errorInfo para obter informações sobre o erro
+    $errorInfo = $conn->errorInfo();
+    echo "Erro na consulta SQL: " . $errorInfo[2];
+} else {
+    if ($result->rowCount() > 0) {
+        $dadosEmprestimo = $result->fetchAll(PDO::FETCH_ASSOC);
+
+        // Exibir a tabela de empréstimos
+        echo "<table>";
+        echo "<thead>";
+        echo "<tr>";
+        echo "<th><center>Estudante</center></th>";
+        echo "<th><center>ID</center></th>";
+        echo "<th><center>Data do Empréstimo</center></th>";
+        echo "<th><center>Data de Devolução</center></th>";
+        echo "<th><center>Data em que foi Devolvido</center></th>";
+        echo "<th><center>Estado</center></th>";
+        echo "</tr>";
+        echo "</thead>";
+        echo "<tbody>";
+
+        foreach ($dadosEmprestimo as $emprestimo) {
+            echo "<tr>";
+            echo "<td><center>" . $emprestimo['Estudante'] . "</center></td>";
+            echo "<td><center>" . $emprestimo['idEmprestimo'] . "</center></td>";
+            echo "<td><center>" . $emprestimo['DataEmprestimoFormatada'] . "</center></td>";
+            echo "<td><center>" . $emprestimo['DataDevolucaoFormatada'] . "</center></td>";
+            echo "<td><center>" . $emprestimo['DataDevolvidaFormatada'] . "</center></td>";
+            echo "<td><center><span class='status ";
+            echo ($emprestimo['Estado'] === 'Dentro do prazo') ? 'process' : (($emprestimo['Estado'] === 'Pendente') ? 'pending' : 'completed');
+            echo "'>" . $emprestimo['Estado'] . "</span></center></td>";
+            echo "</tr>";
+        }
+
+        echo "</tbody>";
+        echo "</table>";
+
+        // Adiciona links de paginação
+        $sqlTotal = "SELECT COUNT(*) AS total FROM emprestimo";
+        $resultadoTotal = $conn->query($sqlTotal);
+        $totalRegistros = $resultadoTotal->fetch(PDO::FETCH_ASSOC)['total'];
+        $totalPaginas = ceil($totalRegistros / $registrosPorPagina);
+
+        echo "<div class='pagination'>";
+        for ($i = 1; $i <= $totalPaginas; $i++) {
+            $classeAtiva = ($i == $paginaAtual) ? "active" : "";
+            echo "<a class='page-link $classeAtiva' href='pagina.php?pagina=$i'>$i</a>";
+        }
+        echo "</div>";
+    } else {
+        echo "<p>Nenhum empréstimo encontrado.</p>";
+    }
+}
+
+$conn = null; // Fecha a conexão
+?>
+
 					</table>
 				</div>
 
@@ -374,6 +420,17 @@ if (isset($_SESSION['usuario_logado']) && $_SESSION['usuario_logado'] === true &
 	</section>
 
 	<script src="../JS/script.js"></script>
+	
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script>
+	$('#searchInput').on('keyup', function() {
+		const value = $(this).val().toLowerCase();
+
+		$('table tbody tr').filter(function() {
+			$(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+		});
+	});
+</script>
 </body>
 
 </html>

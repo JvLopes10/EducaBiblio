@@ -8,36 +8,57 @@ class CEmprestimoController {
             $dataEmprestimo = $_POST['DataEmprestimo'];
             $livroId = $_POST['livro_idLivro'];
             $usuarioId = $_POST['usuario_idUsuario'];
-         //   $profId = $_POST['profId'];
             $alunoId = $_POST['aluno_idAluno'];
             $quantidade = $_POST['quantidade'];
-
-            // Valide os dados, se necessário
 
             // Conecte-se ao banco de dados
             $conexao = new CConexao();
             $conn = $conexao->getConnection();
 
-            // Execute a inserção no banco de dados
-            $query = "INSERT INTO emprestimo (DataEmprestimo, livro_idLivro, usuario_idUsuario, aluno_idAluno, Quantidade_emp) VALUES (:dataEmprestimo, :livroId, :usuarioId, :alunoId, :quantidade)";
-            $stmt = $conn->prepare($query);
-            $stmt->bindParam(':dataEmprestimo', $dataEmprestimo);
-            $stmt->bindParam(':livroId', $livroId);
-            $stmt->bindParam(':usuarioId', $usuarioId);
-          //  $stmt->bindParam(':profId', $profId);
-            $stmt->bindParam(':alunoId', $alunoId);
-            $stmt->bindParam(':quantidade', $quantidade);
+            // Verifique se já existe um empréstimo para o mesmo livro, aluno e data
+            $queryCheck = "SELECT COUNT(*) as count_emprestimo FROM emprestimo WHERE DataEmprestimo = :dataEmprestimo AND livro_idLivro = :livroId AND aluno_idAluno = :alunoId";
+            $stmtCheck = $conn->prepare($queryCheck);
+            $stmtCheck->bindParam(':dataEmprestimo', $dataEmprestimo);
+            $stmtCheck->bindParam(':livroId', $livroId);
+            $stmtCheck->bindParam(':alunoId', $alunoId);
+            $stmtCheck->execute();
+            $result = $stmtCheck->fetch(PDO::FETCH_ASSOC);
 
-            if ($stmt->execute()) {
-                echo "Empréstimo cadastrado com sucesso!";
+            if ($result['count_emprestimo'] > 0) {
+                echo "Empréstimo já existe para este livro, aluno e data.";
             } else {
-                echo "Erro ao cadastrar o empréstimo.";
+                // Execute a inserção no banco de dados
+                $queryInsert = "INSERT INTO emprestimo (DataEmprestimo, livro_idLivro, usuario_idUsuario, aluno_idAluno, Quantidade_emp) VALUES (:dataEmprestimo, :livroId, :usuarioId, :alunoId, :quantidade)";
+                $stmtInsert = $conn->prepare($queryInsert);
+                $stmtInsert->bindParam(':dataEmprestimo', $dataEmprestimo);
+                $stmtInsert->bindParam(':livroId', $livroId);
+                $stmtInsert->bindParam(':usuarioId', $usuarioId);
+                $stmtInsert->bindParam(':alunoId', $alunoId);
+                $stmtInsert->bindParam(':quantidade', $quantidade);
+
+                if ($stmtInsert->execute()) {
+                    echo "Empréstimo cadastrado com sucesso!";
+
+                    // Insira lógica para adicionar uma entrada de devolução pendente na tabela 'devolucao'
+                    $emprestimoId = $conn->lastInsertId(); // Obtém o ID do empréstimo recém-inserido
+
+                    $dataDevolucao = date('Y-m-d', strtotime($dataEmprestimo. ' + 7 days')); // Define a data de devolução após 7 dias (por exemplo)
+
+                    $queryInsertDevolucao = "INSERT INTO devolucao (DataDevolucao, StatusDevolucao, emprestimo_idEmprestimo) VALUES (:dataDevolucao, 'Pendente', :emprestimoId)";
+                    $stmtInsertDevolucao = $conn->prepare($queryInsertDevolucao);
+                    $stmtInsertDevolucao->bindParam(':dataDevolucao', $dataDevolucao);
+                    $stmtInsertDevolucao->bindParam(':emprestimoId', $emprestimoId);
+
+                    if ($stmtInsertDevolucao->execute()) {
+                        echo "Registro de devolução pendente adicionado com sucesso!";
+                    } else {
+                        echo "Erro ao adicionar registro de devolução pendente.";
+                    }
+                } else {
+                    echo "Erro ao cadastrar o empréstimo.";
+                }
             }
         }
     }
 }
-
-// Crie uma instância do controlador e chame a função emprestarLivro
-$emprestimoController = new CEmprestimoController();
-$emprestimoController->emprestarLivro();
 ?>

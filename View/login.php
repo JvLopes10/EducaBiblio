@@ -25,9 +25,9 @@
           <br><br>
           <h2 class="tituloPrincipal">Login</h2>
           <?php
-             if (isset($_GET['erro']) && $_GET['erro'] == 1) {
-               echo '<div class="error-message">Nome de usuário ou senha incorretos.</div>';
-             }
+          if (isset($_GET['erro']) && $_GET['erro'] == 1) {
+            echo '<div class="error-message">Nome de usuário ou senha incorretos.</div>';
+          }
           ?>
 
           <div class="input-field">
@@ -81,7 +81,7 @@
           <p class="direitos">© TODOS OS DIREITOS RESERVADOS - EDUCABIBLIO</p>
         </form>
 
-        
+
       </div>
     </div>
 

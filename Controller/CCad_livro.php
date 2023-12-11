@@ -6,80 +6,72 @@ class LivroController
     public function cadastrarLivro($dadosLivro)
     {
         try {
-            $conn = (new CConexao())->getConnection();
+            $conexao = new CConexao();
+            $conn = $conexao->getConnection();
             $conn->beginTransaction();
 
-            // Processar o upload da imagem
-            if (isset($_FILES['FotoLivro']) && $_FILES['FotoLivro']['error'] === UPLOAD_ERR_OK) {
-                $nomeArquivo = $_FILES['FotoLivro']['name'];
-                $caminhoTemporario = $_FILES['FotoLivro']['tmp_name'];
-                $caminhoDestino = '../img/livros/' . $nomeArquivo;
-            
-                // Validação do tipo de arquivo (imagem)
-                $tipoArquivo = $_FILES['FotoLivro']['type'];
-                $tamanhoArquivo = $_FILES['FotoLivro']['size'];
-            
-                if (!in_array($tipoArquivo, ['image/jpeg', 'image/png'])) {
-                    echo "A imagem deve estar no formato JPEG ou PNG.";
-                    exit();
-                }
-            
-                // Validação do tamanho do arquivo (exemplo: máximo de 2MB)
-                if ($tamanhoArquivo > 2 * 1024 * 1024) {
-                    echo "A imagem é muito grande. O tamanho máximo permitido é 2MB.";
-                    exit();
-                }
-            
-                if (move_uploaded_file($caminhoTemporario, $caminhoDestino)) {
-                    // A imagem foi enviada com sucesso, agora você pode salvar o caminho dela no banco de dados
-                    $dadosLivro['CaminhoFotoLivro'] = $caminhoDestino;
-                } else {
-                    // O upload da imagem falhou
-                    echo "Erro ao fazer o upload da imagem.";
-                    exit();
-                }
-            }
-            
+            // Verifica se o autor já existe na tabela Autor
+            $idAutor = $this->buscarOuCriarAutor($conn, $dadosLivro['NomeAutor']);
 
+            // Inserir os dados do livro na tabela Livro
+            $this->inserirLivro($conn, $dadosLivro, $idAutor);
 
-            // Insira os dados do Autor na tabela Autor
-            $sqlAutor = "INSERT INTO Autor (NomeAutor) VALUES (:NomeAutor)";
-            $stmtAutor = $conn->prepare($sqlAutor);
-            $stmtAutor->bindParam(':NomeAutor', $dadosLivro['NomeAutor']);
-            $stmtAutor->execute();
-
-            // Obtenha o ID do Autor recém-inserido
-            $idAutor = $conn->lastInsertId();
-
-            // Insira os dados do livro na tabela Livro
-            $sqlLivro = "INSERT INTO Livro (NomeLivro, IBSMLivro, LocalLivro, PrateleiraLivro, ColunaLivro, Autor_idAutor, Genero_idGenero, Idioma_idIdioma, EditoraLivro, EdicaoLivro, CaminhoFotoLivro, QuantidadeLivros, DidaticoLivro)
-                         VALUES (:NomeLivro, :IBSMLivro, :LocalLivro, :PrateleiraLivro, :ColunaLivro, :Autor_idAutor, :Genero_idGenero, :Idioma_idIdioma, :EditoraLivro, :EdicaoLivro, :CaminhoFotoLivro, :QuantidadeLivros, :DidaticoLivro)";
-            $stmtLivro = $conn->prepare($sqlLivro);
-            $stmtLivro->bindParam(':NomeLivro', $dadosLivro['NomeLivro']);
-            $stmtLivro->bindParam(':IBSMLivro', $dadosLivro['IBSMLivro']);
-            $stmtLivro->bindParam(':LocalLivro', $dadosLivro['LocalLivro']);
-            $stmtLivro->bindParam(':PrateleiraLivro', $dadosLivro['PrateleiraLivro']);
-            $stmtLivro->bindParam(':ColunaLivro', $dadosLivro['ColunaLivro']);
-            $stmtLivro->bindParam(':Autor_idAutor', $idAutor);
-            $stmtLivro->bindParam(':Idioma_idIdioma', $dadosLivro['Idioma_idIdioma']);
-            $stmtLivro->bindParam(':Genero_idGenero', $dadosLivro['Genero_idGenero']);
-            $stmtLivro->bindParam(':EditoraLivro', $dadosLivro['EditoraLivro']);
-            $stmtLivro->bindParam(':EdicaoLivro', $dadosLivro['EdicaoLivro']);
-            $stmtLivro->bindParam(':CaminhoFotoLivro', $dadosLivro['CaminhoFotoLivro']);
-            $stmtLivro->bindParam(':QuantidadeLivros', $dadosLivro['QuantidadeLivros']);
-            $stmtLivro->bindParam(':DidaticoLivro', $dadosLivro['DidaticoLivro']);
-            $stmtLivro->execute();
-
-            // Finalize a transação
+            // Finaliza a transação
             $conn->commit();
 
-            // Redirecione para uma página de sucesso ou outra página apropriada após o cadastro
-             //header("Location: ../View/livros.php");
+            // Redirecionar para uma página de sucesso ou outra página apropriada após o cadastro
+            header("Location: ../View/livros.php");
             exit();
         } catch (PDOException $e) {
-            // Em caso de erro, faça o rollback da transação e exiba uma mensagem de erro
+            // Em caso de erro, realizar o rollback da transação e exibir uma mensagem de erro
             $conn->rollBack();
             echo "Erro: " . $e->getMessage();
         }
     }
+
+    private function buscarOuCriarAutor($conn, $nomeAutor)
+    {
+        // Verifica se o autor já existe na tabela Autor
+        $sqlCheckAutor = "SELECT idAutor FROM Autor WHERE NomeAutor = :NomeAutor";
+        $stmtCheckAutor = $conn->prepare($sqlCheckAutor);
+        $stmtCheckAutor->bindParam(':NomeAutor', $nomeAutor);
+        $stmtCheckAutor->execute();
+        $autor = $stmtCheckAutor->fetch(PDO::FETCH_ASSOC);
+
+        // Se o autor existir, retorna o ID do autor existente
+        if ($autor) {
+            return $autor['idAutor'];
+        }
+
+        // Se o autor não existir, insere o novo autor na tabela Autor e retorna o ID
+        $sqlNovoAutor = "INSERT INTO Autor (NomeAutor) VALUES (:NomeAutor)";
+        $stmtNovoAutor = $conn->prepare($sqlNovoAutor);
+        $stmtNovoAutor->bindParam(':NomeAutor', $nomeAutor);
+        $stmtNovoAutor->execute();
+
+        // Retorna o ID do autor recém-inserido
+        return $conn->lastInsertId();
+    }
+
+    private function inserirLivro($conn, $dadosLivro, $idAutor)
+    {
+        $sqlLivro = "INSERT INTO Livro (NomeLivro, IBSMLivro, LocalLivro, PrateleiraLivro, ColunaLivro, autor_idAutor, Genero_idGenero, Idioma_idIdioma, EditoraLivro, EdicaoLivro, CaminhoFotoLivro, QuantidadeLivros, DidaticoLivro)
+                     VALUES (:NomeLivro, :IBSMLivro, :LocalLivro, :PrateleiraLivro, :ColunaLivro, :autor_idAutor, :Genero_idGenero, :Idioma_idIdioma, :EditoraLivro, :EdicaoLivro, :CaminhoFotoLivro, :QuantidadeLivros, :DidaticoLivro)";
+        $stmtLivro = $conn->prepare($sqlLivro);
+        $stmtLivro->bindParam(':NomeLivro', $dadosLivro['NomeLivro']);
+        $stmtLivro->bindParam(':IBSMLivro', $dadosLivro['IBSMLivro']);
+        $stmtLivro->bindParam(':LocalLivro', $dadosLivro['LocalLivro']);
+        $stmtLivro->bindParam(':PrateleiraLivro', $dadosLivro['PrateleiraLivro']);
+        $stmtLivro->bindParam(':ColunaLivro', $dadosLivro['ColunaLivro']);
+        $stmtLivro->bindParam(':autor_idAutor', $idAutor);
+        $stmtLivro->bindParam(':Idioma_idIdioma', $dadosLivro['Idioma_idIdioma']);
+        $stmtLivro->bindParam(':Genero_idGenero', $dadosLivro['Genero_idGenero']);
+        $stmtLivro->bindParam(':EditoraLivro', $dadosLivro['EditoraLivro']);
+        $stmtLivro->bindParam(':EdicaoLivro', $dadosLivro['EdicaoLivro']);
+        $stmtLivro->bindParam(':CaminhoFotoLivro', $dadosLivro['FotoLivro']); // Caminho da imagem do livro
+        $stmtLivro->bindParam(':QuantidadeLivros', $dadosLivro['QuantidadeLivros']);
+        $stmtLivro->bindParam(':DidaticoLivro', $dadosLivro['DidaticoLivro']);
+        $stmtLivro->execute();
+    }
 }
+?>

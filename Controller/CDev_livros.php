@@ -1,35 +1,56 @@
 <?php
-require_once('CConexao.php');
+include '../Controller/CConexao.php';
 
-class EmpréstimoController {
-    public function listarAlunosDaTurma($turma) {
-        // Crie uma instância da classe de conexão
-        $conexao = new CConexao();
-        $conn = $conexao->getConnection();
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    // Verifica se os campos do formulário estão configurados e não estão vazios
+    if (isset($_POST['aluno_idAluno']) && !empty($_POST['aluno_idAluno'])) {
+        $alunoId = $_POST['aluno_idAluno'];
 
-        // Consulta para obter os alunos da turma selecionada
-        $sql = "SELECT NomeAluno FROM aluno WHERE Turma_idTurma = :turma";
-        $stmt = $conn->prepare($sql);
-        $stmt->bindParam(':turma', $turma, PDO::PARAM_INT);
-        $stmt->execute();
+        try {
+            $conexao = new CConexao();
+            $conn = $conexao->getConnection();
 
-        // Retorne a lista de alunos
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
+            // Consulta para obter os detalhes dos livros emprestados pelo aluno que ainda não foram devolvidos
+            $query = "SELECT 
+                livro.NomeLivro AS TituloLivro,
+                genero.NomeGenero,
+                emprestimo.idEmprestimo,
+                turma.NomeTurma,
+                aluno.NomeAluno,
+                emprestimo.DataEmprestimo,
+                devolucao.DataDevolucao,
+                emprestimo.Quantidade_emp,
+                usuario.UserUsuario,
+                usuario.EmailUsuario,
+                devolucao.StatusDevolucao
+            FROM emprestimo
+            INNER JOIN livro ON emprestimo.livro_idLivro = livro.idLivro
+            INNER JOIN genero ON livro.Genero_idGenero = genero.idGenero
+            INNER JOIN aluno ON emprestimo.aluno_idAluno = aluno.idAluno
+            INNER JOIN turma ON aluno.Turma_idTurma = turma.IdTurma
+            INNER JOIN usuario ON emprestimo.usuario_idUsuario = usuario.idUsuario
+            LEFT JOIN devolucao ON emprestimo.idEmprestimo = devolucao.emprestimo_idEmprestimo
+            WHERE aluno.idAluno = :alunoId 
+            AND (devolucao.StatusDevolucao IS NULL OR devolucao.StatusDevolucao = 2)";
 
-    public function listarEmpréstimosDoAluno($aluno) {
-        // Crie uma instância da classe de conexão
-        $conexao = new CConexao();
-        $conn = $conexao->getConnection();
+            $stmt = $conn->prepare($query);
+            $stmt->bindParam(':alunoId', $alunoId, PDO::PARAM_INT);
+            $stmt->execute();
 
-        // Consulta para obter os empréstimos do aluno selecionado
-        $sql = "SELECT * FROM emprestimo WHERE aluno_idAluno = :aluno";
-        $stmt = $conn->prepare($sql);
-        $stmt->bindParam(':aluno', $aluno, PDO::PARAM_INT);
-        $stmt->execute();
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        // Retorne a lista de empréstimos
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+            // Envia os resultados como resposta em formato JSON
+            echo json_encode($result);
+        } catch (PDOException $e) {
+            // Em caso de erro na execução da consulta ou conexão com o banco de dados
+            echo json_encode(['error' => 'Erro ao processar a solicitação.']);
+        } finally {
+            // Fecha a conexão com o banco de dados
+            $conn = null;
+        }
+    } else {
+        // Se os campos do formulário estiverem vazios ou não configurados
+        echo json_encode(['error' => 'Campos do formulário ausentes ou vazios.']);
     }
 }
 ?>

@@ -4,7 +4,6 @@ include 'CConexao.php';
 if (isset($_GET['turmaId'])) {
     $turmaId = $_GET['turmaId'];
     
-    // Crie uma instância da classe CConexao para obter a conexão com o banco de dados.
     $conexao = new CConexao();
     $conn = $conexao->getConnection();
 
@@ -13,11 +12,15 @@ if (isset($_GET['turmaId'])) {
     $stmt->bindParam(':turmaId', $turmaId, PDO::PARAM_INT);
     $stmt->execute();
 
+    $alunos = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
     $options = "<option value=''>Selecione um aluno</option>";
-    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-        $options .= "<option value='" . $row['idAluno'] . "'>" . $row['NomeAluno'] . "</option>";
+    foreach ($alunos as $aluno) {
+        $options .= "<option value='" . $aluno['idAluno'] . "'>" . $aluno['NomeAluno'] . "</option>";
     }
 
     echo $options;
+} else {
+    echo "<option value=''>Turma inválida</option>";
 }
 ?>

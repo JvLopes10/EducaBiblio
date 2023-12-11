@@ -178,133 +178,163 @@ include('../Controller/CConexao.php');
 					</form>
 				</div>
 			</section>
+			<style>
+				/* Esconde as setas para campos de entrada numérica */
+				input[type=number]::-webkit-inner-spin-button,
+				input[type=number]::-webkit-outer-spin-button {
+					-webkit-appearance: none;
+					margin: 0;
+				}
+
+				input[type=number] {
+					-moz-appearance: textfield;
+					/* Firefox */
+				}
+
+
+
+				.searchInput {
+					width: 20% !important;
+					height: 30px;
+					background-color: #f2f2f2;
+					border: 1px solid #ccc;
+					border-radius: 5px;
+					padding: 5px;
+				}
+			</style>
 			<main>
 				<div class="table-data">
 					<div class="order">
 						<div class="head">
 							<h3>Tabela de leitores</h3>
+							<input type="text" id="searchInput" class="searchInput" placeholder="Pesquisar...">
+							
 							<button class="pdf-button" id="pdf-button" aria-label="botão pdf">
 								<i class="fas fa-file-pdf"></i></button>
 
 						</div>
 						<table>
 
-				<?php
-		$conexao = new CConexao();
-		$conn = $conexao->getConnection();
+						<?php
 
-		// Consulta para obter os dados da tabela de usuários
-		$sql = "SELECT 
-            aluno.NomeAluno,
-            aluno.idAluno,
-            aluno.Turma_idTurma,
-            aluno.EmailAluno,
-            'aluno' AS tipo
-        FROM aluno
-        UNION
-        SELECT
-            prof.NomeProf AS NomeAluno,
-            prof.idProf AS idAluno,
-            NULL AS Turma_idTurma,
-            prof.EmailProf AS EmailAluno,
-            'prof' AS tipo
-        FROM prof";
+    $conexao = new CConexao();
+    $conn = $conexao->getConnection();
+
+    // Consulta para obter os dados da tabela de usuários com o nome da turma
+	$sql = "SELECT 
+	aluno.NomeAluno,
+	aluno.idAluno,
+	aluno.Turma_idTurma,
+	aluno.EmailAluno,
+	'aluno' AS tipo,
+	turma.nomeTurma,
+	turma.AnoTurma  -- Aqui inclua o campo AnoTurma da tabela turma
+FROM aluno
+LEFT JOIN turma ON aluno.Turma_idTurma = turma.idTurma 
+UNION
+SELECT
+	prof.NomeProf AS NomeAluno,
+	prof.idProf AS idAluno,
+	NULL AS Turma_idTurma,
+	prof.EmailProf AS EmailAluno,
+	'prof' AS tipo,
+	NULL AS nomeTurma,
+	NULL AS AnoTurma  -- Adicione o campo AnoTurma para professores como NULL
+FROM prof";
 
 
-		$result = $conn->query($sql);
+    $result = $conn->query($sql);
 
-		if ($result === false) {
-			// Use errorInfo para obter informações sobre o erro
-			$errorInfo = $conn->errorInfo();
-			echo "Erro na consulta SQL: " . $errorInfo[2];
-		} else {
-			if ($result->rowCount() > 0) {
-				$user = $result->fetchAll(PDO::FETCH_ASSOC);
-				$UsuarioPorPagina = 4;
-				$paginaAtual = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
-				$indiceInicial = ($paginaAtual - 1) * $UsuarioPorPagina;
-				$UsuarioExibidos = array_slice($user, $indiceInicial, $UsuarioPorPagina);
+    if ($result === false) {
+        // Use errorInfo para obter informações sobre o erro
+        $errorInfo = $conn->errorInfo();
+        echo "Erro na consulta SQL: " . $errorInfo[2];
+    } else {
+        if ($result->rowCount() > 0) {
+            $user = $result->fetchAll(PDO::FETCH_ASSOC);
+            $UsuarioPorPagina = 4;
+            $paginaAtual = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
+            $indiceInicial = ($paginaAtual - 1) * $UsuarioPorPagina;
+            $UsuarioExibidos = array_slice($user, $indiceInicial, $UsuarioPorPagina);
 
-				// Exibir a tabela de usuários
-				echo "<table>";
-				echo "<thead>";
+            // Exibir a tabela de usuários com o nome da turma
+            echo "<table>";
+            echo "<thead>";
+            echo "<tr>";
+            echo "<th><center>Nome</center></th>";
+            echo "<th><center>ID</center></th>";
+            echo "<th><center>Email</center></th>";
+            echo "<th><center>Tipo</center></th>";
+            echo "<th><center>Turma</center></th>";
+            echo "<th><center>Editar</center></th>";
+            echo "<th><center>Excluir</center></th>";
+            echo "<th><center>Histórico</center></th>";
+            echo "</tr>";
+            echo "</thead>";
+            echo "<tbody>";
+
+            foreach ($UsuarioExibidos as $row) {
 				echo "<tr>";
-				echo "<th><center>Nome</center></th>";
-				echo "<th><center>ID</center></th>";
-				echo "<th><center>Email</center></th>";
-				echo "<th><center>tipo</center></th>";
-				echo "<th><center>turma</center></th>";
-				echo "<th><center>Editar</center></th>";
-				echo "<th><center>Excluir</center></th>";
-				echo "<th><center>historico</center></th>";
+				echo "<td><center>" . $row["NomeAluno"] . "</center></td>";
+				echo "<td><center>" . $row["idAluno"] . "</center></td>";
+				echo "<td><center>" . $row["EmailAluno"] . "</center></td>";
+				echo "<td><center>" . ucfirst($row["tipo"]) . "</center></td>";
+				echo "<td><center>" . ($row["nomeTurma"] ? $row["AnoTurma"] . ' º ' . $row["nomeTurma"] : "Não se aplica") . "</center></td>";
+			
+				// Botões de edição, exclusão e histórico
+				echo "<td><center>";
+				if (array_key_exists('idAluno', $row)) {
+					echo "<button class='edit-button' data-id='" . $row["idAluno"] . "'><i class='fas fa-pencil-alt'></i></button>";
+				}
+				if (array_key_exists('idProf', $row)) {
+					echo "<button class='edit-button' data-id='" . $row["idProf"] . "'><i class='fas fa-pencil-alt'></i></button>";
+				}
+				echo "</center></td>";
+			
+				echo "<td><center>";
+				if (array_key_exists('idAluno', $row)) {
+					echo "<button class='delete-button' data-id='" . $row["idAluno"] . "' onclick='handleDelete(" . $row["idAluno"] . ")'><i class='fas fa-trash-alt'></i></button>";
+				}
+				if (array_key_exists('idProf', $row)) {
+					echo "<button class='delete-button' data-id='" . $row["idProf"] . "' onclick='handleDelete(" . $row["idProf"] . ")'><i class='fas fa-trash-alt'></i></button>";
+				}
+				echo "</center></td>";
+			
+				echo "<td><center>";
+				if (array_key_exists('idAluno', $row)) {
+					echo "<button class='historico-button' data-id='" . $row["idAluno"] . "'><i class='fas fa-history'></i></button>";
+				}
+				if (array_key_exists('idProf', $row)) {
+					echo "<button class='historico-button' data-id='" . $row["idProf"] . "'><i class='fas fa-history'></i></button>";
+				}
+				echo "</center></td>";
+			
 				echo "</tr>";
-				echo "</thead>";
-				echo "<tbody>";
-
-				foreach ($UsuarioExibidos as $row) {
-					echo "<tr>";
-					echo "<td><center>" . $row["NomeAluno"] . "</center></td>";
-					echo "<td><center>" . $row["idAluno"] . "</center></td>";
-					echo "<td><center>" . $row["EmailAluno"] . "</center></td>"; 
-					echo "<td><center>" . ucfirst($row["tipo"]) . "</center></td>"; // Mostra se é aluno ou professor
-					echo "<td><center>" . ($row["Turma_idTurma"] ? $row["Turma_idTurma"] : "Não se aplica") . "</center></td>";
-				
-					// Botão de edição
-					echo "<td><center>";
-					if (array_key_exists('idAluno', $row)) {
-						echo "<button class='edit-button' data-id='" . $row["idAluno"] . "'><i class='fas fa-pencil-alt'></i></button>";
-					}
-					if (array_key_exists('idProf', $row)) {
-						echo "<button class='edit-button' data-id='" . $row["idProf"] . "'><i class='fas fa-pencil-alt'></i></button>";
-					}
-					echo "</center></td>";
-				
-					// Botão de exclusão
-					echo "<td><center>";
-					if (array_key_exists('idAluno', $row)) {
-						echo "<button class='delete-button' data-id='" . $row["idAluno"] . "' onclick='handleDelete(" . $row["idAluno"] . ")'><i class='fas fa-trash-alt'></i></button>";
-					}
-					if (array_key_exists('idProf', $row)) {
-						echo "<button class='delete-button' data-id='" . $row["idProf"] . "' onclick='handleDelete(" . $row["idProf"] . ")'><i class='fas fa-trash-alt'></i></button>";
-					}
-					echo "</center></td>";
-				
-					// Botão de histórico
-					echo "<td><center>";
-					if (array_key_exists('idAluno', $row)) {
-						echo "<button class='historico-button' data-id='" . $row["idAluno"] . "'><i class='fas fa-history'></i></button>";
-					}
-					if (array_key_exists('idProf', $row)) {
-						echo "<button class='historico-button' data-id='" . $row["idProf"] . "'><i class='fas fa-history'></i></button>";
-					}
-					echo "</center></td>";
-				
-					echo "</tr>";
-				}
-				
-
-				echo "</tbody>";
-				echo "</table>";
-
-				// Adiciona links de paginação
-				echo "<div class='pagination'>";
-				$totalUser = count($user);
-				$totalPaginas = ceil($totalUser / $UsuarioPorPagina);
-				for ($i = 1; $i <= $totalPaginas; $i++) {
-					$classeAtiva = ($i === $paginaAtual) ? "active" : "";
-					echo "<a class='page-link $classeAtiva' href='usuarios.php?pagina=$i'>$i</a>";
-				}
-				echo "</div>";
-
-				// Botão Fechar do popup fora da tabela
-				
-			} else {
-				echo "<p>Nenhum usuário encontrado.</p>";
 			}
-		}
+			
 
-		$conn = null; // Fecha a conexão
-	?>
+            echo "</tbody>";
+            echo "</table>";
+
+            // Adiciona links de paginação
+            echo "<div class='pagination'>";
+            $totalUser = count($user);
+            $totalPaginas = ceil($totalUser / $UsuarioPorPagina);
+            for ($i = 1; $i <= $totalPaginas; $i++) {
+                $classeAtiva = ($i === $paginaAtual) ? "active" : "";
+                echo "<a class='page-link $classeAtiva' href='usuarios.php?pagina=$i'>$i</a>";
+            }
+            echo "</div>";
+
+            // Botão Fechar do popup fora da tabela
+        } else {
+            echo "<p>Nenhum usuário encontrado.</p>";
+        }
+    }
+
+    $conn = null; // Fecha a conexão
+?>
+
 				</tbody>
 				</table>
 				</div>
@@ -364,6 +394,15 @@ include('../Controller/CConexao.php');
             }
         });
     });
+</script>
+<script>
+	$('#searchInput').on('keyup', function() {
+		const value = $(this).val().toLowerCase();
+
+		$('table tbody tr').filter(function() {
+			$(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+		});
+	});
 </script>
 
 
