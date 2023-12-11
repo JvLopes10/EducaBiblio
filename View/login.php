@@ -12,7 +12,6 @@
 <style>
   .error-message {
     color: red;
-    /* Define a cor vermelha */
     font-weight: bold;
   }
 </style>

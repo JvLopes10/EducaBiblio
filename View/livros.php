@@ -218,7 +218,6 @@ include('../Controller/CConexao.php');
 				input[type=number] {
 					-moz-appearance: textfield;
 				}
-
 			</style>
 			<main>
 				<div class="table-data">

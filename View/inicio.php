@@ -48,6 +48,7 @@ $livrosRecomendados = $getlivro->obterLivrosRecomendados();
 		color: #fff;
 	}
 </style>
+
 <body>
 	<section id="sidebar" class="page-transition">
 		<a href="#" class="brand">
@@ -132,22 +133,22 @@ $livrosRecomendados = $getlivro->obterLivrosRecomendados();
 			<input type="checkbox" id="switch-mode" hidden>
 			<label for="switch-mode" class="switch-mode"></label>
 			<a href="#" class="profile">
-			<?php
-// Inicializa a variável do caminho da imagem do usuário
-$caminhoImagemUsuario = isset($_SESSION['caminhoImagemUsuario']) ? $_SESSION['caminhoImagemUsuario'] : '';
+				<?php
+				// Inicializa a variável do caminho da imagem do usuário
+				$caminhoImagemUsuario = isset($_SESSION['caminhoImagemUsuario']) ? $_SESSION['caminhoImagemUsuario'] : '';
 
-if (isset($_SESSION['usuario_logado']) && $_SESSION['usuario_logado'] === true && !empty($caminhoImagemUsuario)) {
-    // Se o usuário está logado e o caminho da imagem do usuário não está vazio, exibe a imagem do usuário
-    echo '<img src="' . $caminhoImagemUsuario . '" alt="Imagem do usuário">';
-} else {
-    // Se o usuário não está logado ou o caminho da imagem do usuário está vazio, exibe a imagem padrão
-    echo '<img src="../img/adm.png" alt="Imagem Padrão">';
-}
-?>
+				if (isset($_SESSION['usuario_logado']) && $_SESSION['usuario_logado'] === true && !empty($caminhoImagemUsuario)) {
+					// Se o usuário está logado e o caminho da imagem do usuário não está vazio, exibe a imagem do usuário
+					echo '<img src="' . $caminhoImagemUsuario . '" alt="Imagem do usuário">';
+				} else {
+					// Se o usuário não está logado ou o caminho da imagem do usuário está vazio, exibe a imagem padrão
+					echo '<img src="../img/adm.png" alt="Imagem Padrão">';
+				}
+				?>
 
-</a>
+			</a>
 
-				
+
 			</a>
 		</nav>
 		<main>
@@ -313,24 +314,24 @@ if (isset($_SESSION['usuario_logado']) && $_SESSION['usuario_logado'] === true &
 					<div class="head">
 						<h3>Histórico de empréstimos</h3>
 						<input type="text" id="searchInput" class="searchInput" placeholder="Pesquisar...">
-							
+
 						<button class="pdf-button">
 							<i class="fas fa-file-pdf"></i></button>
 					</div>
-					<table><?php	
+					<table><?php
 
-$conexao = new CConexao();
-$conn = $conexao->getConnection();
+							$conexao = new CConexao();
+							$conn = $conexao->getConnection();
 
-// Definir o número de registros por página
-$registrosPorPagina = 4;
+							// Definir o número de registros por página
+							$registrosPorPagina = 4;
 
-// Determinar a página atual
-$paginaAtual = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
-$indiceInicial = ($paginaAtual - 1) * $registrosPorPagina;
+							// Determinar a página atual
+							$paginaAtual = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
+							$indiceInicial = ($paginaAtual - 1) * $registrosPorPagina;
 
-// Consulta para obter os dados de empréstimo paginados
-$sql = "SELECT
+							// Consulta para obter os dados de empréstimo paginados
+							$sql = "SELECT
             emprestimo.idEmprestimo,
             aluno.NomeAluno AS Estudante,
             DATE_FORMAT(emprestimo.DataEmprestimo, '%d/%m/%Y') AS DataEmprestimoFormatada,
@@ -347,65 +348,65 @@ $sql = "SELECT
         LEFT JOIN devolucao ON emprestimo.idEmprestimo = devolucao.emprestimo_idEmprestimo
         LIMIT $indiceInicial, $registrosPorPagina";
 
-$result = $conn->query($sql);
+							$result = $conn->query($sql);
 
-if ($result === false) {
-    // Use errorInfo para obter informações sobre o erro
-    $errorInfo = $conn->errorInfo();
-    echo "Erro na consulta SQL: " . $errorInfo[2];
-} else {
-    if ($result->rowCount() > 0) {
-        $dadosEmprestimo = $result->fetchAll(PDO::FETCH_ASSOC);
+							if ($result === false) {
+								// Use errorInfo para obter informações sobre o erro
+								$errorInfo = $conn->errorInfo();
+								echo "Erro na consulta SQL: " . $errorInfo[2];
+							} else {
+								if ($result->rowCount() > 0) {
+									$dadosEmprestimo = $result->fetchAll(PDO::FETCH_ASSOC);
 
-        // Exibir a tabela de empréstimos
-        echo "<table>";
-        echo "<thead>";
-        echo "<tr>";
-        echo "<th><center>Estudante</center></th>";
-        echo "<th><center>ID</center></th>";
-        echo "<th><center>Data do Empréstimo</center></th>";
-        echo "<th><center>Data de Devolução</center></th>";
-        echo "<th><center>Data em que foi Devolvido</center></th>";
-        echo "<th><center>Estado</center></th>";
-        echo "</tr>";
-        echo "</thead>";
-        echo "<tbody>";
+									// Exibir a tabela de empréstimos
+									echo "<table>";
+									echo "<thead>";
+									echo "<tr>";
+									echo "<th><center>Estudante</center></th>";
+									echo "<th><center>ID</center></th>";
+									echo "<th><center>Data do Empréstimo</center></th>";
+									echo "<th><center>Data de Devolução</center></th>";
+									echo "<th><center>Data em que foi Devolvido</center></th>";
+									echo "<th><center>Estado</center></th>";
+									echo "</tr>";
+									echo "</thead>";
+									echo "<tbody>";
 
-        foreach ($dadosEmprestimo as $emprestimo) {
-            echo "<tr>";
-            echo "<td><center>" . $emprestimo['Estudante'] . "</center></td>";
-            echo "<td><center>" . $emprestimo['idEmprestimo'] . "</center></td>";
-            echo "<td><center>" . $emprestimo['DataEmprestimoFormatada'] . "</center></td>";
-            echo "<td><center>" . $emprestimo['DataDevolucaoFormatada'] . "</center></td>";
-            echo "<td><center>" . $emprestimo['DataDevolvidaFormatada'] . "</center></td>";
-            echo "<td><center><span class='status ";
-            echo ($emprestimo['Estado'] === 'Dentro do prazo') ? 'process' : (($emprestimo['Estado'] === 'Pendente') ? 'pending' : 'completed');
-            echo "'>" . $emprestimo['Estado'] . "</span></center></td>";
-            echo "</tr>";
-        }
+									foreach ($dadosEmprestimo as $emprestimo) {
+										echo "<tr>";
+										echo "<td><center>" . $emprestimo['Estudante'] . "</center></td>";
+										echo "<td><center>" . $emprestimo['idEmprestimo'] . "</center></td>";
+										echo "<td><center>" . $emprestimo['DataEmprestimoFormatada'] . "</center></td>";
+										echo "<td><center>" . $emprestimo['DataDevolucaoFormatada'] . "</center></td>";
+										echo "<td><center>" . $emprestimo['DataDevolvidaFormatada'] . "</center></td>";
+										echo "<td><center><span class='status ";
+										echo ($emprestimo['Estado'] === 'Dentro do prazo') ? 'process' : (($emprestimo['Estado'] === 'Pendente') ? 'pending' : 'completed');
+										echo "'>" . $emprestimo['Estado'] . "</span></center></td>";
+										echo "</tr>";
+									}
 
-        echo "</tbody>";
-        echo "</table>";
+									echo "</tbody>";
+									echo "</table>";
 
-        // Adiciona links de paginação
-        $sqlTotal = "SELECT COUNT(*) AS total FROM emprestimo";
-        $resultadoTotal = $conn->query($sqlTotal);
-        $totalRegistros = $resultadoTotal->fetch(PDO::FETCH_ASSOC)['total'];
-        $totalPaginas = ceil($totalRegistros / $registrosPorPagina);
+									// Adiciona links de paginação
+									$sqlTotal = "SELECT COUNT(*) AS total FROM emprestimo";
+									$resultadoTotal = $conn->query($sqlTotal);
+									$totalRegistros = $resultadoTotal->fetch(PDO::FETCH_ASSOC)['total'];
+									$totalPaginas = ceil($totalRegistros / $registrosPorPagina);
 
-        echo "<div class='pagination'>";
-        for ($i = 1; $i <= $totalPaginas; $i++) {
-            $classeAtiva = ($i == $paginaAtual) ? "active" : "";
-            echo "<a class='page-link $classeAtiva' href='pagina.php?pagina=$i'>$i</a>";
-        }
-        echo "</div>";
-    } else {
-        echo "<p>Nenhum empréstimo encontrado.</p>";
-    }
-}
+									echo "<div class='pagination'>";
+									for ($i = 1; $i <= $totalPaginas; $i++) {
+										$classeAtiva = ($i == $paginaAtual) ? "active" : "";
+										echo "<a class='page-link $classeAtiva' href='pagina.php?pagina=$i'>$i</a>";
+									}
+									echo "</div>";
+								} else {
+									echo "<p>Nenhum empréstimo encontrado.</p>";
+								}
+							}
 
-$conn = null; // Fecha a conexão
-?>
+							$conn = null; // Fecha a conexão
+							?>
 
 					</table>
 				</div>
@@ -420,17 +421,17 @@ $conn = null; // Fecha a conexão
 	</section>
 
 	<script src="../JS/script.js"></script>
-	
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-	<script>
-	$('#searchInput').on('keyup', function() {
-		const value = $(this).val().toLowerCase();
 
-		$('table tbody tr').filter(function() {
-			$(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script>
+		$('#searchInput').on('keyup', function() {
+			const value = $(this).val().toLowerCase();
+
+			$('table tbody tr').filter(function() {
+				$(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+			});
 		});
-	});
-</script>
+	</script>
 </body>
 
 </html>

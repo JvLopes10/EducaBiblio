@@ -15,7 +15,7 @@
 			<script src="../ArquivosExternos/icons.js"></script>
 			<link rel="shortcut icon" href="../img/icon1.png" type="image/x-icon">
 			<link rel="stylesheet" href="../CSS/style.css">
-			<link rel="stylesheet" href="../CSS/popup2.css">
+			<link rel="stylesheet" href="../CSS/popup5.css">
 			<title>EducaBiblio</title>
 		</head>
 
@@ -174,36 +174,36 @@
 						</div>
 					</section>
 					<style>
-				/* Esconde as setas para campos de entrada numérica */
-				input[type=number]::-webkit-inner-spin-button,
-				input[type=number]::-webkit-outer-spin-button {
-					-webkit-appearance: none;
-					margin: 0;
-				}
+						/* Esconde as setas para campos de entrada numérica */
+						input[type=number]::-webkit-inner-spin-button,
+						input[type=number]::-webkit-outer-spin-button {
+							-webkit-appearance: none;
+							margin: 0;
+						}
 
-				input[type=number] {
-					-moz-appearance: textfield;
-					/* Firefox */
-				}
+						input[type=number] {
+							-moz-appearance: textfield;
+							/* Firefox */
+						}
 
 
 
-				.searchInput {
-					width: 20% !important;
-					height: 30px;
-					background-color: #f2f2f2;
-					border: 1px solid #ccc;
-					border-radius: 5px;
-					padding: 5px;
-				}
-			</style>
+						.searchInput {
+							width: 20% !important;
+							height: 30px;
+							background-color: #f2f2f2;
+							border: 1px solid #ccc;
+							border-radius: 5px;
+							padding: 5px;
+						}
+					</style>
 					<main>
 						<div class="table-data">
 							<div class="order">
 								<div class="head">
 									<h3>Tabela de empréstimos</h3>
 									<input type="text" id="searchInput" class="searchInput" placeholder="Pesquisar...">
-							
+
 									<button class="pdf-button">
 										<i class="fas fa-file-pdf"></i></button>
 
@@ -271,28 +271,28 @@
 											echo "<td><center>" . $row["idEmprestimo"] . "</center></td>";
 											echo "<td><center>" . $row["NomeTurma"] . "</center></td>";
 											echo "<td><center>" . $row["NomeAluno"] . "</center></td>";
-											
+
 											// Verifica se a data de empréstimo está definida antes de formatar
 											if ($row["DataEmprestimo"] !== null) {
 												echo "<td><center>" . date('d/m/Y', strtotime($row["DataEmprestimo"])) . "</center></td>";
 											} else {
 												echo "<td><center>Data não disponível</center></td>";
 											}
-										
+
 											// Verifica se a data de devolução está definida antes de formatar
 											if ($row["DataDevolucao"] !== null) {
 												echo "<td><center>" . date('d/m/Y', strtotime($row["DataDevolucao"])) . "</center></td>";
 											} else {
 												echo "<td><center>Data não disponível</center></td>";
 											}
-										
+
 											echo "<td><center>" . $row["Quantidade_emp"] . "</center></td>";
 											echo "<td><center>" . $row["UserUsuario"] . "</center></td>";
 											echo "<td><center><button class='edit-button'><i class='fas fa-pencil-alt'></i></button></center></td>";
 											echo "<td><div class='container'><center><button class='delete-button' type='submit' onclick='handlePopup(true)'><i class='fas fa-trash-alt'></i></button></center><div class='popup' id='popup'><img src='../img/decisao.png' aria-label='popup decisão'><h2 class='title'>Aviso!</h2><p class='desc'>Deseja mesmo excluir?</p><button class='close-popup-button' type='submit' onclick='handlePopup(false)'>Fechar</button><a href='../Controller/CExcluir_usuario.php?id={$row["idEmprestimo"]}'><button class='close-popup-button'>Excluir</button></a></div></div></div></td>";
 											echo "</tr>";
 										}
-										
+
 
 										echo "</tbody>";
 										echo "</table>";
@@ -377,16 +377,16 @@
 				});
 			});
 		</script>
-		
-<script>
-	$('#searchInput').on('keyup', function() {
-		const value = $(this).val().toLowerCase();
 
-		$('table tbody tr').filter(function() {
-			$(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
-		});
-	});
-</script>
+		<script>
+			$('#searchInput').on('keyup', function() {
+				const value = $(this).val().toLowerCase();
+
+				$('table tbody tr').filter(function() {
+					$(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+				});
+			});
+		</script>
 		</body>
 
 		</html>
