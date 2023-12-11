@@ -79,7 +79,7 @@ body {
     /* Escala do popup para torná-lo pequeno */
     opacity: 0;
     /* Mais uma vez, definindo a opacidade inicial como 0 */
-    box-shadow: 0 0 10px rgba(151, 0, 0, 0.5);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     /* Sombra do popup */
 }
 
