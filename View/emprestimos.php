@@ -13,7 +13,7 @@
 			<meta charset="UTF-8">
 			<meta name="viewport" content="width=device-width, initial-scale=1.0">
 			<script src="../ArquivosExternos/icons.js"></script>
-			<link rel="shortcut icon" href="../img/icon.png" type="image/x-icon" />
+			<link rel="shortcut icon" href="../img/icon1.png" type="image/x-icon">
 			<link rel="stylesheet" href="../CSS/style.css">
 			<link rel="stylesheet" href="../CSS/popup2.css">
 			<title>EducaBiblio</title>
@@ -260,7 +260,6 @@
 										echo "<th><center>Usuário</center></th>";
 										echo "<th><center>Editar</center></th>";
 										echo "<th><center>Excluir</center></th>";
-										echo "<th><center>E-mail</center></th>";
 										echo "</tr>";
 										echo "</thead>";
 										echo "<tbody>";
@@ -291,7 +290,6 @@
 											echo "<td><center>" . $row["UserUsuario"] . "</center></td>";
 											echo "<td><center><button class='edit-button'><i class='fas fa-pencil-alt'></i></button></center></td>";
 											echo "<td><div class='container'><center><button class='delete-button' type='submit' onclick='handlePopup(true)'><i class='fas fa-trash-alt'></i></button></center><div class='popup' id='popup'><img src='../img/decisao.png' aria-label='popup decisão'><h2 class='title'>Aviso!</h2><p class='desc'>Deseja mesmo excluir?</p><button class='close-popup-button' type='submit' onclick='handlePopup(false)'>Fechar</button><a href='../Controller/CExcluir_usuario.php?id={$row["idEmprestimo"]}'><button class='close-popup-button'>Excluir</button></a></div></div></div></td>";
-											echo "<td><div class='container'><center><button class='historico-button' type='submit' onclick='handlePopup2(true)'><i class='fas fa-envelope'></i></button></center><div class='popup2' id='popup2'><img src='../img/email.png'><form action='https://formsubmit.co/{$row["EmailUsuario"]}' method='POST'><h2 class='title'>E-mail</h2><p class='desc'>Deseja enviar um e-mail ao estudante?</p><p class='formu'><b>✧ Estudante: </b>" . $row["NomeAluno"] . "</p><p class='formu'><b>✧ E-mail: </b>" . $row["EmailUsuario"] . "</p><p class='formu'><b>✧ Mensagem: </b></p><textarea name='Mensagem' id='mensagem' cols='45' rows='5'></textarea> <br><input type='hidden' name='_captcha' value='false'><input type='hidden' name='_next' value='http://127.0.0.1:5500/View/emprestimos.html' !important><button class='close-popup2-button' type='submit' onclick='handlePopup2(false)'>Fechar</button><button class='close-popup2-button'>Enviar</button></form></div></div></div></td>";
 											echo "</tr>";
 										}
 										

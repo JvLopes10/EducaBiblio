@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <script src="../ArquivosExternos/icons.js"></script>
   <link rel="stylesheet" href="../CSS/login.css" />
-  <link rel="shortcut icon" href="../img/icon.png" type="image/x-icon" />
+  <link rel="shortcut icon" href="../img/icon1.png" type="image/x-icon">
   <title>EducaBiblio</title>
 </head>
 <style>

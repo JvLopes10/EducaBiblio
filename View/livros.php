@@ -9,7 +9,7 @@ include('../Controller/CConexao.php');
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<script src="../ArquivosExternos/icons.js"></script>
-	<link rel="shortcut icon" href="../img/icon.png" type="image/x-icon" alt="icon do site" />
+	<link rel="shortcut icon" href="../img/icon1.png" type="image/x-icon">
 	<link rel="stylesheet" href="../CSS/style.css">
 	<link rel="stylesheet" href="../CSS/popup2.css">
 
@@ -217,19 +217,8 @@ include('../Controller/CConexao.php');
 
 				input[type=number] {
 					-moz-appearance: textfield;
-					/* Firefox */
 				}
 
-
-
-				.searchInput {
-					width: 20% !important;
-					height: 30px;
-					background-color: #f2f2f2;
-					border: 1px solid #ccc;
-					border-radius: 5px;
-					padding: 5px;
-				}
 			</style>
 			<main>
 				<div class="table-data">

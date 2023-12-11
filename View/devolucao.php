@@ -16,7 +16,7 @@ $conn = $conexao->getConnection();
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<script src="../ArquivosExternos/icons.js"></script>
-	<link rel="shortcut icon" href="../img/icon.png" type="image/x-icon" alt="icon do site" />
+	<link rel="shortcut icon" href="../img/icon1.png" type="image/x-icon">
 	<link rel="stylesheet" href="../CSS/style.css">
 	<link rel="stylesheet" href="../CSS/popup3.css">
 	<title>EducaBiblio</title>
@@ -142,6 +142,7 @@ $conn = $conexao->getConnection();
 					<div class="order">
 						<div class="head">
 							<h3>Devolução de livros</h3>
+							<input type="text" id="searchInput" class="searchInput" placeholder="Pesquisar...">
 							<button class="pdf-button">
 								<i class="fas fa-file-pdf"></i></button>
 
