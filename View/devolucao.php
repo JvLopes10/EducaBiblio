@@ -142,6 +142,7 @@ $conn = $conexao->getConnection();
 					<div class="order">
 						<div class="head">
 							<h3>Devolução de livros</h3>
+							<input type="text" id="searchInput" class="searchInput" placeholder="Pesquisar...">
 							<button class="pdf-button">
 								<i class="fas fa-file-pdf"></i></button>
 

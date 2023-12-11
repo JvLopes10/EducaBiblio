@@ -217,19 +217,8 @@ include('../Controller/CConexao.php');
 
 				input[type=number] {
 					-moz-appearance: textfield;
-					/* Firefox */
 				}
 
-
-
-				.searchInput {
-					width: 20% !important;
-					height: 30px;
-					background-color: #f2f2f2;
-					border: 1px solid #ccc;
-					border-radius: 5px;
-					padding: 5px;
-				}
 			</style>
 			<main>
 				<div class="table-data">

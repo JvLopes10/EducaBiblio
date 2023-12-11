@@ -149,6 +149,16 @@ include('../Controller/CConexao.php');
 					</form>
 				</div>
 			</section>
+			<style>
+								#content main .table-data .head h3 {
+    color: var(--cinzaEscuro);
+    margin-right: auto !important;
+    margin-left: auto;
+    font-size: 2rem;
+    font-family: 'Mulish', sans-serif;
+    font-weight: bolder;
+    margin-top: -15px;
+}</style>
 			<main>
 				<div class="table-data">
 					<div class="order">
