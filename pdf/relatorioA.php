@@ -1,6 +1,6 @@
 <?php
 include '../Controller/CCad_alunos.php';
-$listaAlunos = CCad_aluno::retornarAlunos();
+$listaAlunos = CCad_aluno::cadastrarAluno();
 
 //var_dump($listaLivros);
 
