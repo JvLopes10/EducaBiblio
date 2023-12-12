@@ -2,11 +2,14 @@
 include('../Controller/CConexao.php');
 include('../Controller/CLog_usu.php');
 require '../Controller/CGet_rec.php';
+
 $conexao = new CConexao();
 $conn = $conexao->getConnection();
 $getlivro = new GetLivro($conn);
 $livrosRecomendados = $getlivro->obterLivrosRecomendados();
+include('../Controller/CPendencias.php'); // Inclua o arquivo CPendencias.php aqui
 ?>
+
 
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -396,7 +399,7 @@ if ($result === false) {
         echo "<div class='pagination'>";
         for ($i = 1; $i <= $totalPaginas; $i++) {
             $classeAtiva = ($i == $paginaAtual) ? "active" : "";
-            echo "<a class='page-link $classeAtiva' href='pagina.php?pagina=$i'>$i</a>";
+            echo "<a class='page-link $classeAtiva' href='inicio.php?pagina=$i'>$i</a>";
         }
         echo "</div>";
     } else {

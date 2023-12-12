@@ -273,14 +273,14 @@ FROM prof";
             echo "</thead>";
             echo "<tbody>";
 
-            foreach ($UsuarioExibidos as $row) {
+			foreach ($UsuarioExibidos as $row) {
 				echo "<tr>";
 				echo "<td><center>" . $row["NomeAluno"] . "</center></td>";
 				echo "<td><center>" . $row["idAluno"] . "</center></td>";
 				echo "<td><center>" . $row["EmailAluno"] . "</center></td>";
 				echo "<td><center>" . ucfirst($row["tipo"]) . "</center></td>";
 				echo "<td><center>" . ($row["nomeTurma"] ? $row["AnoTurma"] . ' º ' . $row["nomeTurma"] : "Não se aplica") . "</center></td>";
-			
+				
 				// Botões de edição, exclusão e histórico
 				echo "<td><center>";
 				if (array_key_exists('idAluno', $row)) {
@@ -290,16 +290,16 @@ FROM prof";
 					echo "<button class='edit-button' data-id='" . $row["idProf"] . "'><i class='fas fa-pencil-alt'></i></button>";
 				}
 				echo "</center></td>";
-			
+				
 				echo "<td><center>";
 				if (array_key_exists('idAluno', $row)) {
-					echo "<button class='delete-button' data-id='" . $row["idAluno"] . "' onclick='handleDelete(" . $row["idAluno"] . ")'><i class='fas fa-trash-alt'></i></button>";
+					echo "<button class='delete-button' data-id='" . $row["idAluno"] . "' onclick=\"handlePopup(true, 'popup-" . $row["idAluno"] . "')\"><i class='fas fa-trash-alt'></i></button><div class='popup' id='popup-" . $row["idAluno"] . "' style='display: none;'><img src='../img/decisao.png' aria-label='popup decisão'><h2 class='title'>Aviso!</h2><p class='desc'>Deseja mesmo excluir?</p><button class='close-popup-button' onclick=\"handlePopup(false, 'popup-" . $row["idAluno"] . "')\">Fechar</button><a href='../Controller/CExcluir_usuario.php?id=" . $row["idAluno"] . "'><button class='close-popup-button'>Excluir</button></a></div>";
 				}
 				if (array_key_exists('idProf', $row)) {
-					echo "<button class='delete-button' data-id='" . $row["idProf"] . "' onclick='handleDelete(" . $row["idProf"] . ")'><i class='fas fa-trash-alt'></i></button>";
+					echo "<button class='delete-button' data-id='" . $row["idProf"] . "' onclick=\"handlePopup(true, 'popup-" . $row["idProf"] . "')\"><i class='fas fa-trash-alt'></i></button><div class='popup' id='popup-" . $row["idProf"] . "' style='display: none;'><img src='../img/decisao.png' aria-label='popup decisão'><h2 class='title'>Aviso!</h2><p class='desc'>Deseja mesmo excluir?</p><button class='close-popup-button' onclick=\"handlePopup(false, 'popup-" . $row["idProf"] . "')\">Fechar</button><a href='../Controller/CExcluir_usuario.php?id=" . $row["idProf"] . "'><button class='close-popup-button'>Excluir</button></a></div>";
 				}
 				echo "</center></td>";
-			
+				
 				echo "<td><center>";
 				if (array_key_exists('idAluno', $row)) {
 					echo "<button class='historico-button' data-id='" . $row["idAluno"] . "'><i class='fas fa-history'></i></button>";
@@ -308,9 +308,11 @@ FROM prof";
 					echo "<button class='historico-button' data-id='" . $row["idProf"] . "'><i class='fas fa-history'></i></button>";
 				}
 				echo "</center></td>";
-			
+				
 				echo "</tr>";
 			}
+						
+			
 			
 
             echo "</tbody>";
@@ -404,6 +406,35 @@ FROM prof";
 		});
 	});
 </script>
+<script>
+    $(document).ready(function() {
+        // Capturar clique no botão de exclusão
+        $('.delete-button').click(function() {
+            var id = $(this).data('id'); // Obter o ID do item a ser excluído
+
+            handlePopup(true); // Mostrar o popup de confirmação
+
+            // Preencher o link de exclusão com o ID correto
+            var linkExclusao = '../Controller/CExcluir_usuario.php?id=' + id;
+            $('#popup a').attr('href', linkExclusao);
+        });
+
+        // Aqui, pode adicionar funções para os botões de edição e histórico se desejado
+
+        // Exemplo de função para botão de edição
+        $('.edit-button').click(function() {
+            var id = $(this).data('id'); // Obter o ID do item a ser editado
+            // Adicionar lógica para ação de edição se necessário
+        });
+
+        // Exemplo de função para botão de histórico
+        $('.historico-button').click(function() {
+            var id = $(this).data('id'); // Obter o ID do item para visualizar o histórico
+            // Adicionar lógica para ação de histórico se necessário
+        });
+    });
+</script>
+
 
 
 

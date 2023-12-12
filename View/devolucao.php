@@ -21,7 +21,35 @@ $conn = $conexao->getConnection();
 	<link rel="stylesheet" href="../CSS/popup3.css">
 	<title>EducaBiblio</title>
 </head>
+<style>
+	.pagination {
+		text-align: center;
+		margin-top: 15px;
 
+	}
+
+	.page-link {
+		display: inline-block;
+		padding: 5px 10px;
+		margin: 2px;
+		border: 1px solid #333;
+		background-color: #fff;
+		color: #333;
+		text-decoration: none;
+		border-radius: 5px;
+		transition: background-color 0.3s, color 0.3s;
+	}
+
+	.page-link.active {
+		background-color: #333;
+		color: #fff;
+	}
+
+	.page-link:hover {
+		background-color: #333;
+		color: #fff;
+	}
+</style>
 <body>
 	<section id="sidebar">
 		<a href="#" class="brand">
@@ -149,8 +177,6 @@ $conn = $conexao->getConnection();
 						</div>
 						<table>
 						<?php
-// ... Seu código de conexão com o banco de dados e outras configurações ...
-
 // Consulta SQL para buscar os livros que estão emprestados e ainda não foram devolvidos
 $queryLivrosParaDevolucao = "SELECT emprestimo.idEmprestimo, aluno.NomeAluno AS Leitor, turma.NomeTurma AS Turma, livro.NomeLivro AS Livro, emprestimo.StatusEmprestimo AS Estado, devolucao.DataDevolucao
     FROM emprestimo
@@ -158,7 +184,6 @@ $queryLivrosParaDevolucao = "SELECT emprestimo.idEmprestimo, aluno.NomeAluno AS 
     INNER JOIN livro ON emprestimo.livro_idLivro = livro.idLivro
     INNER JOIN turma ON aluno.Turma_idTurma = turma.IdTurma
     LEFT JOIN devolucao ON emprestimo.idEmprestimo = devolucao.emprestimo_idEmprestimo";
-
 
 $stmtLivrosParaDevolucao = $conn->query($queryLivrosParaDevolucao);
 
@@ -183,19 +208,23 @@ if ($stmtLivrosParaDevolucao->rowCount() > 0) {
 
         switch ($row['Estado']) {
             case 0:
-                $estado = "Dentro do prazo";
+                $estado = "Dentro do prazo.";
                 $classeCSS = "status process";
                 break;
             case 1:
-                $estado = "Pendente";
+                $estado = "Pendente.";
                 $classeCSS = "status pending";
                 break;
-            case 2:
-                $estado = "Devolvido";
-                $classeCSS = "status completed";
+                case 2: 
+                    $estado = "Devolvido.";
+                    $classeCSS = "status completed";
+                    break;
+            case 4: 
+                $estado = "Devolvido com pendencia.";
+                $classeCSS = "status process";
                 break;
             default:
-                $estado = "Estado desconhecido";
+                $estado = "Estado desconhecido.";
                 $classeCSS = "status unknown";
                 break;
         }
@@ -209,7 +238,7 @@ if ($stmtLivrosParaDevolucao->rowCount() > 0) {
         echo '<td><center><span class="' . $classeCSS . '">' . $estado . '</span></center></td>';
         echo '<td>';
         
-        if ($row['Estado'] == 2) {
+        if ($row['Estado'] == 2 || $row['Estado'] == 4) {
             echo '<div class="container">';
             echo '<center><a href="#"><button class="close-popup-button">X</button></a></center>';
             echo '</div>';
@@ -221,7 +250,7 @@ if ($stmtLivrosParaDevolucao->rowCount() > 0) {
             echo '<h2 class="title"></h2>';
             echo '<p class="desc">O livro foi realmente devolvido?</p>';
             echo '<button class="close-popup-button" type="submit" onclick="handlePopup(false)">Fechar</button>';
-            echo '<button class="close-popup-button">Confirmar Devolução</button>';
+            echo '<a href="../Controller/CDevolver.livro.php?id=' . $row['idEmprestimo'] . '"><button class="close-popup-button">Confirmar Devolução</button></a>';
             echo '</div>';
             echo '</div>';
         }
@@ -232,10 +261,42 @@ if ($stmtLivrosParaDevolucao->rowCount() > 0) {
 
     echo '</tbody>';
     echo '</table>';
-} else {
-    echo 'Nenhum livro disponível para devolução.';
-}
-?>
+     // Adição do sistema de paginação
+     echo "<div class='pagination'>";
+     $livrosPorPagina = 5;
+     $totalLivros = $stmtLivrosParaDevolucao->rowCount();
+     $totalPaginas = ceil($totalLivros / $livrosPorPagina);
+     $paginaAtual = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
+ 
+     $range = 2; // Define quantos links de página para mostrar ao redor da página atual
+     $inicio = $paginaAtual - $range;
+     $fim = $paginaAtual + $range;
+ 
+     if ($inicio <= 0) {
+         $fim += abs($inicio) + 1;
+         $inicio = 1;
+     }
+ 
+     if ($fim > $totalPaginas) {
+         $fim = $totalPaginas;
+         if ($fim - 2 * $range > 0) {
+             $inicio = $fim - 2 * $range;
+         } else {
+             $inicio = 1;
+         }
+     }
+ 
+     for ($i = $inicio; $i <= $fim; $i++) {
+         $classeAtiva = ($i == $paginaAtual) ? "active" : "";
+         echo "<a class='page-link $classeAtiva' href='devolucao.php?pagina=$i'>$i</a>";
+     }
+     echo "</div>";
+ 
+ } else {
+     echo 'Nenhum livro disponível para devolução.';
+ }
+ ?>
+
 
 
 
@@ -261,6 +322,20 @@ if ($stmtLivrosParaDevolucao->rowCount() > 0) {
 <script src="../JS/popup.js"></script>
 <script scr="../ArquivosExternos/ajax.js"></script>
 <script src="../ArquivosExternos/jquery.js"></script>
+<script>
+    $(document).ready(function() {
+        $('.historico-button').click(function() {
+            var id = $(this).closest('tr').find('td:first').text().trim(); // Obtendo o ID do primeiro <td>
+
+            // Mostrar o popup de confirmação
+            handlePopup(true);
+
+            // Preencher o link de devolução com o ID correto
+            var linkDevolucao = '../Controller/CDevolver_livro.php?id=' + id;
+            $('#popup a:last').attr('href', linkDevolucao); // Atualizando o link de devolução no último botão
+        });
+    });
+</script>
 <script>
 	$(document).ready(function() {
     function mostrarLivros(alunoId) {
@@ -344,6 +419,17 @@ if ($stmtLivrosParaDevolucao->rowCount() > 0) {
 });
 
 </script>
+
+<script>
+	$('#searchInput').on('keyup', function() {
+		const value = $(this).val().toLowerCase();
+
+		$('table tbody tr').filter(function() {
+			$(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+		});
+	});
+</script>
+
 
 </body>
 
