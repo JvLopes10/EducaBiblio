@@ -206,7 +206,7 @@ include('../Controller/CConexao.php');
 						</div>
 						<script>
 				function abrirAluno() {
-					var urlDoPDF = "../pdf/relatorioA.php";
+					var urlDoPDF = "../bancoTeste/teste.php";
 					window.open(urlDoPDF, '_blank');
 				}
 			</script>
