@@ -354,7 +354,7 @@ FROM prof";
 	});
 </script>
 <!-- Exemplo de como incluir o jQuery -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="../ArquivosExternos/Ajax.js"></script>
 <script>
 	$(document).ready(function() {
 		// Capturar clique no botão de edição

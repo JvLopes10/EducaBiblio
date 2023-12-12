@@ -285,7 +285,7 @@ include('../Controller/CConexao.php');
 		$('#turmaTable').DataTable(); // Inicializa o DataTables para a tabela de turma
 	});
 </script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="../ArquivosExternos/Jquery.js"></script>
 <script>
 	$(document).ready(function() {
 		// Capturar clique no botão de edição

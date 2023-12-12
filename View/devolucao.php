@@ -147,89 +147,101 @@ $conn = $conexao->getConnection();
 								<i class="fas fa-file-pdf"></i></button>
 
 						</div>
-						<table><?php
-								// Verifica se a requisição é do tipo POST
-								if ($_SERVER["REQUEST_METHOD"] == "POST") {
-									// Verifica se o campo do aluno foi enviado pelo formulário
-									if (isset($_POST['aluno_idAluno'])) {
-										$aluno_id = $_POST['aluno_idAluno'];
+						<table>
+						<?php
+// ... Seu código de conexão com o banco de dados e outras configurações ...
 
-										// Aqui você precisa construir a lógica de consulta ao banco de dados
-										// Substitua este trecho de código pela consulta que retorna os dados desejados
-										// Por exemplo:
-										$query = "SELECT 
-                    aluno.NomeAluno AS Leitor,
-                    turma.NomeTurma AS Turma,
-                    livro.NomeLivro AS Livro,
-                    CASE
-                        WHEN devolucao.StatusDevolucao IS NULL OR devolucao.StatusDevolucao = 2 THEN 'Pendente'
-                        ELSE 'Devolvido'
-                    END AS Estado
-                FROM emprestimo
-                INNER JOIN aluno ON emprestimo.aluno_idAluno = aluno.idAluno
-                INNER JOIN turma ON aluno.Turma_idTurma = turma.IdTurma
-                INNER JOIN livro ON emprestimo.livro_idLivro = livro.idLivro
-                LEFT JOIN devolucao ON emprestimo.idEmprestimo = devolucao.emprestimo_idEmprestimo
-                WHERE aluno.idAluno = :aluno_id";
+// Consulta SQL para buscar os livros que estão emprestados e ainda não foram devolvidos
+$queryLivrosParaDevolucao = "SELECT emprestimo.idEmprestimo, aluno.NomeAluno AS Leitor, turma.NomeTurma AS Turma, livro.NomeLivro AS Livro, emprestimo.StatusEmprestimo AS Estado, devolucao.DataDevolucao
+    FROM emprestimo
+    INNER JOIN aluno ON emprestimo.aluno_idAluno = aluno.idAluno
+    INNER JOIN livro ON emprestimo.livro_idLivro = livro.idLivro
+    INNER JOIN turma ON aluno.Turma_idTurma = turma.IdTurma
+    LEFT JOIN devolucao ON emprestimo.idEmprestimo = devolucao.emprestimo_idEmprestimo";
 
-										$stmt = $conn->prepare($query);
-										$stmt->bindParam(':aluno_id', $aluno_id);
-										$stmt->execute();
-										$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-										// Gera a tabela HTML com base nos resultados obtidos
-										if (!empty($result)) {
-											echo '<table>';
-											echo '<thead>';
-											echo '<tr>';
-											echo '<th><center>Leitor</center></th>';
-											echo '<th><center>Turma</center></th>';
-											echo '<th><center>Livro</center></th>';
-											echo '<th><center>Estado</center></th>';
-											echo '<th><center>Devolvido</center></th>';
-											echo '</tr>';
-											echo '</thead>';
-											echo '<tbody>';
+$stmtLivrosParaDevolucao = $conn->query($queryLivrosParaDevolucao);
 
-											foreach ($result as $row) {
-												echo '<tr>';
-												echo '<td><center>' . $row['Leitor'] . '</center></td>';
-												echo '<td><center>' . $row['Turma'] . '</center></td>';
-												echo '<td><center>' . $row['Livro'] . '</center></td>';
-												echo '<td><center><span class="status pending">' . $row['Estado'] . '</span></center></td>';
-												echo '<td>';
-												echo '<div class="container">';
-												echo '<center>';
-												echo '<button class="historico-button" type="submit" onclick="handlePopup(true)">';
-												echo '<i class="fas fa-check"></i>';
-												echo '</button>';
-												echo '</center>';
-												echo '<div class="popup" id="popup">';
-												echo '<img src="../img/livro2.png">';
-												echo '<h2 class="title">Devolução</h2>';
-												echo '<p class="desc">O livro foi realmente devolvido?</p>';
-												echo '<button class="close-popup-button" type="submit" onclick="handlePopup(false)">';
-												echo 'ㅤ Fechar ㅤ';
-												echo '</button>';
-												echo '<button class="close-popup-button">';
-												echo 'Devolver';
-												echo '</button>';
-												echo '</div>';
-												echo '</div>';
-												echo '</td>';
-												echo '</tr>';
-											}
+if ($stmtLivrosParaDevolucao->rowCount() > 0) {
+    echo '<table>';
+    echo '<thead>';
+    echo '<tr>';
+    echo '<th><center>ID</center></th>';
+    echo '<th><center>Leitor</center></th>';
+    echo '<th><center>Turma</center></th>';
+    echo '<th><center>Livro</center></th>';
+    echo '<th><center>Data de Devolução</center></th>';
+    echo '<th><center>Estado</center></th>';
+    echo '<th><center>Ações</center></th>';
+    echo '</tr>';
+    echo '</thead>';
+    echo '<tbody>';
 
-											echo '</tbody>';
-											echo '</table>';
-										} else {
-											echo 'Nenhum resultado encontrado.';
-										}
-									} else {
-										echo 'ID do aluno não foi recebido.';
-									}
-								}
-								?>
+    while ($row = $stmtLivrosParaDevolucao->fetch(PDO::FETCH_ASSOC)) {
+        $estado = "";
+        $classeCSS = "";
+
+        switch ($row['Estado']) {
+            case 0:
+                $estado = "Dentro do prazo";
+                $classeCSS = "status process";
+                break;
+            case 1:
+                $estado = "Pendente";
+                $classeCSS = "status pending";
+                break;
+            case 2:
+                $estado = "Devolvido";
+                $classeCSS = "status completed";
+                break;
+            default:
+                $estado = "Estado desconhecido";
+                $classeCSS = "status unknown";
+                break;
+        }
+
+        echo '<tr>';
+        echo '<td><center>' . $row['idEmprestimo'] . '</center></td>';
+        echo '<td><center>' . $row['Leitor'] . '</center></td>';
+        echo '<td><center>' . $row['Turma'] . '</center></td>';
+        echo '<td><center>' . $row['Livro'] . '</center></td>';
+        echo '<td><center>' . $row['DataDevolucao'] . '</center></td>';
+        echo '<td><center><span class="' . $classeCSS . '">' . $estado . '</span></center></td>';
+        echo '<td>';
+        
+        if ($row['Estado'] == 2) {
+            echo '<div class="container">';
+            echo '<center><a href="#"><button class="close-popup-button">X</button></a></center>';
+            echo '</div>';
+        } else {
+            echo '<div class="container">';
+            echo '<center><button class="historico-button" type="submit" onclick="handlePopup(true)"><i class="fas fa-check"></i></button></center>';
+            echo '<div class="popup" id="popup">';
+            echo '<img src="../img/livro2.png">';
+            echo '<h2 class="title"></h2>';
+            echo '<p class="desc">O livro foi realmente devolvido?</p>';
+            echo '<button class="close-popup-button" type="submit" onclick="handlePopup(false)">Fechar</button>';
+            echo '<button class="close-popup-button">Confirmar Devolução</button>';
+            echo '</div>';
+            echo '</div>';
+        }
+        
+        echo '</td>';
+        echo '</tr>';
+    }
+
+    echo '</tbody>';
+    echo '</table>';
+} else {
+    echo 'Nenhum livro disponível para devolução.';
+}
+?>
+
+
+
+
+
+
 
 						</table>
 					</div>
@@ -246,120 +258,120 @@ $conn = $conexao->getConnection();
 </html>
 
 <script src="../JS/script.js"></script>
-<script src="../JS/popup.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="../JS/popup.js"></script><script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
 	$(".search-button").click(function(e) {
-		e.preventDefault();
-		var alunoId = $("#aluno_idAluno").val();
+    e.preventDefault();
+    var alunoId = $("#aluno_idAluno").val();
 
-		if (alunoId !== "") {
-			$.ajax({
-				url: '../Controller/CDev_tabela.php',
-				type: 'POST',
-				dataType: 'json',
-				data: {
-					aluno_idAluno: alunoId
-				},
-				success: function(response) {
-					// Limpar a lista de livros antes de adicionar os novos
-					$('#lista-livros').empty();
+    if (alunoId !== "") {
+        $.ajax({
+            url: '../Controller/CDev_tabela.php',
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                aluno_idAluno: alunoId
+            },
+            success: function(response) {
+                // Limpar a lista de livros antes de adicionar os novos
+                $('#lista-livros').empty();
 
-					// Adicionar os livros à lista
-					$.each(response, function(index, row) {
-						var livro = '<li>' + row.NomeLivro + '</li>';
-						$('#lista-livros').append(livro);
-					});
+                // Adicionar os livros à lista
+                $.each(response, function(index, row) {
+                    var livro = '<li>' + row.NomeLivro + '</li>';
+                    $('#lista-livros').append(livro);
+                });
 
-					// Mostrar a lista de livros em algum elemento na sua página
-					// Por exemplo, se você tem um <ul> com id "lista-livros":
-					$('#lista-livros').show();
-				},
-				error: function() {
-					alert('Erro ao buscar dados do servidor.');
-				}
-			});
-		}
-	});
+                // Mostrar a lista de livros em algum elemento na sua página
+                // Por exemplo, se você tem um <ul> com id "lista-livros":
+                $('#lista-livros').show();
+            },
+            error: function() {
+                alert('Erro ao buscar dados do servidor.');
+            }
+        });
+    }
+});
+
 </script>
 <script>
-	$(document).ready(function() {
-		$("#Turma_idTurma").change(function() {
-			var turmaId = $(this).val();
-			var alunoSelect = $("#aluno_idAluno");
+    $(document).ready(function() {
+        $("#Turma_idTurma").change(function() {
+            var turmaId = $(this).val();
+            var alunoSelect = $("#aluno_idAluno");
 
-			if (turmaId) {
-				$.ajax({
-					type: "GET",
-					url: "../Controller/CBusca_alunos.php",
-					data: {
-						turmaId: turmaId
-					},
-					success: function(data) {
-						alunoSelect.html(data);
-					},
-					error: function() {
-						alunoSelect.html("<option value=''>Erro ao carregar alunos</option>");
-					}
-				});
-			} else {
-				alunoSelect.html("<option value=''>Selecione um aluno</option>");
-			}
-		});
+            if (turmaId) {
+                $.ajax({
+                    type: "GET",
+                    url: "../Controller/CBusca_alunos.php",
+                    data: {
+                        turmaId: turmaId
+                    },
+                    success: function(data) {
+                        alunoSelect.html(data);
+                    },
+                    error: function() {
+                        alunoSelect.html("<option value=''>Erro ao carregar alunos</option>");
+                    }
+                });
+            } else {
+                alunoSelect.html("<option value=''>Selecione um aluno</option>");
+            }
+        });
 
-		$(".search-button").click(function(e) {
-			e.preventDefault();
-			var alunoId = $("#aluno_idAluno").val();
+        $(".search-button").click(function(e) {
+            e.preventDefault();
+            var alunoId = $("#aluno_idAluno").val();
 
-			if (alunoId !== "") {
-				$.ajax({
-					url: '../Controller/CDev_tabela.php',
-					type: 'POST',
-					dataType: 'json',
-					data: {
-						aluno_idAluno: alunoId
-					},
-					success: function(response) {
-						$('#tabela-dados tbody').empty();
+            if (alunoId !== "") {
+                $.ajax({
+                    url: '../Controller/CDev_tabela.php',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {
+                        aluno_idAluno: alunoId
+                    },
+                    success: function(response) {
+                        $('#tabela-dados tbody').empty();
 
-						$.each(response, function(index, row) {
-							var newRow = '<tr>' +
-								'<td><center>' + row.Leitor + '</center></td>' +
-								'<td><center>' + row.Turma + '</center></td>' +
-								'<td><center>' + row.Livro + '</center></td>' +
-								'<td><center><span class="status pending">' + row.Estado + '</span></center></td>' +
-								'<td>' +
-								'<div class="container">' +
-								'<center>' +
-								'<button class="historico-button" type="submit" onclick="handlePopup(true)">' +
-								'<i class="fas fa-check"></i>' +
-								'</button>' +
-								'</center>' +
-								'<div class="popup" id="popup">' +
-								'<img src="../img/livro2.png">' +
-								'<h2 class="title">Devolução</h2>' +
-								'<p class="desc">O livro foi realmente devolvido?</p>' +
-								'<button class="close-popup-button" type="submit" onclick="handlePopup(false)">' +
-								'ㅤ Fechar ㅤ' +
-								'</button>' +
-								'<button class="close-popup-button">' +
-								'Devolver' +
-								'</button>' +
-								'</div>' +
-								'</div>' +
-								'</td>' +
-								'</tr>';
+                        $.each(response, function(index, row) {
+                            var newRow = '<tr>' +
+                                '<td><center>' + row.Leitor + '</center></td>' +
+                                '<td><center>' + row.Turma + '</center></td>' +
+                                '<td><center>' + row.Livro + '</center></td>' +
+                                '<td><center><span class="status pending">' + row.Estado + '</span></center></td>' +
+                                '<td>' +
+                                '<div class="container">' +
+                                '<center>' +
+                                '<button class="historico-button" type="submit" onclick="handlePopup(true)">' +
+                                '<i class="fas fa-check"></i>' +
+                                '</button>' +
+                                '</center>' +
+                                '<div class="popup" id="popup">' +
+                                '<img src="../img/livro2.png">' +
+                                '<h2 class="title">Devolução</h2>' +
+                                '<p class="desc">O livro foi realmente devolvido?</p>' +
+                                '<button class="close-popup-button" type="submit" onclick="handlePopup(false)">' +
+                                'ㅤ Fechar ㅤ' +
+                                '</button>' +
+                                '<button class="close-popup-button">' +
+                                'Devolver' +
+                                '</button>' +
+                                '</div>' +
+                                '</div>' +
+                                '</td>' +
+                                '</tr>';
 
-							$('#tabela-dados tbody').append(newRow);
-						});
-					},
-					error: function() {
-						alert('Erro ao buscar dados do servidor.');
-					}
-				});
-			}
-		});
-	});
+                            $('#tabela-dados tbody').append(newRow);
+                        });
+                    },
+                    error: function() {
+                        alert('Erro ao buscar dados do servidor.');
+                    }
+                });
+            }
+        });
+    });
 </script>
 
 </body>

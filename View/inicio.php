@@ -421,8 +421,8 @@ $livrosRecomendados = $getlivro->obterLivrosRecomendados();
 	</section>
 
 	<script src="../JS/script.js"></script>
-
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script>
 		$('#searchInput').on('keyup', function() {
 			const value = $(this).val().toLowerCase();
