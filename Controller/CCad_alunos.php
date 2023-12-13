@@ -1,5 +1,4 @@
 <?php
-// Inclua a classe de conexão
 include('../Controller/CConexao.php');
 
 class CCad_aluno {
@@ -34,4 +33,5 @@ class CCad_aluno {
         }
     }
 }
+
 ?>

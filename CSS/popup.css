@@ -43,7 +43,7 @@ body {
     /* Define a posição como absoluta para posicionamento personalizado */
     top: -200%;
     /* Inicialmente, o topo está fora da tela */
-    right: 300%;
+    right: 450%;
     /* Inicialmente, a direita está fora da tela */
     padding: 5%;
     /* Preenchimento interno do popup */
@@ -67,7 +67,7 @@ body {
     /* Mais borda arredondada */
     text-align: center;
     /* Mais centralização de conteúdo */
-    width: 350px;
+    width: 370px;
     /* Largura fixa do popup */
     box-sizing: border-box;
     /* Outra vez, garante que o preenchimento não afete o tamanho total */
@@ -115,6 +115,7 @@ body {
     /* Margens */
     margin-top: 10px;
     /* Margem superior */
+    margin-right: 5px;
 }
 
 

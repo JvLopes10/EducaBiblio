@@ -11,7 +11,7 @@ include('../Controller/CConexao.php');
 	<script src="../ArquivosExternos/icons.js"></script>
 	<link rel="shortcut icon" href="../img/icon1.png" type="image/x-icon">
 	<link rel="stylesheet" href="../CSS/style.css">
-	<link rel="stylesheet" href="../CSS/popup.css">
+	<link rel="stylesheet" href="../CSS/popup4.css">
 	<title>EducaBiblio</title>
 </head>
 <style>
@@ -42,8 +42,6 @@ include('../Controller/CConexao.php');
 		background-color: #333;
 		color: #fff;
 	}
-
-
 </style>
 
 <body>
@@ -147,7 +145,7 @@ include('../Controller/CConexao.php');
 						<input type="number" placeholder="ID" name="IdTurma" id="IdTurma" required maxlength="50" class="box3" autocomplete="off" readonly>
 						<input type="Number" placeholder="Ano de início" name="AnodeInicio" id="AnodeInicio" required maxlength="50" class="box" autocomplete="off">
 						<input type="text" placeholder="Série" name="AnoTurma" id="AnoTurma" required maxlength="50" class="box" autocomplete="off" required>
-						<input type="text" placeholder="Turma" name="NomeTurma" id="NomeTurma"  maxlength="50" class="box" autocomplete="off">
+						<input type="text" placeholder="Turma" name="NomeTurma" id="NomeTurma" maxlength="50" class="box" autocomplete="off">
 
 						<center><input type="submit" value="Enviar" class="inline-btn" name="action"></center>
 					</form>
@@ -155,26 +153,28 @@ include('../Controller/CConexao.php');
 			</section>
 			<style>
 				/* Esconde as setas para campos de entrada numérica */
-input[type=number]::-webkit-inner-spin-button,
-input[type=number]::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-input[type=number] {
-  -moz-appearance: textfield; /* Firefox */
-}
+				input[type=number]::-webkit-inner-spin-button,
+				input[type=number]::-webkit-outer-spin-button {
+					-webkit-appearance: none;
+					margin: 0;
+				}
+
+				input[type=number] {
+					-moz-appearance: textfield;
+					/* Firefox */
+				}
 
 
-			
-			.searchInput {
-  width: 20% !important;
-  height: 30px;
-  background-color: #f2f2f2;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  padding: 5px;
-}
-</style>
+
+				.searchInput {
+					width: 20% !important;
+					height: 30px;
+					background-color: #f2f2f2;
+					border: 1px solid #ccc;
+					border-radius: 5px;
+					padding: 5px;
+				}
+			</style>
 			<main>
 				<div class="table-data">
 					<div class="order">
@@ -233,7 +233,8 @@ input[type=number] {
 										echo "<td><center>" . $row["NomeTurma"] . "</center></td>";
 										echo "<td><center>" . $row["AnodeInicio"] . "</center></td>";
 										echo "<td><center><button class='edit-button' data-id='$row[IdTurma]'><i class='fas fa-pencil-alt'></i></button></center></td>";
-										echo "<td><div class='container'><center><button class='delete-button' type='button' onclick='handlePopup(true)' aria-label='botão excluir'><i class='fas fa-trash-alt'></i></button></center><div class='popup' id='popup'><img src='../img/decisao.png' aria-label='popup decisão'><h2 class='title'>Aviso!</h2><p class='desc'>Deseja mesmo excluir?</p><button class='close-popup-button' type='button' onclick='handlePopup(false)'>Fechar</button><a href='../Controller/CExcluir_turma.php?id={$row["IdTurma"]}'><button class='close-popup-button'>Excluir</button></a></div></div></div></td>";echo "</tr>";
+										echo "<td><div class='container'><center><button class='delete-button' type='button' onclick='handlePopup(true)' aria-label='botão excluir'><i class='fas fa-trash-alt'></i></button></center><div class='popup' id='popup'><img src='../img/decisao.png' aria-label='popup decisão'><h2 class='title'>Aviso!</h2><p class='desc'>Deseja mesmo excluir?</p><button class='close-popup-button' type='button' onclick='handlePopup(false)'>Fechar</button><a href='../Controller/CExcluir_turma.php?id={$row["IdTurma"]}'><button class='close-popup-button'>Excluir</button></a></div></div></div></td>";
+										echo "</tr>";
 									}
 
 									echo "</tbody>";
@@ -316,37 +317,37 @@ input[type=number] {
 	});
 </script>
 <script>
-    $(document).ready(function() {
-        $('.sortable').click(function() {
-            const column = $(this).data('column');
-            const order = $(this).hasClass('asc') ? 'desc' : 'asc';
+	$(document).ready(function() {
+		$('.sortable').click(function() {
+			const column = $(this).data('column');
+			const order = $(this).hasClass('asc') ? 'desc' : 'asc';
 
-            $('.sortable').removeClass('asc desc');
-            $(this).addClass(order);
+			$('.sortable').removeClass('asc desc');
+			$(this).addClass(order);
 
-            sortTable(column, order);
-        });
-    });
+			sortTable(column, order);
+		});
+	});
 
-    function sortTable(column, order) {
-        const $tbody = $('table tbody');
-        const $rows = $tbody.find('tr').get();
+	function sortTable(column, order) {
+		const $tbody = $('table tbody');
+		const $rows = $tbody.find('tr').get();
 
-        $rows.sort(function(a, b) {
-            const keyA = $(a).find(`td[data-column='${column}']`).text();
-            const keyB = $(b).find(`td[data-column='${column}']`).text();
+		$rows.sort(function(a, b) {
+			const keyA = $(a).find(`td[data-column='${column}']`).text();
+			const keyB = $(b).find(`td[data-column='${column}']`).text();
 
-            if (order === 'asc') {
-                return keyA.localeCompare(keyB);
-            } else {
-                return keyB.localeCompare(keyA);
-            }
-        });
+			if (order === 'asc') {
+				return keyA.localeCompare(keyB);
+			} else {
+				return keyB.localeCompare(keyA);
+			}
+		});
 
-        $.each($rows, function(index, row) {
-            $tbody.append(row);
-        });
-    }
+		$.each($rows, function(index, row) {
+			$tbody.append(row);
+		});
+	}
 </script>
 
 <script>

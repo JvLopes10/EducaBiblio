@@ -324,100 +324,82 @@ if ($stmtLivrosParaDevolucao->rowCount() > 0) {
 <script src="../ArquivosExternos/jquery.js"></script>
 <script>
     $(document).ready(function() {
-        $('.historico-button').click(function() {
-            var id = $(this).closest('tr').find('td:first').text().trim(); // Obtendo o ID do primeiro <td>
+        $("#Turma_idTurma").change(function() {
+            var turmaId = $(this).val();
+            var alunoSelect = $("#aluno_idAluno");
 
-            // Mostrar o popup de confirmação
-            handlePopup(true);
+            if (turmaId) {
+                $.ajax({
+                    type: "GET",
+                    url: "../Controller/CBusca_alunos.php",
+                    data: {
+                        turmaId: turmaId
+                    },
+                    success: function(data) {
+                        alunoSelect.html(data);
+                    },
+                    error: function() {
+                        alunoSelect.html("<option value=''>Erro ao carregar alunos</option>");
+                    }
+                });
+            } else {
+                alunoSelect.html("<option value=''>Selecione um aluno</option>");
+            }
+        });
 
-            // Preencher o link de devolução com o ID correto
-            var linkDevolucao = '../Controller/CDevolver_livro.php?id=' + id;
-            $('#popup a:last').attr('href', linkDevolucao); // Atualizando o link de devolução no último botão
+        $(".search-button").click(function(e) {
+            e.preventDefault();
+            var alunoId = $("#aluno_idAluno").val();
+
+            if (alunoId !== "") {
+                $.ajax({
+                    url: '../Controller/CDev_tabela.php',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {
+                        aluno_idAluno: alunoId
+                    },
+                    success: function(response) {
+                        $('#tabela-dados tbody').empty();
+
+                        $.each(response, function(index, row) {
+                            var newRow = '<tr>' +
+                                '<td><center>' + row.Leitor + '</center></td>' +
+                                '<td><center>' + row.Turma + '</center></td>' +
+                                '<td><center>' + row.Livro + '</center></td>' +
+                                '<td><center><span class="status pending">' + row.Estado + '</span></center></td>' +
+                                '<td>' +
+                                '<div class="container">' +
+                                '<center>' +
+                                '<button class="historico-button" type="submit" onclick="handlePopup(true)">' +
+                                '<i class="fas fa-check"></i>' +
+                                '</button>' +
+                                '</center>' +
+                                '<div class="popup" id="popup">' +
+                                '<img src="../img/livro2.png">' +
+                                '<h2 class="title">Devolução</h2>' +
+                                '<p class="desc">O livro foi realmente devolvido?</p>' +
+                                '<button class="close-popup-button" type="submit" onclick="handlePopup(false)">' +
+                                'ㅤ Fechar ㅤ' +
+                                '</button>' +
+                                '<button class="close-popup-button">' +
+                                'Devolver' +
+                                '</button>' +
+                                '</div>' +
+                                '</div>' +
+                                '</td>' +
+                                '</tr>';
+
+                            $('#tabela-dados tbody').append(newRow);
+                        });
+                    },
+                    error: function() {
+                        alert('Erro ao buscar dados do servidor.');
+                    }
+                });
+            }
         });
     });
-</script>
-<script>
-	$(document).ready(function() {
-    function mostrarLivros(alunoId) {
-        if (alunoId !== "") {
-            $.ajax({
-                url: '../Controller/CDev_tabela.php',
-                type: 'POST',
-                dataType: 'json',
-                data: {
-                    aluno_idAluno: alunoId
-                },
-                success: function(response) {
-                    $('#tabela-dados tbody').empty();
-
-                    $.each(response, function(index, row) {
-                        var newRow = '<tr>' +
-                            '<td><center>' + row.Leitor + '</center></td>' +
-                            '<td><center>' + row.Turma + '</center></td>' +
-                            '<td><center>' + row.Livro + '</center></td>' +
-                            '<td><center><span class="status pending">' + row.Estado + '</span></center></td>' +
-                            '<td>' +
-                            '<div class="container">' +
-                            '<center>' +
-                            '<button class="historico-button" type="submit" onclick="handlePopup(true)">' +
-                            '<i class="fas fa-check"></i>' +
-                            '</button>' +
-                            '</center>' +
-                            '<div class="popup" id="popup">' +
-                            '<img src="../img/livro2.png">' +
-                            '<h2 class="title">Devolução</h2>' +
-                            '<p class="desc">O livro foi realmente devolvido?</p>' +
-                            '<button class="close-popup-button" type="submit" onclick="handlePopup(false)">' +
-                            'ㅤ Fechar ㅤ' +
-                            '</button>' +
-                            '<button class="close-popup-button">' +
-                            'Devolver' +
-                            '</button>' +
-                            '</div>' +
-                            '</div>' +
-                            '</td>' +
-                            '</tr>';
-
-                        $('#tabela-dados tbody').append(newRow);
-                    });
-                },
-                error: function() {
-                    alert('Erro ao buscar dados do servidor.');
-                }
-            });
-        }
-    }
-
-    $(".search-button").click(function(e) {
-        e.preventDefault();
-        var alunoId = $("#aluno_idAluno").val();
-        mostrarLivros(alunoId);
-    });
-
-    $("#Turma_idTurma").change(function() {
-        var turmaId = $(this).val();
-        var alunoSelect = $("#aluno_idAluno");
-
-        if (turmaId) {
-            $.ajax({
-                type: "GET",
-                url: "../Controller/CBusca_alunos.php",
-                data: {
-                    turmaId: turmaId
-                },
-                success: function(data) {
-                    alunoSelect.html(data);
-                },
-                error: function() {
-                    alunoSelect.html("<option value=''>Erro ao carregar alunos</option>");
-                }
-            });
-        } else {
-            alunoSelect.html("<option value=''>Selecione um aluno</option>");
-        }
-    });
-});
-
 </script>
 
 <script>

@@ -46,6 +46,7 @@ include('../Controller/CConexao.php');
 		color: #fff;
 	}
 </style>
+
 <body>
 
 	<section id="sidebar">
@@ -105,7 +106,7 @@ include('../Controller/CConexao.php');
 		</ul>
 		<ul class="side-menu">
 			<li>
-			<a href="../Controller/CLogout.php" class="logout">
+				<a href="../Controller/CLogout.php" class="logout">
 					<i class="fas fa-sign-out-alt"></i>
 					<span class="text">Deslogar</span>
 				</a>
@@ -122,7 +123,8 @@ include('../Controller/CConexao.php');
 				<div id="menu-btn" class="fas fa-question" onclick="abrirPDFEmNovaAba()"></div>
 			</div>
 
-			<script>function abrirPDFEmNovaAba() {
+			<script>
+				function abrirPDFEmNovaAba() {
 					var urlDoPDF = "../ArquivosExternos/Manual.pdf";
 					window.open(urlDoPDF, '_blank');
 				}
@@ -139,7 +141,7 @@ include('../Controller/CConexao.php');
 
 			<section class="tabela">:
 				<div class="row">
-				<form action="../Router/alunos_rotas.php" method="post">
+					<form action="../Router/alunos_rotas.php" method="post">
 						<h3>Cadastro de leitores</h3>
 						<input type="text" placeholder="ID" name="id" maxlength="50" class="box2" autocomplete="off" readonly>
 
@@ -190,17 +192,6 @@ include('../Controller/CConexao.php');
 					-moz-appearance: textfield;
 					/* Firefox */
 				}
-
-
-
-				.searchInput {
-					width: 20% !important;
-					height: 30px;
-					background-color: #f2f2f2;
-					border: 1px solid #ccc;
-					border-radius: 5px;
-					padding: 5px;
-				}
 			</style>
 			<main>
 				<div class="table-data">
@@ -208,20 +199,26 @@ include('../Controller/CConexao.php');
 						<div class="head">
 							<h3>Tabela de leitores</h3>
 							<input type="text" id="searchInput" class="searchInput" placeholder="Pesquisar...">
-							
-							<button class="pdf-button" id="pdf-button" aria-label="botão pdf">
+
+							<button class="pdf-button" id="pdf-button" aria-label="botão pdf" onclick="abrirAluno()">
 								<i class="fas fa-file-pdf"></i></button>
 
 						</div>
+						<script>
+				function abrirAluno() {
+					var urlDoPDF = "../bancoTeste/teste.php";
+					window.open(urlDoPDF, '_blank');
+				}
+			</script>
 						<table>
 
-						<?php
+							<?php
 
-    $conexao = new CConexao();
-    $conn = $conexao->getConnection();
+							$conexao = new CConexao();
+							$conn = $conexao->getConnection();
 
-    // Consulta para obter os dados da tabela de usuários com o nome da turma
-	$sql = "SELECT 
+							// Consulta para obter os dados da tabela de usuários com o nome da turma
+							$sql = "SELECT 
 	aluno.NomeAluno,
 	aluno.idAluno,
 	aluno.Turma_idTurma,
@@ -243,36 +240,37 @@ SELECT
 FROM prof";
 
 
-    $result = $conn->query($sql);
+							$result = $conn->query($sql);
 
-    if ($result === false) {
-        // Use errorInfo para obter informações sobre o erro
-        $errorInfo = $conn->errorInfo();
-        echo "Erro na consulta SQL: " . $errorInfo[2];
-    } else {
-        if ($result->rowCount() > 0) {
-            $user = $result->fetchAll(PDO::FETCH_ASSOC);
-            $UsuarioPorPagina = 4;
-            $paginaAtual = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
-            $indiceInicial = ($paginaAtual - 1) * $UsuarioPorPagina;
-            $UsuarioExibidos = array_slice($user, $indiceInicial, $UsuarioPorPagina);
+							if ($result === false) {
+								// Use errorInfo para obter informações sobre o erro
+								$errorInfo = $conn->errorInfo();
+								echo "Erro na consulta SQL: " . $errorInfo[2];
+							} else {
+								if ($result->rowCount() > 0) {
+									$user = $result->fetchAll(PDO::FETCH_ASSOC);
+									$UsuarioPorPagina = 4;
+									$paginaAtual = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
+									$indiceInicial = ($paginaAtual - 1) * $UsuarioPorPagina;
+									$UsuarioExibidos = array_slice($user, $indiceInicial, $UsuarioPorPagina);
 
-            // Exibir a tabela de usuários com o nome da turma
-            echo "<table>";
-            echo "<thead>";
-            echo "<tr>";
-            echo "<th><center>Nome</center></th>";
-            echo "<th><center>ID</center></th>";
-            echo "<th><center>Email</center></th>";
-            echo "<th><center>Tipo</center></th>";
-            echo "<th><center>Turma</center></th>";
-            echo "<th><center>Editar</center></th>";
-            echo "<th><center>Excluir</center></th>";
-            echo "<th><center>Histórico</center></th>";
-            echo "</tr>";
-            echo "</thead>";
-            echo "<tbody>";
+									// Exibir a tabela de usuários com o nome da turma
+									echo "<table>";
+									echo "<thead>";
+									echo "<tr>";
+									echo "<th><center>Nome</center></th>";
+									echo "<th><center>ID</center></th>";
+									echo "<th><center>Email</center></th>";
+									echo "<th><center>Tipo</center></th>";
+									echo "<th><center>Turma</center></th>";
+									echo "<th><center>Editar</center></th>";
+									echo "<th><center>Excluir</center></th>";
+									echo "<th><center>Histórico</center></th>";
+									echo "</tr>";
+									echo "</thead>";
+									echo "<tbody>";
 
+<<<<<<< HEAD
 			foreach ($UsuarioExibidos as $row) {
 				echo "<tr>";
 				echo "<td><center>" . $row["NomeAluno"] . "</center></td>";
@@ -314,32 +312,73 @@ FROM prof";
 						
 			
 			
+=======
+									foreach ($UsuarioExibidos as $row) {
+										echo "<tr>";
+										echo "<td><center>" . $row["NomeAluno"] . "</center></td>";
+										echo "<td><center>" . $row["idAluno"] . "</center></td>";
+										echo "<td><center>" . $row["EmailAluno"] . "</center></td>";
+										echo "<td><center>" . ucfirst($row["tipo"]) . "</center></td>";
+										echo "<td><center>" . ($row["nomeTurma"] ? $row["AnoTurma"] . ' º ' . $row["nomeTurma"] : "Não se aplica") . "</center></td>";
+>>>>>>> 62659d8390c8c9eb615ac7b7a6154499a429285d
 
-            echo "</tbody>";
-            echo "</table>";
+										// Botões de edição, exclusão e histórico
+										echo "<td><center>";
+										if (array_key_exists('idAluno', $row)) {
+											echo "<button class='edit-button' data-id='" . $row["idAluno"] . "'><i class='fas fa-pencil-alt'></i></button>";
+										}
+										if (array_key_exists('idProf', $row)) {
+											echo "<button class='edit-button' data-id='" . $row["idProf"] . "'><i class='fas fa-pencil-alt'></i></button>";
+										}
+										echo "</center></td>";
 
-            // Adiciona links de paginação
-            echo "<div class='pagination'>";
-            $totalUser = count($user);
-            $totalPaginas = ceil($totalUser / $UsuarioPorPagina);
-            for ($i = 1; $i <= $totalPaginas; $i++) {
-                $classeAtiva = ($i === $paginaAtual) ? "active" : "";
-                echo "<a class='page-link $classeAtiva' href='usuarios.php?pagina=$i'>$i</a>";
-            }
-            echo "</div>";
+										echo "<td><center>";
+										if (array_key_exists('idAluno', $row)) {
+											echo "<button class='delete-button' data-id='" . $row["idAluno"] . "' onclick='handleDelete(" . $row["idAluno"] . ")'><i class='fas fa-trash-alt'></i></button>";
+										}
+										if (array_key_exists('idProf', $row)) {
+											echo "<button class='delete-button' data-id='" . $row["idProf"] . "' onclick='handleDelete(" . $row["idProf"] . ")'><i class='fas fa-trash-alt'></i></button>";
+										}
+										echo "</center></td>";
 
-            // Botão Fechar do popup fora da tabela
-        } else {
-            echo "<p>Nenhum usuário encontrado.</p>";
-        }
-    }
+										echo "<td><center>";
+										if (array_key_exists('idAluno', $row)) {
+											echo "<button class='historico-button' data-id='" . $row["idAluno"] . "'><i class='fas fa-history'></i></button>";
+										}
+										if (array_key_exists('idProf', $row)) {
+											echo "<button class='historico-button' data-id='" . $row["idProf"] . "'><i class='fas fa-history'></i></button>";
+										}
+										echo "</center></td>";
 
-    $conn = null; // Fecha a conexão
-?>
+										echo "</tr>";
+									}
 
-				</tbody>
-				</table>
-				</div>
+
+									echo "</tbody>";
+									echo "</table>";
+
+									// Adiciona links de paginação
+									echo "<div class='pagination'>";
+									$totalUser = count($user);
+									$totalPaginas = ceil($totalUser / $UsuarioPorPagina);
+									for ($i = 1; $i <= $totalPaginas; $i++) {
+										$classeAtiva = ($i === $paginaAtual) ? "active" : "";
+										echo "<a class='page-link $classeAtiva' href='usuarios.php?pagina=$i'>$i</a>";
+									}
+									echo "</div>";
+
+									// Botão Fechar do popup fora da tabela
+								} else {
+									echo "<p>Nenhum usuário encontrado.</p>";
+								}
+							}
+
+							$conn = null; // Fecha a conexão
+							?>
+
+							</tbody>
+						</table>
+					</div>
 				</div>
 				<footer class="footer">
 					© Copyright 2023 por <span>EducaBiblio</span> | Todos os direitos reservados
@@ -361,41 +400,41 @@ FROM prof";
 <!-- Exemplo de como incluir o jQuery -->
 <script src="../ArquivosExternos/Ajax.js"></script>
 <script>
-    $(document).ready(function() {
-        // Capturar clique no botão de edição
-        $('.edit-button').click(function() {
-            // Obter o ID do item a ser editado
-            var id = $(this).data('id');
+	$(document).ready(function() {
+		// Capturar clique no botão de edição
+		$('.edit-button').click(function() {
+			// Obter o ID do item a ser editado
+			var id = $(this).data('id');
 
-            // Encontrar os dados correspondentes na tabela de usuários e preencher o formulário
-            var row = $(this).closest('tr'); // Obter a linha (tr) mais próxima do botão clicado
+			// Encontrar os dados correspondentes na tabela de usuários e preencher o formulário
+			var row = $(this).closest('tr'); // Obter a linha (tr) mais próxima do botão clicado
 
-            var nome = row.find('td:eq(0)').text().trim(); // Pegar o nome da primeira coluna da linha
-            var email = row.find('td:eq(2)').text().trim(); // Pegar o email da terceira coluna da linha
-            var tipo = row.find('td:eq(3)').text().trim(); // Pegar o tipo da quarta coluna da linha
-            var turma = row.find('td:eq(4)').text().trim(); // Pegar a turma da quinta coluna da linha
+			var nome = row.find('td:eq(0)').text().trim(); // Pegar o nome da primeira coluna da linha
+			var email = row.find('td:eq(2)').text().trim(); // Pegar o email da terceira coluna da linha
+			var tipo = row.find('td:eq(3)').text().trim(); // Pegar o tipo da quarta coluna da linha
+			var turma = row.find('td:eq(4)').text().trim(); // Pegar a turma da quinta coluna da linha
 
-            // Preencher os campos do formulário com os dados obtidos
-            $('#id').val(id);
-            $('#NomeAluno').val(nome);
-            $('#EmailAluno').val(email);
+			// Preencher os campos do formulário com os dados obtidos
+			$('#id').val(id);
+			$('#NomeAluno').val(nome);
+			$('#EmailAluno').val(email);
 
-            // Preencher o campo de escolha (Aluno/Professor) de acordo com o tipo de usuário
-            if (tipo === 'Aluno') {
-                $('#escolha').val('Aluno');
-                $('#Turma_idTurma').val(turma);
-                $('#NomeProf').val('');
-                $('#EmailProf').val('');
-                $('#MateriaProf').val('');
-            } else if (tipo === 'Professor') {
-                $('#escolha').val('Professor');
-                $('#Turma_idTurma').val('');
-                $('#NomeProf').val(nome);
-                $('#EmailProf').val(email);
-                $('#MateriaProf').val(turma);
-            }
-        });
-    });
+			// Preencher o campo de escolha (Aluno/Professor) de acordo com o tipo de usuário
+			if (tipo === 'Aluno') {
+				$('#escolha').val('Aluno');
+				$('#Turma_idTurma').val(turma);
+				$('#NomeProf').val('');
+				$('#EmailProf').val('');
+				$('#MateriaProf').val('');
+			} else if (tipo === 'Professor') {
+				$('#escolha').val('Professor');
+				$('#Turma_idTurma').val('');
+				$('#NomeProf').val(nome);
+				$('#EmailProf').val(email);
+				$('#MateriaProf').val(turma);
+			}
+		});
+	});
 </script>
 <script>
 	$('#searchInput').on('keyup', function() {

@@ -43,6 +43,7 @@ include('../Controller/CConexao.php');
 		color: #fff;
 	}
 </style>
+
 <body>
 
 	<section id="sidebar">
@@ -119,7 +120,8 @@ include('../Controller/CConexao.php');
 				<div id="menu-btn" class="fas fa-question" onclick="abrirPDFEmNovaAba()"></div>
 			</div>
 
-			<script>function abrirPDFEmNovaAba() {
+			<script>
+				function abrirPDFEmNovaAba() {
 					var urlDoPDF = "../ArquivosExternos/Manual.pdf";
 					window.open(urlDoPDF, '_blank');
 				}
@@ -138,9 +140,9 @@ include('../Controller/CConexao.php');
 			<section class="tabela">
 
 				<div class="row">
-				<form action="../Router/Rec_rotas.php" method="post" enctype="multipart/form-data">
+					<form action="../Router/Rec_rotas.php" method="post" enctype="multipart/form-data">
 						<h3>Recomendações semanais</h3>
-						<input type="text" id="idRec" name="idRec" placeholder="ID" class="box3 select-dark-mode" autocomplete="off" readonly>							
+						<input type="text" id="idRec" name="idRec" placeholder="ID" class="box3 select-dark-mode" autocomplete="off" readonly>
 						<input type="text" placeholder="Livro" name="LivroRec" id="LivroRec" required maxlength="50" class="box" autocomplete="off" required>
 						<input type="text" placeholder="Autor" name="AutorRec" id="AutorRec" required maxlength="50" class="box" autocomplete="off" required>
 						<input type="text" placeholder="Categoria" name="CatRec" id="CatRec" required maxlength="50" class="box" autocomplete="off" required>
@@ -150,15 +152,16 @@ include('../Controller/CConexao.php');
 				</div>
 			</section>
 			<style>
-								#content main .table-data .head h3 {
-    color: var(--cinzaEscuro);
-    margin-right: auto !important;
-    margin-left: auto;
-    font-size: 2rem;
-    font-family: 'Mulish', sans-serif;
-    font-weight: bolder;
-    margin-top: -15px;
-}</style>
+				#content main .table-data .head h3 {
+					color: var(--cinzaEscuro);
+					margin-right: auto !important;
+					margin-left: auto;
+					font-size: 2rem;
+					font-family: 'Mulish', sans-serif;
+					font-weight: bolder;
+					margin-top: -15px;
+				}
+			</style>
 			<main>
 				<div class="table-data">
 					<div class="order">
@@ -166,13 +169,13 @@ include('../Controller/CConexao.php');
 							<h3><br>Tabela de recomendações<br></h3>
 						</div>
 						<table>
-							
-							<?php
-    $conexao = new CConexao();
-    $conn = $conexao->getConnection();
 
-    // Consulta para obter os dados da tabela de usuários
-    $sql = "SELECT
+							<?php
+							$conexao = new CConexao();
+							$conn = $conexao->getConnection();
+
+							// Consulta para obter os dados da tabela de usuários
+							$sql = "SELECT
                 recomendacao.LivroRec,
                 recomendacao.idRec,
                 recomendacao.AutorRec,
@@ -180,67 +183,67 @@ include('../Controller/CConexao.php');
                 recomendacao.CamRec
             FROM recomendacao";
 
-    $result = $conn->query($sql);
+							$result = $conn->query($sql);
 
-    if ($result === false) {
-        // Use errorInfo para obter informações sobre o erro
-        $errorInfo = $conn->errorInfo();
-        echo "Erro na consulta SQL: " . $errorInfo[2];
-    } else {
-        if ($result->rowCount() > 0) {
-            $rec = $result->fetchAll(PDO::FETCH_ASSOC);
-            $RecPorPagina = 4;
-            $paginaAtual = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
-            $indiceInicial = ($paginaAtual - 1) * $RecPorPagina;
-            $RecExibidos = array_slice($rec, $indiceInicial, $RecPorPagina);
+							if ($result === false) {
+								// Use errorInfo para obter informações sobre o erro
+								$errorInfo = $conn->errorInfo();
+								echo "Erro na consulta SQL: " . $errorInfo[2];
+							} else {
+								if ($result->rowCount() > 0) {
+									$rec = $result->fetchAll(PDO::FETCH_ASSOC);
+									$RecPorPagina = 4;
+									$paginaAtual = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
+									$indiceInicial = ($paginaAtual - 1) * $RecPorPagina;
+									$RecExibidos = array_slice($rec, $indiceInicial, $RecPorPagina);
 
-            // Exibir a tabela de usuários
-            echo "<table>";
-            echo "<thead>";
-            echo "<tr>";
-            echo "<th><center>Livro</center></th>";
-            echo "<th><center>ID</center></th>";
-            echo "<th><center>Autor</center></th>";
-            echo "<th><center>Categoria</center></th>";
-            echo "<th><center>Imagem</center></th>";
-            echo "<th><center>Editar</center></th>";
-            echo "</tr>";
-            echo "</thead>";
-            echo "<tbody>";
+									// Exibir a tabela de usuários
+									echo "<table>";
+									echo "<thead>";
+									echo "<tr>";
+									echo "<th><center>Livro</center></th>";
+									echo "<th><center>ID</center></th>";
+									echo "<th><center>Autor</center></th>";
+									echo "<th><center>Categoria</center></th>";
+									echo "<th><center>Imagem</center></th>";
+									echo "<th><center>Editar</center></th>";
+									echo "</tr>";
+									echo "</thead>";
+									echo "<tbody>";
 
-            foreach ($RecExibidos as $row) {
-                echo "<tr>";
-                echo "<td><center>" . $row["LivroRec"] . "</center></td>";
-                echo "<td><center>" . $row["idRec"] . "</center></td>";
-                echo "<td><center>" . $row["AutorRec"] . "</center></td>";
-                echo "<td><center>" . $row["CatRec"] . "</center></td>"; 
-                echo "<td><center><img src='" . $row["CamRec"] . "' alt='Imagem do Livro' /></center></td>";
-				echo "<td><center><button class='edit-button' data-id='$row[idRec]'><i class='fas fa-pencil-alt'></i></button></center></td>";
-                echo "</tr>";
-            }
+									foreach ($RecExibidos as $row) {
+										echo "<tr>";
+										echo "<td><center>" . $row["LivroRec"] . "</center></td>";
+										echo "<td><center>" . $row["idRec"] . "</center></td>";
+										echo "<td><center>" . $row["AutorRec"] . "</center></td>";
+										echo "<td><center>" . $row["CatRec"] . "</center></td>";
+										echo "<td><center><img src='" . $row["CamRec"] . "' alt='Imagem do Livro' /></center></td>";
+										echo "<td><center><button class='edit-button' data-id='$row[idRec]'><i class='fas fa-pencil-alt'></i></button></center></td>";
+										echo "</tr>";
+									}
 
-            echo "</tbody>";
-            echo "</table>";
+									echo "</tbody>";
+									echo "</table>";
 
-            // Adiciona links de paginação
-            echo "<div class='pagination'>";
-            $totalRec = count($rec);
-            $totalPaginas = ceil($totalRec / $RecPorPagina);
-            for ($i = 1; $i <= $totalPaginas; $i++) {
-                $classeAtiva = ($i === $paginaAtual) ? "active" : "";
-                echo "<a class='page-link $classeAtiva' href='recomendacoes.php?pagina=$i'>$i</a>";
-            }
-            echo "</div>";
+									// Adiciona links de paginação
+									echo "<div class='pagination'>";
+									$totalRec = count($rec);
+									$totalPaginas = ceil($totalRec / $RecPorPagina);
+									for ($i = 1; $i <= $totalPaginas; $i++) {
+										$classeAtiva = ($i === $paginaAtual) ? "active" : "";
+										echo "<a class='page-link $classeAtiva' href='recomendacoes.php?pagina=$i'>$i</a>";
+									}
+									echo "</div>";
 
-            // Botão Fechar do popup fora da tabela
-            
-        } else {
-            echo "<p>Nenhum usuário encontrado.</p>";
-        }
-    }
+									// Botão Fechar do popup fora da tabela
 
-    $conn = null; // Fecha a conexão
-?>
+								} else {
+									echo "<p>Nenhum usuário encontrado.</p>";
+								}
+							}
+
+							$conn = null; // Fecha a conexão
+							?>
 					</div>
 
 				</div>
@@ -259,32 +262,32 @@ include('../Controller/CConexao.php');
 <script src="../JS/script.js"></script>
 <script src="../ArquivosExternos/Jquery.js"></script>
 <script>
-    $(document).ready(function() {
-        // Capturar clique no botão de edição
-        $('.edit-button').click(function() {
-            // Obter o ID do item a ser editado
-            var id = $(this).data('id');
+	$(document).ready(function() {
+		// Capturar clique no botão de edição
+		$('.edit-button').click(function() {
+			// Obter o ID do item a ser editado
+			var id = $(this).data('id');
 
-            // Encontrar os dados correspondentes na tabela e preencher o formulário
-            $('table tbody tr').each(function() {
-                var rowId = $(this).find('td:eq(1)').text(); // Considerando que o ID está na segunda coluna
-                if (rowId == id) {
-                    var livro = $(this).find('td:eq(0)').text();
-                    var autor = $(this).find('td:eq(2)').text();
-                    var categoria = $(this).find('td:eq(3)').text();
+			// Encontrar os dados correspondentes na tabela e preencher o formulário
+			$('table tbody tr').each(function() {
+				var rowId = $(this).find('td:eq(1)').text(); // Considerando que o ID está na segunda coluna
+				if (rowId == id) {
+					var livro = $(this).find('td:eq(0)').text();
+					var autor = $(this).find('td:eq(2)').text();
+					var categoria = $(this).find('td:eq(3)').text();
 
-                    // Preencher os campos do formulário com os dados obtidos
-                    $('#idRec').val(id);
-                    $('#LivroRec').val(livro);
-                    $('#AutorRec').val(autor);
-                    $('#CatRec').val(categoria);
-                    // Não está preenchendo o campo de imagem, pois é mais complexo
-                    // Pode exigir uma lógica diferente ou uma abordagem de armazenamento/manipulação diferente
-                    // ...
-                }
-            });
-        });
-    });
+					// Preencher os campos do formulário com os dados obtidos
+					$('#idRec').val(id);
+					$('#LivroRec').val(livro);
+					$('#AutorRec').val(autor);
+					$('#CatRec').val(categoria);
+					// Não está preenchendo o campo de imagem, pois é mais complexo
+					// Pode exigir uma lógica diferente ou uma abordagem de armazenamento/manipulação diferente
+					// ...
+				}
+			});
+		});
+	});
 </script>
 </body>
 
