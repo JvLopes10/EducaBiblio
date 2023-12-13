@@ -132,14 +132,14 @@ include('../Controller/CConexao.php');
 			<input type="checkbox" id="switch-mode" hidden>
 			<label for="switch-mode" class="switch-mode"></label>
 			<a href="#" class="profile">
-    <?php
-	require ('../Controller/Utils.php');
-	
-$conexao = new CConexao();
-$conn = $conexao->getConnection();
-    
-    ?>
-</a>
+				<?php
+				require('../Controller/Utils.php');
+
+				$conexao = new CConexao();
+				$conn = $conexao->getConnection();
+
+				?>
+			</a>
 		</nav>
 		</head>
 
@@ -211,11 +211,11 @@ $conn = $conexao->getConnection();
 
 						</div>
 						<script>
-				function abrirAluno() {
-					var urlDoPDF = "../pdf/alunoPdf.php";
-					window.open(urlDoPDF, '_blank');
-				}
-			</script>
+							function abrirAluno() {
+								var urlDoPDF = "../pdf/alunoPdf.php";
+								window.open(urlDoPDF, '_blank');
+							}
+						</script>
 						<table>
 
 							<?php
@@ -296,10 +296,10 @@ FROM prof";
 
 										echo "<td><center>";
 										if (array_key_exists('idAluno', $row)) {
-											echo "<button class='delete-button' data-id='" . $row["idAluno"] . "' onclick='handleDelete(" . $row["idAluno"] . ")'><i class='fas fa-trash-alt'></i></button>";
+											echo "<div class='popup' id='popup" . $row["idAluno"] . "' style='display: none;'><img src='../img/decisao.png' alt='Imagem com ponto de interrogação indicando dous caminhos a serem seguidos'><h2 class='title'>Aviso!</h2><p class='desc'>Deseja mesmo excluir?</p><button class='close-popup-button' type='submit' onclick='handlePopup(false)' aria-label='botão fechar'>Fechar</button><button class='close-popup-button' aria-label='botão excluir'>Excluir</button></div><button class='delete-button' data-id='" . $row["idAluno"] . "' onclick='handleDeleteWithPopup(" . $row["idAluno"] . ")'><i class='fas fa-trash-alt'></i></button>";
 										}
 										if (array_key_exists('idProf', $row)) {
-											echo "<button class='delete-button' data-id='" . $row["idProf"] . "' onclick='handleDelete(" . $row["idProf"] . ")'><i class='fas fa-trash-alt'></i></button>";
+											echo "<div class='popup' id='popup" . $row["idProf"] . "' style='display: none;'><img src='../img/decisao.png' alt='Imagem com ponto de interrogação indicando dous caminhos a serem seguidos'><h2 class='title'>Aviso!</h2> <p class='desc'>Deseja mesmo excluir?</p><button class='close-popup-button' type='submit' onclick='handlePopup(false)' aria-label='botão fechar'>Fechar</button><button class='close-popup-button' aria-label='botão excluir'>Excluir</button></div><button class='delete-button' data-id='" . $row["idProf"] . "' onclick='handleDeleteWithPopup(" . $row["idProf"] . ")'><i class='fas fa-trash-alt'></i></button>";
 										}
 										echo "</center></td>";
 
@@ -408,32 +408,32 @@ FROM prof";
 	});
 </script>
 <script>
-    $(document).ready(function() {
-        // Capturar clique no botão de exclusão
-        $('.delete-button').click(function() {
-            var id = $(this).data('id'); // Obter o ID do item a ser excluído
+	$(document).ready(function() {
+		// Capturar clique no botão de exclusão
+		$('.delete-button').click(function() {
+			var id = $(this).data('id'); // Obter o ID do item a ser excluído
 
-            handlePopup(true); // Mostrar o popup de confirmação
+			handlePopup(true); // Mostrar o popup de confirmação
 
-            // Preencher o link de exclusão com o ID correto
-            var linkExclusao = '../Controller/CExcluir_usuario.php?id=' + id;
-            $('#popup a').attr('href', linkExclusao);
-        });
+			// Preencher o link de exclusão com o ID correto
+			var linkExclusao = '../Controller/CExcluir_usuario.php?id=' + id;
+			$('#popup a').attr('href', linkExclusao);
+		});
 
-        // Aqui, pode adicionar funções para os botões de edição e histórico se desejado
+		// Aqui, pode adicionar funções para os botões de edição e histórico se desejado
 
-        // Exemplo de função para botão de edição
-        $('.edit-button').click(function() {
-            var id = $(this).data('id'); // Obter o ID do item a ser editado
-            // Adicionar lógica para ação de edição se necessário
-        });
+		// Exemplo de função para botão de edição
+		$('.edit-button').click(function() {
+			var id = $(this).data('id'); // Obter o ID do item a ser editado
+			// Adicionar lógica para ação de edição se necessário
+		});
 
-        // Exemplo de função para botão de histórico
-        $('.historico-button').click(function() {
-            var id = $(this).data('id'); // Obter o ID do item para visualizar o histórico
-            // Adicionar lógica para ação de histórico se necessário
-        });
-    });
+		// Exemplo de função para botão de histórico
+		$('.historico-button').click(function() {
+			var id = $(this).data('id'); // Obter o ID do item para visualizar o histórico
+			// Adicionar lógica para ação de histórico se necessário
+		});
+	});
 </script>
 
 

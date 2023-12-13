@@ -148,7 +148,9 @@ INSERT INTO `idioma` (`idIdioma`, `Idioma`) VALUES
 --
 
 DROP TABLE IF EXISTS `livro`;
-CREATE TABLE IF NOT EXISTS `livro` (
+-- Definições de esquema e tabelas...
+
+CREATE TABLE IF NOT EXISTS `biblioteca`.`livro` (
   `idLivro` int NOT NULL AUTO_INCREMENT,
   `NomeLivro` varchar(100) NOT NULL,
   `IBSMLivro` varchar(50) DEFAULT NULL,
@@ -159,18 +161,23 @@ CREATE TABLE IF NOT EXISTS `livro` (
   `Genero_idGenero` int NOT NULL,
   `Idioma_idIdioma` int NOT NULL,
   `FotoLivro` blob,
-  `EditoraLivro` varchar(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL,
+  `EditoraLivro` varchar(100) DEFAULT NULL,
   `EdicaoLivro` varchar(100) DEFAULT NULL,
   `CaminhoFotoLivro` varchar(255) DEFAULT NULL,
   `Quantidadelivros` int NOT NULL,
   `DidaticoLivro` varchar(10) DEFAULT NULL,
-  `autor_idAutor1` int NOT NULL,
   PRIMARY KEY (`idLivro`),
   KEY `fk_Livro_Altor_idx` (`autor_idAutor`),
   KEY `fk_Livro_Genero1_idx` (`Genero_idGenero`),
-  KEY `fk_Livro_Idioma1_idx` (`Idioma_idIdioma`),
-  KEY `fk_livro_autor1_idx` (`autor_idAutor1`)
+  KEY `fk_Livro_Idioma1_idx` (`Idioma_idIdioma`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+-- Restrições para tabelas `livro`
+--
+ALTER TABLE `livro`
+  ADD CONSTRAINT `fk_Livro_Genero1` FOREIGN KEY (`Genero_idGenero`) REFERENCES `genero` (`idGenero`),
+  ADD CONSTRAINT `fk_Livro_Idioma1` FOREIGN KEY (`Idioma_idIdioma`) REFERENCES `idioma` (`idIdioma`),
+  ADD CONSTRAINT `fk_Livro_Altor` FOREIGN KEY (`autor_idAutor`) REFERENCES `autor` (`idAutor`);
 
 -- --------------------------------------------------------
 

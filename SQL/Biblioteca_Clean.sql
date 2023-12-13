@@ -105,27 +105,25 @@ CREATE TABLE IF NOT EXISTS `Biblioteca`.`livro` (
   `CaminhoFotoLivro` VARCHAR(255) NULL DEFAULT NULL,
   `Quantidadelivros` INT NOT NULL,
   `DidaticoLivro` VARCHAR(10) NULL DEFAULT NULL,
-  `autor_idAutor1` INT NOT NULL,
   PRIMARY KEY (`idLivro`),
   INDEX `fk_Livro_Altor_idx` (`autor_idAutor` ASC) VISIBLE,
   INDEX `fk_Livro_Genero1_idx` (`Genero_idGenero` ASC) VISIBLE,
   INDEX `fk_Livro_Idioma1_idx` (`Idioma_idIdioma` ASC) VISIBLE,
-  INDEX `fk_livro_autor1_idx` (`autor_idAutor1` ASC) VISIBLE,
   CONSTRAINT `fk_Livro_Genero1`
     FOREIGN KEY (`Genero_idGenero`)
     REFERENCES `Biblioteca`.`genero` (`idGenero`),
   CONSTRAINT `fk_Livro_Idioma1`
     FOREIGN KEY (`Idioma_idIdioma`)
     REFERENCES `Biblioteca`.`idioma` (`idIdioma`),
-  CONSTRAINT `fk_livro_autor1`
-    FOREIGN KEY (`autor_idAutor1`)
+  CONSTRAINT `fk_Livro_Altor`
+    FOREIGN KEY (`autor_idAutor`)
     REFERENCES `Biblioteca`.`autor` (`idAutor`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON UPDATE NO ACTION
+)
 ENGINE = InnoDB
 AUTO_INCREMENT = 1
 DEFAULT CHARACTER SET = utf8mb3;
-
 
 -- -----------------------------------------------------
 -- Table `Biblioteca`.`prof`
