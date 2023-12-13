@@ -1,41 +1,47 @@
 <?php
+session_start();
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    require_once('../Controller/CConexao.php'); // Verifique o caminho correto do arquivo
+
     if (isset($_POST['action']) && $_POST['action'] === 'Cadastrar') {
-        include('../Controller/CCad_usu.php');
+        include('../Controller/CCad_usu.php'); // Verifique o caminho correto do arquivo
         $usuarioController = new UsuarioController();
         $usuarioController->salvarUsuario($_POST);
         header("Location: ../View/login.php");
+        exit();
     } elseif (isset($_POST['action']) && $_POST['action'] === 'Entrar') {
         // Obtenha os dados do formulário
         $username = $_POST['UserUsuario'];
         $password = $_POST['SenhaUsuario'];
 
-        // Inclua sua conexão com o banco de dados aqui
-        include('../Controller/CConexao.php');
         $conexaoObj = new CConexao();
         $conn = $conexaoObj->getConnection();
 
-        // Implemente a lógica de verificação das credenciais do usuário
-        if (verificarCredenciais($conn, $username, $password)) {
-            // Credenciais corretas, efetue o login
-            // Você pode definir uma variável de sessão ou outra lógica de autenticação aqui
-            // Em seguida, redirecione para a página de sucesso ou área restrita
+        if ($conn) {
+            if (verificarCredenciais($conn, $username, $password)) {
+                session_start();
+                $_SESSION['usuario_logado'] = true;
 
-            session_start();
-            $_SESSION['usuario_logado'] = true;
+                // Recupere o nome do usuário do banco de dados (substitua com sua consulta SQL)
+                $nomeDoUsuario = obterNomeDoUsuario($conn, $username);
+                $_SESSION['nomeDoUsuario'] = $nomeDoUsuario;
 
-            // Recupere o nome do usuário do banco de dados (substitua com sua consulta SQL)
-            $nomeDoUsuario = obterNomeDoUsuario($conn, $username);
-            $_SESSION['nomeDoUsuario'] = $nomeDoUsuario;
+                // Recupere o ID do usuário do banco de dados (substitua com sua consulta SQL)
+                $idUsuario = obterIdDoUsuario($conn, $username);
+                $_SESSION['id_usuario'] = $idUsuario;
 
-            header("Location: ../View/inicio.php");
-            exit();
+                header("Location: ../View/inicio.php");
+                exit();
+            } else {
+                $_SESSION['erro_login'] = "Nome de usuário ou senha incorretos.";
+                header("Location: ../View/login.php?erro=1");
+                exit();
+            }
         } else {
-            // Credenciais incorretas, exiba uma mensagem de erro
-            $_SESSION['erro_login'] = "Nome de usuário ou senha incorretos.";
-            header("Location: ../View/login.php?erro=1");
-            
-
+            echo "Não foi possível conectar ao banco de dados.";
+            // Você pode redirecionar para uma página de erro se preferir
+            exit();
         }
     }
 }
@@ -52,10 +58,8 @@ function verificarCredenciais($conn, $username, $password)
         $storedPassword = $stmt->fetch(PDO::FETCH_COLUMN);
 
         if ($storedPassword === $password) {
-            // Senha correta, autenticação bem-sucedida
             return true;
         } else {
-            // Credenciais incorretas
             return false;
         }
     } catch (PDOException $e) {
@@ -86,3 +90,26 @@ function obterNomeDoUsuario($conn, $username)
         return "";
     }
 }
+
+// Função para obter o ID do usuário a partir do banco de dados
+function obterIdDoUsuario($conn, $username)
+{
+    try {
+        $sql = "SELECT idUsuario FROM usuario WHERE UserUsuario = :username";
+        $stmt = $conn->prepare($sql);
+        $stmt->bindParam(':username', $username);
+        $stmt->execute();
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($user) {
+            return $user['idUsuario'];
+        } else {
+            return null; // Ou outra indicação de que o usuário não foi encontrado
+        }
+    } catch (PDOException $e) {
+        // Erro na conexão ou consulta SQL
+        echo "Erro: " . $e->getMessage();
+        return null; // Ou outra indicação de erro, se necessário
+    }
+}
+?>

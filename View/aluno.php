@@ -132,8 +132,14 @@ include('../Controller/CConexao.php');
 			<input type="checkbox" id="switch-mode" hidden>
 			<label for="switch-mode" class="switch-mode"></label>
 			<a href="#" class="profile">
-				<img src="../img/adm.png" alt="imagem de perfil do administrador">
-			</a>
+    <?php
+	require ('../Controller/Utils.php');
+	
+$conexao = new CConexao();
+$conn = $conexao->getConnection();
+    
+    ?>
+</a>
 		</nav>
 		</head>
 
@@ -270,49 +276,6 @@ FROM prof";
 									echo "</thead>";
 									echo "<tbody>";
 
-<<<<<<< HEAD
-			foreach ($UsuarioExibidos as $row) {
-				echo "<tr>";
-				echo "<td><center>" . $row["NomeAluno"] . "</center></td>";
-				echo "<td><center>" . $row["idAluno"] . "</center></td>";
-				echo "<td><center>" . $row["EmailAluno"] . "</center></td>";
-				echo "<td><center>" . ucfirst($row["tipo"]) . "</center></td>";
-				echo "<td><center>" . ($row["nomeTurma"] ? $row["AnoTurma"] . ' º ' . $row["nomeTurma"] : "Não se aplica") . "</center></td>";
-				
-				// Botões de edição, exclusão e histórico
-				echo "<td><center>";
-				if (array_key_exists('idAluno', $row)) {
-					echo "<button class='edit-button' data-id='" . $row["idAluno"] . "'><i class='fas fa-pencil-alt'></i></button>";
-				}
-				if (array_key_exists('idProf', $row)) {
-					echo "<button class='edit-button' data-id='" . $row["idProf"] . "'><i class='fas fa-pencil-alt'></i></button>";
-				}
-				echo "</center></td>";
-				
-				echo "<td><center>";
-				if (array_key_exists('idAluno', $row)) {
-					echo "<button class='delete-button' data-id='" . $row["idAluno"] . "' onclick=\"handlePopup(true, 'popup-" . $row["idAluno"] . "')\"><i class='fas fa-trash-alt'></i></button><div class='popup' id='popup-" . $row["idAluno"] . "' style='display: none;'><img src='../img/decisao.png' aria-label='popup decisão'><h2 class='title'>Aviso!</h2><p class='desc'>Deseja mesmo excluir?</p><button class='close-popup-button' onclick=\"handlePopup(false, 'popup-" . $row["idAluno"] . "')\">Fechar</button><a href='../Controller/CExcluir_usuario.php?id=" . $row["idAluno"] . "'><button class='close-popup-button'>Excluir</button></a></div>";
-				}
-				if (array_key_exists('idProf', $row)) {
-					echo "<button class='delete-button' data-id='" . $row["idProf"] . "' onclick=\"handlePopup(true, 'popup-" . $row["idProf"] . "')\"><i class='fas fa-trash-alt'></i></button><div class='popup' id='popup-" . $row["idProf"] . "' style='display: none;'><img src='../img/decisao.png' aria-label='popup decisão'><h2 class='title'>Aviso!</h2><p class='desc'>Deseja mesmo excluir?</p><button class='close-popup-button' onclick=\"handlePopup(false, 'popup-" . $row["idProf"] . "')\">Fechar</button><a href='../Controller/CExcluir_usuario.php?id=" . $row["idProf"] . "'><button class='close-popup-button'>Excluir</button></a></div>";
-				}
-				echo "</center></td>";
-				
-				echo "<td><center>";
-				if (array_key_exists('idAluno', $row)) {
-					echo "<button class='historico-button' data-id='" . $row["idAluno"] . "'><i class='fas fa-history'></i></button>";
-				}
-				if (array_key_exists('idProf', $row)) {
-					echo "<button class='historico-button' data-id='" . $row["idProf"] . "'><i class='fas fa-history'></i></button>";
-				}
-				echo "</center></td>";
-				
-				echo "</tr>";
-			}
-						
-			
-			
-=======
 									foreach ($UsuarioExibidos as $row) {
 										echo "<tr>";
 										echo "<td><center>" . $row["NomeAluno"] . "</center></td>";
@@ -320,7 +283,6 @@ FROM prof";
 										echo "<td><center>" . $row["EmailAluno"] . "</center></td>";
 										echo "<td><center>" . ucfirst($row["tipo"]) . "</center></td>";
 										echo "<td><center>" . ($row["nomeTurma"] ? $row["AnoTurma"] . ' º ' . $row["nomeTurma"] : "Não se aplica") . "</center></td>";
->>>>>>> 62659d8390c8c9eb615ac7b7a6154499a429285d
 
 										// Botões de edição, exclusão e histórico
 										echo "<td><center>";

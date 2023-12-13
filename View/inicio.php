@@ -3,6 +3,7 @@ include('../Controller/CConexao.php');
 include('../Controller/CLog_usu.php');
 require '../Controller/CGet_rec.php';
 
+
 $conexao = new CConexao();
 $conn = $conexao->getConnection();
 $getlivro = new GetLivro($conn);
@@ -50,6 +51,10 @@ include('../Controller/CPendencias.php'); // Inclua o arquivo CPendencias.php aq
 		background-color: #333;
 		color: #fff;
 	}
+	.no-click {
+    pointer-events: none;
+}
+
 </style>
 
 <body>
@@ -136,23 +141,16 @@ include('../Controller/CPendencias.php'); // Inclua o arquivo CPendencias.php aq
 			<input type="checkbox" id="switch-mode" hidden>
 			<label for="switch-mode" class="switch-mode"></label>
 			<a href="#" class="profile">
-				<?php
-				// Inicializa a variável do caminho da imagem do usuário
-				$caminhoImagemUsuario = isset($_SESSION['caminhoImagemUsuario']) ? $_SESSION['caminhoImagemUsuario'] : '';
-
-				if (isset($_SESSION['usuario_logado']) && $_SESSION['usuario_logado'] === true && !empty($caminhoImagemUsuario)) {
-					// Se o usuário está logado e o caminho da imagem do usuário não está vazio, exibe a imagem do usuário
-					echo '<img src="' . $caminhoImagemUsuario . '" alt="Imagem do usuário">';
-				} else {
-					// Se o usuário não está logado ou o caminho da imagem do usuário está vazio, exibe a imagem padrão
-					echo '<img src="../img/adm.png" alt="Imagem Padrão">';
-				}
-				?>
-
-			</a>
+    <?php
+	require ('../Controller/Utils.php');
+	
+$conexao = new CConexao();
+$conn = $conexao->getConnection();
+    
+    ?>
+</a>
 
 
-			</a>
 		</nav>
 		<main>
 			<div class="head-title">
@@ -263,27 +261,28 @@ include('../Controller/CPendencias.php'); // Inclua o arquivo CPendencias.php aq
 				<h1 class="heading">Recomendações <span>semanais</span> </h1>
 				<div class="container-card">
 					<ul>
-						<?php
-						// Loop para exibir as recomendações da tabela 'recomendacao'
-						foreach ($livrosRecomendados as $livroRecomendado) {
-							echo '<div class="card">
-                        				<li>
-                            				<a href="' . $livroRecomendado["CamRec"] . '">
-													<img src="' . $livroRecomendado["CamRec"] . '" alt="">
-												<div class="card-content">
-													<div class="nome">
-														<section class="container-livros">
-																<h3 class="heading">' . $livroRecomendado["LivroRec"] . '</h3>
-																<p><b>Autor: </b>' . $livroRecomendado["AutorRec"] . '</p>
-																<p><b>Categoria: </b>' . $livroRecomendado["CatRec"] . '</p>
-														</section>
-													</div>
-												</div>
-											</a>
-										</li>
-                  				  </div>';
-						}
-						?>
+					<?php
+// Loop para exibir as recomendações da tabela 'recomendacao'
+foreach ($livrosRecomendados as $livroRecomendado) {
+    echo '<div class="card">
+        <li>
+            <a class="no-click" href="' . $livroRecomendado["CamRec"] . '">
+                <img src="' . $livroRecomendado["CamRec"] . '" alt="">
+                <div class="card-content">
+                    <div class="nome">
+                        <section class="container-livros">
+                            <h3 class="heading">' . $livroRecomendado["LivroRec"] . '</h3>
+                            <p><b>Autor: </b>' . $livroRecomendado["AutorRec"] . '</p>
+                            <p><b>Categoria: </b>' . $livroRecomendado["CatRec"] . '</p>
+                        </section>
+                    </div>
+                </div>
+            </a>
+        </li>
+    </div>';
+}
+?>
+
 					</ul>
 				</div>
 			</section>
@@ -397,29 +396,16 @@ include('../Controller/CPendencias.php'); // Inclua o arquivo CPendencias.php aq
 									$totalRegistros = $resultadoTotal->fetch(PDO::FETCH_ASSOC)['total'];
 									$totalPaginas = ceil($totalRegistros / $registrosPorPagina);
 
-<<<<<<< HEAD
-        echo "<div class='pagination'>";
-        for ($i = 1; $i <= $totalPaginas; $i++) {
-            $classeAtiva = ($i == $paginaAtual) ? "active" : "";
-            echo "<a class='page-link $classeAtiva' href='inicio.php?pagina=$i'>$i</a>";
-        }
-        echo "</div>";
-    } else {
-        echo "<p>Nenhum empréstimo encontrado.</p>";
-    }
-}
-=======
 									echo "<div class='pagination'>";
 									for ($i = 1; $i <= $totalPaginas; $i++) {
 										$classeAtiva = ($i == $paginaAtual) ? "active" : "";
-										echo "<a class='page-link $classeAtiva' href='pagina.php?pagina=$i'>$i</a>";
+										echo "<a class='page-link $classeAtiva' href='inicio.php?pagina=$i'>$i</a>";
 									}
 									echo "</div>";
 								} else {
 									echo "<p>Nenhum empréstimo encontrado.</p>";
 								}
 							}
->>>>>>> 62659d8390c8c9eb615ac7b7a6154499a429285d
 
 							$conn = null; // Fecha a conexão
 							?>
