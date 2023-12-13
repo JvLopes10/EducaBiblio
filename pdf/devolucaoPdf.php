@@ -2,13 +2,12 @@
 
 include 'config.php';
 
-$sql = "SELECT
-usuario.NomeUsuario,
-usuario.idUsuario,
-usuario.UserUsuario,
-usuario.EmailUsuario,
-usuario.camfoto
-FROM usuario";
+$sql = "SELECT emprestimo.idEmprestimo, aluno.NomeAluno AS Leitor, turma.NomeTurma AS Turma, livro.NomeLivro AS Livro, emprestimo.StatusEmprestimo AS Estado, devolucao.DataDevolucao
+FROM emprestimo
+INNER JOIN aluno ON emprestimo.aluno_idAluno = aluno.idAluno
+INNER JOIN livro ON emprestimo.livro_idLivro = livro.idLivro
+INNER JOIN turma ON aluno.Turma_idTurma = turma.IdTurma
+LEFT JOIN devolucao ON emprestimo.idEmprestimo = devolucao.emprestimo_idEmprestimo";
 
 $res = $conn->query($sql);
 
@@ -51,10 +50,10 @@ if ($res->num_rows > 0) {
                 font-weight: bolder;
             }
             tbody tr:nth-child(even) {
-                background-color: #f2f2f2;
+                background-color: #f2f2f2; /* Light Gray */
             }
             tbody tr:nth-child(odd) {
-                background-color: #fff;
+                background-color: #fff; /* White */
             }
             .footer {
                 position: fixed;
@@ -70,28 +69,30 @@ if ($res->num_rows > 0) {
     </head>
     <body>
         <div id='library-info'>
-            <h1>Tabela de Livros</h1>
+            <h1>Tabela de Devolução</h1>
             <p>
-                Bem-vindo ao EducaBiblio, o seu sistema de biblioteca dedicado à promoção da educação e leitura! Abaixo, apresentamos os registros dos livros cadastrados.
+                Bem-vindo ao EducaBiblio, o seu sistema de biblioteca dedicado à promoção da educação e leitura! Abaixo, apresentamos os registros de devoluções realizadas.
             </p>
         </div>
         <table>
             <thead>
                 <tr>
                 <th>ID</th>
-                <th>Nome</th>
-                <th>Usuário</th>
-                <th>E-mail</th>
+                <th>Livro</th>
+                <th>Leitor</th>
+                <th>Turma</th>
+                <th>Data de Devolução</th>
                 </tr>
             </thead>
             <tbody>";
 
     while ($row = $res->fetch_object()) {
         $html .= "<tr>";
-        $html .= "<td>" . $row->idUsuario . "</td>";
-        $html .= "<td>" . $row->NomeUsuario . "</td>";
-        $html .= "<td>" . $row->UserUsuario . "</td>";
-        $html .= "<td>" . $row->EmailUsuario . "</td>";
+        $html .= "<td>" . $row->idEmprestimo . "</td>";
+        $html .= "<td>" . $row->Livro . "</td>";
+        $html .= "<td>" . $row->Leitor . "</td>";
+        $html .= "<td>" . $row->Turma. "</td>";
+        $html .= "<td>" . $row->DataDevolucao . "</td>";
 
         $html .= "</tr>";
     }
@@ -121,5 +122,6 @@ $dompdf->setPaper('A4', 'portrait');
 
 $dompdf->render();
 
-$dompdf->stream("Tabela de usuários", array("Attachment" => false));
+$dompdf->stream("Tabela de devolução", array("Attachment" => false));
+
 ?>

@@ -177,8 +177,15 @@ $conn = $conexao->getConnection();
 						<div class="head">
 							<h3>Devolução de livros</h3>
 							<input type="text" id="searchInput" class="searchInput" placeholder="Pesquisar...">
-							<button class="pdf-button">
+							<button class="pdf-button" id="pdf-button" aria-label="botão pdf" onclick="abrirAluno()">
 								<i class="fas fa-file-pdf"></i></button>
+
+                                <script>
+				function abrirAluno() {
+					var urlDoPDF = "../pdf/devolucaoPdf.php";
+					window.open(urlDoPDF, '_blank');
+				}
+			</script>
 
 						</div>
 						<table>
