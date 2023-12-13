@@ -30,6 +30,7 @@ $res = $conn->query($sql);
 if ($res->num_rows > 0) {
     $html = "<html>
     <head>
+    <title>EducaBiblio</title>
         <style>
             body {
                 font-family: 'Arial', sans-serif;
@@ -38,8 +39,10 @@ if ($res->num_rows > 0) {
             }
             h1 {
                 text-align: center;
-                color: #333;
+                color: #ffffff;
                 margin-bottom: 20px;
+                background-color: rgba(76,175,80); 
+                padding: 10px; 
             }
             #library-info {
                 text-align: center;
@@ -76,6 +79,7 @@ if ($res->num_rows > 0) {
                 background-color: #4CAF50;
                 color: white;
                 padding: 10px;
+                font-weight: bold;
             }
         </style>
     </head>
@@ -138,5 +142,5 @@ $dompdf->setPaper('A4', 'portrait');
 
 $dompdf->render();
 
-$dompdf->stream("Tabelas de leitores", array("Attachment" => false));
+$dompdf->stream("Tabela de livros", array("Attachment" => false));
 ?>

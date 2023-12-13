@@ -3,12 +3,23 @@
 include 'config.php';
 
 $sql = "SELECT
-usuario.NomeUsuario,
-usuario.idUsuario,
-usuario.UserUsuario,
-usuario.EmailUsuario,
-usuario.camfoto
-FROM usuario";
+            livro.NomeLivro AS TituloLivro,
+            genero.NomeGenero,
+            emprestimo.idEmprestimo,
+            turma.NomeTurma,
+            aluno.NomeAluno,
+            emprestimo.DataEmprestimo,
+            devolucao.DataDevolucao,
+            emprestimo.Quantidade_emp,
+            usuario.UserUsuario,
+            usuario.EmailUsuario
+        FROM emprestimo
+        INNER JOIN livro ON emprestimo.livro_idLivro = livro.idLivro
+        INNER JOIN genero ON livro.Genero_idGenero = genero.idGenero
+        INNER JOIN aluno ON emprestimo.aluno_idAluno = aluno.idAluno
+        INNER JOIN turma ON aluno.Turma_idTurma = turma.IdTurma
+        INNER JOIN usuario ON emprestimo.usuario_idUsuario = usuario.idUsuario
+        LEFT JOIN devolucao ON emprestimo.idEmprestimo = devolucao.emprestimo_idEmprestimo";
 
 $res = $conn->query($sql);
 
@@ -51,10 +62,10 @@ if ($res->num_rows > 0) {
                 font-weight: bolder;
             }
             tbody tr:nth-child(even) {
-                background-color: #f2f2f2;
+                background-color: #f2f2f2; /* Light Gray */
             }
             tbody tr:nth-child(odd) {
-                background-color: #fff;
+                background-color: #fff; /* White */
             }
             .footer {
                 position: fixed;
@@ -70,28 +81,34 @@ if ($res->num_rows > 0) {
     </head>
     <body>
         <div id='library-info'>
-            <h1>Tabela de Livros</h1>
+            <h1>Tabela de Empréstimos</h1>
             <p>
-                Bem-vindo ao EducaBiblio, o seu sistema de biblioteca dedicado à promoção da educação e leitura! Abaixo, apresentamos os registros dos livros cadastrados.
+                Bem-vindo ao EducaBiblio, o seu sistema de biblioteca dedicado à promoção da educação e leitura! Abaixo, apresentamos os registros dos empréstimos realizados.
             </p>
         </div>
         <table>
             <thead>
                 <tr>
                 <th>ID</th>
-                <th>Nome</th>
+                <th>Livro</th>
+                <th>Quantidade</th>
+                <th>Aluno</th>
+                <th>Turma</th>
+                <th>Data do empréstimo</th>
                 <th>Usuário</th>
-                <th>E-mail</th>
                 </tr>
             </thead>
             <tbody>";
 
     while ($row = $res->fetch_object()) {
         $html .= "<tr>";
-        $html .= "<td>" . $row->idUsuario . "</td>";
-        $html .= "<td>" . $row->NomeUsuario . "</td>";
+        $html .= "<td>" . $row->idEmprestimo . "</td>";
+        $html .= "<td>" . $row->TituloLivro . "</td>";
+        $html .= "<td>" . $row->Quantidade_emp . "</td>";
+        $html .= "<td>" . $row->NomeAluno . "</td>";
+        $html .= "<td>" . $row->NomeTurma . "</td>";
+        $html .= "<td>" . $row->DataEmprestimo . "</td>";
         $html .= "<td>" . $row->UserUsuario . "</td>";
-        $html .= "<td>" . $row->EmailUsuario . "</td>";
 
         $html .= "</tr>";
     }
@@ -121,5 +138,5 @@ $dompdf->setPaper('A4', 'portrait');
 
 $dompdf->render();
 
-$dompdf->stream("Tabela de usuários", array("Attachment" => false));
+$dompdf->stream("Tabela de empréstimo", array("Attachment" => false));
 ?>

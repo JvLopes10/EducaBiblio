@@ -172,7 +172,7 @@ $conn = $conexao->getConnection();
 				<div class="table-data">
 					<div class="order">
 						<div class="head">
-							<h3><br>Tabela de recomendações<br></h3>
+							<h3><br>Tabela de recomendações<br> <br></h3>
 						</div>
 						<table>
 
