@@ -2,11 +2,14 @@
 include('../Controller/CConexao.php');
 include('../Controller/CLog_usu.php');
 require '../Controller/CGet_rec.php';
+
 $conexao = new CConexao();
 $conn = $conexao->getConnection();
 $getlivro = new GetLivro($conn);
 $livrosRecomendados = $getlivro->obterLivrosRecomendados();
+include('../Controller/CPendencias.php'); // Inclua o arquivo CPendencias.php aqui
 ?>
+
 
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -394,6 +397,18 @@ $livrosRecomendados = $getlivro->obterLivrosRecomendados();
 									$totalRegistros = $resultadoTotal->fetch(PDO::FETCH_ASSOC)['total'];
 									$totalPaginas = ceil($totalRegistros / $registrosPorPagina);
 
+<<<<<<< HEAD
+        echo "<div class='pagination'>";
+        for ($i = 1; $i <= $totalPaginas; $i++) {
+            $classeAtiva = ($i == $paginaAtual) ? "active" : "";
+            echo "<a class='page-link $classeAtiva' href='inicio.php?pagina=$i'>$i</a>";
+        }
+        echo "</div>";
+    } else {
+        echo "<p>Nenhum empréstimo encontrado.</p>";
+    }
+}
+=======
 									echo "<div class='pagination'>";
 									for ($i = 1; $i <= $totalPaginas; $i++) {
 										$classeAtiva = ($i == $paginaAtual) ? "active" : "";
@@ -404,6 +419,7 @@ $livrosRecomendados = $getlivro->obterLivrosRecomendados();
 									echo "<p>Nenhum empréstimo encontrado.</p>";
 								}
 							}
+>>>>>>> 62659d8390c8c9eb615ac7b7a6154499a429285d
 
 							$conn = null; // Fecha a conexão
 							?>
