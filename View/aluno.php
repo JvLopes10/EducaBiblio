@@ -132,8 +132,14 @@ include('../Controller/CConexao.php');
 			<input type="checkbox" id="switch-mode" hidden>
 			<label for="switch-mode" class="switch-mode"></label>
 			<a href="#" class="profile">
-				<img src="../img/adm.png" alt="imagem de perfil do administrador">
-			</a>
+    <?php
+	require ('../Controller/Utils.php');
+	
+$conexao = new CConexao();
+$conn = $conexao->getConnection();
+    
+    ?>
+</a>
 		</nav>
 		</head>
 
