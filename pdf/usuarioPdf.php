@@ -1,4 +1,5 @@
 <?php
+
 include 'config.php';
 
 $sql = "SELECT
@@ -16,12 +17,14 @@ if ($res->num_rows > 0) {
     <head>
         <style>
             body {
-                font-family: 'Arial';
+                font-family: 'Arial', sans-serif;
+                margin: 0;
+                padding: 0;
             }
             h1 {
-                font-family: 'Arial';
                 text-align: center;
                 color: #333;
+                margin-bottom: 20px;
             }
             #library-info {
                 text-align: center;
@@ -31,8 +34,8 @@ if ($res->num_rows > 0) {
                 border-collapse: collapse;
                 width: 100%;
                 margin-top: 20px;
-                background-color: #fff; /* White table background */
-                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Box shadow for a subtle effect */
+                background-color: #fff;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             }
             th, td {
                 border: 1px solid #333;
@@ -40,31 +43,41 @@ if ($res->num_rows > 0) {
                 text-align: center;
             }
             th {
-                background-color: #4CAF50; /* Green header background */
+                background-color: #4CAF50;
                 color: white;
                 font-weight: bolder;
             }
-            #logo {
-                max-width: 100px;
-                margin-right: 20px;
+            tbody tr:nth-child(even) {
+                background-color: #f2f2f2; /* Light Gray */
+            }
+            tbody tr:nth-child(odd) {
+                background-color: #fff; /* White */
+            }
+            .footer {
+                position: fixed;
+                bottom: 0;
+                width: 100%;
+                text-align: center;
+                background-color: #4CAF50;
+                color: white;
+                padding: 10px;
             }
         </style>
     </head>
     <body>
         <div id='library-info'>
-            <img id='logo' src='logoCeara.png'>
+            <h1>Tabela de Livros</h1>
             <p>
-            Bem-vindo ao EducaBiblio, o seu sistema de biblioteca dedicado à promoção da educação e leitura! Abaixo, apresentamos os registros dos nossos usuários cadastrados.
+                Bem-vindo ao EducaBiblio, o seu sistema de biblioteca dedicado à promoção da educação e leitura! Abaixo, apresentamos os registros dos livros cadastrados.
             </p>
         </div>
-        <h1>Tabela de usuários</h1>
         <table>
             <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>Nome</th>
-                    <th>Usuário</th>
-                    <th>E-mail</th>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Usuário</th>
+                <th>E-mail</th>
                 </tr>
             </thead>
             <tbody>";
@@ -75,11 +88,15 @@ if ($res->num_rows > 0) {
         $html .= "<td>" . $row->NomeUsuario . "</td>";
         $html .= "<td>" . $row->UserUsuario . "</td>";
         $html .= "<td>" . $row->EmailUsuario . "</td>";
+
         $html .= "</tr>";
     }
 
     $html .= "</tbody>
         </table>
+        <div class='footer'>
+            Governo do Ceará - Educação e Leitura
+        </div>
     </body>
     </html>";
 } else {

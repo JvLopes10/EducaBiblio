@@ -397,18 +397,6 @@ include('../Controller/CPendencias.php'); // Inclua o arquivo CPendencias.php aq
 									$totalRegistros = $resultadoTotal->fetch(PDO::FETCH_ASSOC)['total'];
 									$totalPaginas = ceil($totalRegistros / $registrosPorPagina);
 
-<<<<<<< HEAD
-        echo "<div class='pagination'>";
-        for ($i = 1; $i <= $totalPaginas; $i++) {
-            $classeAtiva = ($i == $paginaAtual) ? "active" : "";
-            echo "<a class='page-link $classeAtiva' href='inicio.php?pagina=$i'>$i</a>";
-        }
-        echo "</div>";
-    } else {
-        echo "<p>Nenhum empréstimo encontrado.</p>";
-    }
-}
-=======
 									echo "<div class='pagination'>";
 									for ($i = 1; $i <= $totalPaginas; $i++) {
 										$classeAtiva = ($i == $paginaAtual) ? "active" : "";
@@ -419,7 +407,6 @@ include('../Controller/CPendencias.php'); // Inclua o arquivo CPendencias.php aq
 									echo "<p>Nenhum empréstimo encontrado.</p>";
 								}
 							}
->>>>>>> 62659d8390c8c9eb615ac7b7a6154499a429285d
 
 							$conn = null; // Fecha a conexão
 							?>
