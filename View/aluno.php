@@ -212,7 +212,7 @@ $conn = $conexao->getConnection();
 						</div>
 						<script>
 				function abrirAluno() {
-					var urlDoPDF = "../bancoTeste/teste.php";
+					var urlDoPDF = "../pdf/alunoPdf.php";
 					window.open(urlDoPDF, '_blank');
 				}
 			</script>
