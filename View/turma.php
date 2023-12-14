@@ -266,7 +266,7 @@ $conn = $conexao->getConnection();
 									// Botão Fechar do popup fora da tabela
 
 								} else {
-									echo "<p></p>";
+									echo "<p><center>Nenhuma turma encontrada.</center></p>";
 								}
 							}
 

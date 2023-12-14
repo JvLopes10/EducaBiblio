@@ -310,7 +310,7 @@ $conn = $conexao->getConnection();
 										echo "</tbody>";
 										echo "</table>";
 									} else {
-										echo "<p>Nenhum empréstimo encontrado.</p>";
+										echo "<p><center>Nenhum empréstimo encontrado.</center></p>";
 									}
 								}
 

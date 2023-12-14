@@ -105,7 +105,7 @@ if ($res->num_rows > 0) {
     </body>
     </html>";
 } else {
-    $html = 'Não há dados a serem exibidos';
+    $html = 'Não há dados a serem exibidos.';
 }
 
 use Dompdf\Dompdf;

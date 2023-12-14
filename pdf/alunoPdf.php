@@ -93,6 +93,7 @@ if ($res->num_rows > 0) {
                 <th>ID</th>
                 <th>Nome</th>
                 <th>E-mail</th>
+                <th>Tipo</th>
                 <th>Série</th>
                 <th>Turma</th>
                 </tr>
@@ -104,8 +105,10 @@ if ($res->num_rows > 0) {
         $html .= "<td>" . $row->idAluno . "</td>";
         $html .= "<td>" . $row->NomeAluno . "</td>";
         $html .= "<td>" . $row->EmailAluno . "</td>";
-        $html .= "<td>" . $row->AnoTurma . 'º ' . "</td>";
+        $html .= "<td>" . $row->tipo . "</td>";
+        $html .= "<td>" . $row->AnoTurma . "</td>";
         $html .= "<td>" . $row->nomeTurma . "</td>";
+
 
         $html .= "</tr>";
     }
@@ -118,7 +121,7 @@ if ($res->num_rows > 0) {
     </body>
     </html>";
 } else {
-    $html = 'Não há dados a serem exibidos';
+    $html = 'Não há dados a serem exibidos.';
 }
 
 use Dompdf\Dompdf;

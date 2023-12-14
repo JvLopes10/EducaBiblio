@@ -277,7 +277,7 @@ $conn = $conexao->getConnection();
 									// Botão Fechar do popup fora da tabela
 
 								} else {
-									echo "<p>Nenhum usuário encontrado.</p>";
+									echo "<p><center>enhum usuário encontrado.</center></p>";
 								}
 							}
 
