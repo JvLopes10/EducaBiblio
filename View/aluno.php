@@ -306,7 +306,11 @@ include('../Controller/CConexao.php');
 
 										echo "<td><center>";
 										if (array_key_exists('idAluno', $row)) {
-											echo "<button class='historico-button' onclick='abrirAluno()' data-id='" . $row["idAluno"] . "'><i class='fas fa-history'></i></button>";
+											echo "<button class='historico-button' data-id='" . $row["idAluno"] . "'>"
+												 . "<a href='../pdf/registrosAluPdf.php?idAluno=" . $row["idAluno"] . "'>"
+												 . "<i class='fas fa-history'></i></a></button>";
+										}
+										
 										}
 										if (array_key_exists('idProf', $row)) {
 											echo "<button class='historico-button' data-id='" . $row["idProf"] . "'><i class='fas fa-history'></i></button>";
@@ -334,9 +338,7 @@ include('../Controller/CConexao.php');
 									echo "</div>";
 
 									// Botão Fechar do popup fora da tabela
-								} else {
-									echo "<p><center>Nenhum usuário encontrado.</center></p>";
-								}
+								
 							}
 
 							$conn = null; // Fecha a conexão
