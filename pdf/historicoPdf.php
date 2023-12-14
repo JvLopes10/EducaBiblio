@@ -9,7 +9,7 @@ $sql = "SELECT
             IFNULL(DATE_FORMAT(devolucao.DataDevolucao, '%d/%m/%Y'), '--/--/----') AS DataDevolucaoFormatada,
             IFNULL(DATE_FORMAT(devolucao.DataDevolvida, '%d/%m/%Y'), '--/--/----') AS DataDevolvidaFormatada,
             CASE
-                WHEN emprestimo.StatusEmprestimo = 0 THEN 'Dentro do prazo'
+                WHEN emprestimo.StatusEmprestimo = 0 THEN 'A prazo'
                 WHEN emprestimo.StatusEmprestimo = 1 THEN 'Pendente'
                 WHEN emprestimo.StatusEmprestimo = 2 THEN 'Devolvido'
                 ELSE 'Status não definido'
@@ -134,4 +134,3 @@ $dompdf->setPaper('A4', 'portrait');
 $dompdf->render();
 
 $dompdf->stream("Histórico", array("Attachment" => false));
-?>

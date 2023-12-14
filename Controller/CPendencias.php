@@ -14,7 +14,7 @@ try {
                 FROM devolucao d
                 INNER JOIN emprestimo e ON d.emprestimo_idEmprestimo = e.idEmprestimo";
         $stmt = $conn->prepare($sql);
-        
+
         if ($stmt) {
             $stmt->execute();
             $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -38,7 +38,7 @@ try {
                     }
                 }
             }
-         //   echo "Status de empréstimo atualizado com sucesso!";
+            //   echo "Status de empréstimo atualizado com sucesso!";
         } else {
             echo "Erro na execução da consulta.";
         }
@@ -48,4 +48,3 @@ try {
 } catch (PDOException $e) {
     echo "Erro: " . $e->getMessage();
 }
-?>

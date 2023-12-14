@@ -1,7 +1,8 @@
 <?php
 require_once('../Controller/CConexao.php');
 
-function getTurmasFromDB() {
+function getTurmasFromDB()
+{
     $conexao = new CConexao();
     $conn = $conexao->getConnection();
 
@@ -31,4 +32,3 @@ function getTurmasFromDB() {
 
     return $turmas;
 }
-?>

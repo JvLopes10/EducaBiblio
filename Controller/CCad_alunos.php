@@ -1,8 +1,10 @@
 <?php
 include('../Controller/CConexao.php');
 
-class CCad_aluno {
-    public function cadastrarAluno($nome, $email, $idTurma) {
+class CCad_aluno
+{
+    public function cadastrarAluno($nome, $email, $idTurma)
+    {
         // Conecte-se ao banco de dados
         $conexao = new CConexao();
         $conn = $conexao->getConnection();
@@ -33,5 +35,3 @@ class CCad_aluno {
         }
     }
 }
-
-?>

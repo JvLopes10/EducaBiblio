@@ -139,4 +139,3 @@ $dompdf->setPaper('A4', 'portrait');
 $dompdf->render();
 
 $dompdf->stream("Tabela de empréstimo", array("Attachment" => false));
-?>

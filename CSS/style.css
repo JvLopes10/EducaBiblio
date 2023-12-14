@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Josefin+Slab:ital,wght@0,300;0,400;0,600;1,300&family=Mulish:ital,wght@1,200;1,300;1,800&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Josefin+Slab:ital,wght@0,300;0,400;0,600;1,300&family=Mulish:ital,wght@1,200;1,300;1,800&display=swap");
 * {
     margin: 0;
     padding: 0;
@@ -14,27 +14,27 @@ li {
 }
 
 :root {
-    --poppins: 'Poppins', sans-serif;
-    --lato: 'Lato', sans-serif;
-    --light: #F9F9F9;
-    --verdePrincipal: #32CD32;
+    --poppins: "Poppins", sans-serif;
+    --lato: "Lato", sans-serif;
+    --light: #f9f9f9;
+    --verdePrincipal: #32cd32;
     --azulClaro: #e0fdcf;
     --cinzinha: #eee;
-    --cinzaIntermediário: #AAAAAA;
+    --cinzaIntermediário: #aaaaaa;
     --cinzaEscuro: #494949;
-    --vermelho: #DB504A;
-    --amarelo: #FFCE26;
-    --amareloClaro: #FFF2C6;
-    --laranja: #FD7238;
-    --laranjaClaro: #FFE0D3;
-    --bordinha: .1rem solid rgba(0, 0, 0, .2);
+    --vermelho: #db504a;
+    --amarelo: #ffce26;
+    --amareloClaro: #fff2c6;
+    --laranja: #fd7238;
+    --laranjaClaro: #ffe0d3;
+    --bordinha: 0.1rem solid rgba(0, 0, 0, 0.2);
     --cinzaClaro: #888;
     --brancoFundo: #eee;
     --preto: #2c3e50;
     --placeholder: #494949;
-    --nãoEditável: #E0E0E0;
+    --nãoEditável: #e0e0e0;
     --pop-up: rgba(105, 105, 105, 0.4);
-    --rosa: #F89B9B;
+    --rosa: #f89b9b;
 }
 
 html {
@@ -42,7 +42,7 @@ html {
 }
 
 *::-webkit-scrollbar {
-    height: .5rem;
+    height: 0.5rem;
     width: 0.5rem;
 }
 
@@ -55,15 +55,15 @@ html {
 }
 
 body.dark {
-    --light: #0C0C1E;
+    --light: #0c0c1e;
     --cinzinha: #060714;
-    --cinzaEscuro: #FBFBFB;
+    --cinzaEscuro: #fbfbfb;
     --cinzaClaro: #aaa;
     --brancoFundo: rgba(170, 170, 170, 0.1);
     --preto: #fff;
-    --bordinha: .1rem solid rgba(255, 255, 255, .2);
-    --placeholder: #FBFBFB;
-    --ids: #AAAAAA1A;
+    --bordinha: 0.1rem solid rgba(255, 255, 255, 0.2);
+    --placeholder: #fbfbfb;
+    --ids: #aaaaaa1a;
     --nãoEditável: rgba(170, 170, 170, 0.3);
 }
 
@@ -102,8 +102,7 @@ section.container-livros {
     font-weight: 600;
     font-size: 30px;
     color: var(--cinzaEscuro);
-    font-family: 'Poppins', sans-serif;
-    ;
+    font-family: "Poppins", sans-serif;
 }
 
 .heading span {
@@ -113,10 +112,10 @@ section.container-livros {
 .icons div {
     font-size: 20px;
     color: var(--cinzaEscuro);
-    border-radius: .5rem;
+    border-radius: 0.5rem;
     cursor: pointer;
     text-align: center;
-    margin-left: .7rem;
+    margin-left: 0.7rem;
 }
 
 .fas.fa-bars {
@@ -255,7 +254,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     background: var(--light);
     z-index: 2000;
     font-family: var(--lato);
-    transition: .3s ease;
+    transition: 0.3s ease;
     overflow-x: hidden;
     scrollbar-width: none;
 }
@@ -309,7 +308,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 
 #sidebar .side-menu li.active::before {
-    content: '';
+    content: "";
     position: absolute;
     width: 40px;
     height: 40px;
@@ -321,7 +320,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 
 #sidebar .side-menu li.active::after {
-    content: '';
+    content: "";
     position: absolute;
     width: 40px;
     height: 40px;
@@ -351,7 +350,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
 #sidebar.hide .side-menu li a {
     width: calc(48px - (4px * 2));
-    transition: width .3s ease;
+    transition: width 0.3s ease;
 }
 
 #sidebar .side-menu li a.logout {
@@ -361,7 +360,6 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
 #sidebar .side-menu li a.logout:hover {
     color: #e2211a;
-    ;
 }
 
 #sidebar .side-menu.top li a:hover {
@@ -388,7 +386,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     position: relative;
     width: calc(100% - 280px);
     left: 280px;
-    transition: .3s ease;
+    transition: 0.3s ease;
 }
 
 #sidebar.hide~#content {
@@ -411,7 +409,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 
 #content nav::before {
-    content: '';
+    content: "";
     position: absolute;
     width: 40px;
     height: 40px;
@@ -432,7 +430,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
 #content nav .nav-link {
     font-size: 16px;
-    transition: .3s ease;
+    transition: 0.3s ease;
 }
 
 #content nav .nav-link:hover {
@@ -518,7 +516,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 
 #content nav .switch-mode::before {
-    content: '';
+    content: "";
     position: absolute;
     top: 2px;
     left: 2px;
@@ -526,7 +524,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     width: calc(25px - 4px);
     background: var(--verdePrincipal);
     border-radius: 50%;
-    transition: all .3s ease;
+    transition: all 0.3s ease;
 }
 
 #content nav #switch-mode:checked+.switch-mode::before {
@@ -534,7 +532,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 
 p {
-    color: var(--cinzaEscuro)
+    color: var(--cinzaEscuro);
 }
 
 .pdf-button {
@@ -553,7 +551,7 @@ p {
     cursor: pointer;
     transition: 0.6s;
     display: block;
-    font-family: 'Poppins', sans-serif;
+    font-family: "Poppins", sans-serif;
     font-size: 15px;
     margin: 1rem 0;
 }
@@ -580,7 +578,7 @@ p {
     cursor: pointer;
     transition: 0.6s;
     display: block;
-    font-family: 'Poppins', sans-serif;
+    font-family: "Poppins", sans-serif;
     font-size: 15px;
     margin: 0.7rem 0;
     margin-left: 89%;
@@ -711,7 +709,7 @@ p {
     background: var(--light);
     z-index: 2000;
     font-family: var(--lato);
-    transition: .3s ease;
+    transition: 0.3s ease;
     overflow-x: hidden;
     scrollbar-width: none;
 }
@@ -745,7 +743,7 @@ p {
     margin-right: 4.5%;
     margin-left: auto;
     font-size: 2rem;
-    font-family: 'Mulish', sans-serif;
+    font-family: "Mulish", sans-serif;
     font-weight: bolder;
     margin-top: -15px;
 }
@@ -981,7 +979,7 @@ p {
     margin-bottom: 1rem;
     color: var(--cinzaEscuro);
     font-size: 2rem;
-    font-family: 'Mulish', sans-serif;
+    font-family: "Mulish", sans-serif;
     font-weight: bolder;
 }
 
@@ -1081,7 +1079,7 @@ p {
 
 .form-container form {
     background-color: var(--white);
-    border-radius: .5rem;
+    border-radius: 0.5rem;
     padding: 2rem;
     width: 40rem;
 }
@@ -1117,7 +1115,7 @@ p {
     cursor: pointer;
     transition: 0.7s;
     display: block;
-    font-family: 'Mulish', sans-serif;
+    font-family: "Mulish", sans-serif;
     font-size: 20px;
     margin: 1rem 0;
     align-items: center;
@@ -1143,7 +1141,7 @@ p {
     cursor: pointer;
     transition: 0.7s;
     display: block;
-    font-family: 'Mulish', sans-serif;
+    font-family: "Mulish", sans-serif;
     font-size: 20px;
     margin: 1rem 0;
     align-items: center;

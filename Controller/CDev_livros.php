@@ -53,4 +53,3 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         echo json_encode(['error' => 'Campos do formulário ausentes ou vazios.']);
     }
 }
-?>

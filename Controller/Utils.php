@@ -49,4 +49,3 @@ if ($conn) {
 } else {
     echo "Não foi possível conectar ao banco de dados.";
 }
-?>

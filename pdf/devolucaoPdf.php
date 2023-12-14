@@ -91,7 +91,7 @@ if ($res->num_rows > 0) {
         $html .= "<td>" . $row->idEmprestimo . "</td>";
         $html .= "<td>" . $row->Livro . "</td>";
         $html .= "<td>" . $row->Leitor . "</td>";
-        $html .= "<td>" . $row->Turma. "</td>";
+        $html .= "<td>" . $row->Turma . "</td>";
         $html .= "<td>" . $row->DataDevolucao . "</td>";
 
         $html .= "</tr>";
@@ -123,5 +123,3 @@ $dompdf->setPaper('A4', 'portrait');
 $dompdf->render();
 
 $dompdf->stream("Tabela de devolução", array("Attachment" => false));
-
-?>

@@ -41,4 +41,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['aluno_idAluno'])) {
     // Se não receber o ID do aluno na requisição, retornar erro
     echo json_encode(array('error' => 'ID do aluno não fornecido.'));
 }
-?>

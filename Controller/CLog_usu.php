@@ -34,7 +34,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 // Função para verificar as credenciais do usuário (baseada no seu banco de dados)
-function verificarCredenciais($conn, $username, $password) {
+function verificarCredenciais($conn, $username, $password)
+{
     try {
         // Consulta SQL para verificar as credenciais
         $sql = "SELECT * FROM usuario WHERE UserUsuario = :username";
@@ -58,7 +59,8 @@ function verificarCredenciais($conn, $username, $password) {
 }
 
 // Função para obter o caminho da imagem do usuário
-function obterCaminhoImagemUsuario($conn, $username) {
+function obterCaminhoImagemUsuario($conn, $username)
+{
     try {
         // Consulta SQL para buscar o caminho da imagem do usuário com base no nome de usuário
         $sql = "SELECT CamFoto FROM usuario WHERE UserUsuario = :username";
@@ -82,5 +84,3 @@ function obterCaminhoImagemUsuario($conn, $username) {
         return "../img/adm.png"; // Caminho de imagem de erro ou padrão de falha
     }
 }
-
-?>

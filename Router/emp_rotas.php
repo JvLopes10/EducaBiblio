@@ -13,4 +13,3 @@ if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true)
 $emprestimoController = new CEmprestimoController();
 $emprestimoController->emprestarLivro();
 header("Location: ../View/emprestimos.php");
-?>

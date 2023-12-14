@@ -1,7 +1,8 @@
 <?php
 require_once('CConexao.php');
 
-function atualizarBancoDeDados($idRec, $LivroRec, $AutorRec, $CatRec, $ImgRec, $imgPath) {
+function atualizarBancoDeDados($idRec, $LivroRec, $AutorRec, $CatRec, $ImgRec, $imgPath)
+{
     try {
         $conexao = new CConexao();
         $conn = $conexao->getConnection();
@@ -29,7 +30,8 @@ function atualizarBancoDeDados($idRec, $LivroRec, $AutorRec, $CatRec, $ImgRec, $
     }
 }
 
-function saveImage($image) {
+function saveImage($image)
+{
     if ($image['error'] == UPLOAD_ERR_OK) {
         $tempName = $image['tmp_name'];
         $imgName = $image['name'];
@@ -68,4 +70,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit; // Encerre o script após o redirecionamento
     }
 }
-?>

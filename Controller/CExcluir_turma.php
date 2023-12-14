@@ -17,7 +17,7 @@ if (isset($_GET['id'])) {
         $sql = "DELETE FROM turma WHERE IdTurma  = :IdTurma";
         $stmt = $conn->prepare($sql);
         $stmt->bindParam(':IdTurma', $IdTurma);
-        
+
         // Executa a consulta para excluir o turma
         $stmt->execute();
 
@@ -40,4 +40,3 @@ if (isset($_GET['id'])) {
     // header("Location: alguma_pagina.php");
     exit();
 }
-?>

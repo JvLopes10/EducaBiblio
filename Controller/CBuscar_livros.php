@@ -3,7 +3,7 @@ include 'CConexao.php';
 
 if (isset($_GET['generoId'])) {
     $generoId = $_GET['generoId'];
-    
+
     $conexao = new CConexao();
     $conn = $conexao->getConnection();
 
@@ -23,4 +23,3 @@ if (isset($_GET['generoId'])) {
 } else {
     echo "<option value=''>Gênero inválido</option>";
 }
-?>

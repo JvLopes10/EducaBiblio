@@ -5,8 +5,8 @@ require '../Controller/CGet_rec.php';
 
 // Verificar se o usuário está logado
 if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true) {
-    header("Location: ../View/login.php"); // Redirecionar para a página de login se não estiver logado
-    exit();
+	header("Location: ../View/login.php"); // Redirecionar para a página de login se não estiver logado
+	exit();
 }
 
 
@@ -22,7 +22,7 @@ include('../Controller/CPendencias.php'); // Inclua o arquivo CPendencias.php aq
 <html lang="pt-br">
 
 <head>
-<title>EducaBiblio</title>
+	<title>EducaBiblio</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<script src="../ArquivosExternos/icons.js"></script>
@@ -57,10 +57,10 @@ include('../Controller/CPendencias.php'); // Inclua o arquivo CPendencias.php aq
 		background-color: #333;
 		color: #fff;
 	}
-	.no-click {
-    pointer-events: none;
-}
 
+	.no-click {
+		pointer-events: none;
+	}
 </style>
 
 <body>
@@ -147,14 +147,14 @@ include('../Controller/CPendencias.php'); // Inclua o arquivo CPendencias.php aq
 			<input type="checkbox" id="switch-mode" hidden>
 			<label for="switch-mode" class="switch-mode"></label>
 			<a href="#" class="profile">
-    <?php
-	require ('../Controller/Utils.php');
-	
-$conexao = new CConexao();
-$conn = $conexao->getConnection();
-    
-    ?>
-</a>
+				<?php
+				require('../Controller/Utils.php');
+
+				$conexao = new CConexao();
+				$conn = $conexao->getConnection();
+
+				?>
+			</a>
 
 
 		</nav>
@@ -267,10 +267,10 @@ $conn = $conexao->getConnection();
 				<h1 class="heading">Recomendações <span>semanais</span> </h1>
 				<div class="container-card">
 					<ul>
-					<?php
-// Loop para exibir as recomendações da tabela 'recomendacao'
-foreach ($livrosRecomendados as $livroRecomendado) {
-    echo '<div class="card">
+						<?php
+						// Loop para exibir as recomendações da tabela 'recomendacao'
+						foreach ($livrosRecomendados as $livroRecomendado) {
+							echo '<div class="card">
         <li>
             <a class="no-click" href="' . $livroRecomendado["CamRec"] . '">
                 <img src="' . $livroRecomendado["CamRec"] . '" alt="">
@@ -286,8 +286,8 @@ foreach ($livrosRecomendados as $livroRecomendado) {
             </a>
         </li>
     </div>';
-}
-?>
+						}
+						?>
 
 					</ul>
 				</div>
@@ -324,14 +324,14 @@ foreach ($livrosRecomendados as $livroRecomendado) {
 						<input type="text" id="searchInput" class="searchInput" placeholder="Pesquisar...">
 
 						<button class="pdf-button" id="pdf-button" aria-label="botão pdf" onclick="abrirAluno()">
-								<i class="fas fa-file-pdf"></i></button>
+							<i class="fas fa-file-pdf"></i></button>
 
-								<script>
-				function abrirAluno() {
-					var urlDoPDF = "../pdf/historicoPdf.php";
-					window.open(urlDoPDF, '_blank');
-				}
-			</script>
+						<script>
+							function abrirAluno() {
+								var urlDoPDF = "../pdf/historicoPdf.php";
+								window.open(urlDoPDF, '_blank');
+							}
+						</script>
 
 					</div>
 					<table><?php
@@ -437,8 +437,8 @@ foreach ($livrosRecomendados as $livroRecomendado) {
 	</section>
 
 	<script src="../JS/script.js"></script>
-	
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script>
 		$('#searchInput').on('keyup', function() {
 			const value = $(this).val().toLowerCase();

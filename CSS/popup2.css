@@ -3,7 +3,7 @@
 * {
     outline: none;
     /* Remove a borda de foco em todos os elementos */
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     /* Define a fonte padrão */
 }
 
@@ -11,13 +11,13 @@
 /* Define variáveis de cor personalizadas no root do documento */
 
 :root {
-    --pop-up: #F9F9F9;
+    --pop-up: #f9f9f9;
     /* Cor de fundo do popup */
     --pop-upTexto: #3a3a3a;
     /* Cor do texto no popup */
-    --vermelho: #DB504A;
+    --vermelho: #db504a;
     /* Cor vermelha personalizada */
-    --verde: #32CD32;
+    --verde: #32cd32;
     /* Cor verde personalizada */
 }
 
@@ -73,11 +73,11 @@ body {
     /* Largura fixa do popup */
     box-sizing: border-box;
     /* Outra vez, garante que o preenchimento não afete o tamanho total */
-    transition: all .4s;
+    transition: all 0.4s;
     /* Outra transição suave */
     z-index: -1;
     /* Z-index negativo novamente */
-    transform: scale(.4);
+    transform: scale(0.4);
     /* Escala do popup para torná-lo pequeno */
     opacity: 0;
     /* Mais uma vez, definindo a opacidade inicial como 0 */
@@ -107,7 +107,7 @@ body {
     /* Borda arredondada */
     text-transform: uppercase;
     /* Transforma o texto em maiúsculas */
-    color: #FFF;
+    color: #fff;
     /* Cor do texto em branco */
     font-size: 16px;
     /* Tamanho da fonte */
@@ -115,7 +115,7 @@ body {
     /* Peso da fonte */
     cursor: pointer;
     /* Mostra uma mão ao passar o mouse (cursor de clique) */
-    transition: all .4s;
+    transition: all 0.4s;
     /* Transição suave para animações */
     margin: 8px 0;
     /* Margens */
@@ -137,7 +137,7 @@ body {
 
 .popup-button:active,
 .popup .close-popup-button:active {
-    transform: scale(.8);
+    transform: scale(0.8);
     /* Reduz a escala do botão quando pressionado */
 }
 
@@ -213,11 +213,11 @@ body {
     /* Largura fixa do popup */
     box-sizing: border-box;
     /* Outra vez, garante que o preenchimento não afete o tamanho total */
-    transition: all .4s;
+    transition: all 0.4s;
     /* Outra transição suave */
     z-index: -1;
     /* Z-index negativo novamente */
-    transform: scale(.4);
+    transform: scale(0.4);
     /* Escala do popup para torná-lo pequeno */
     opacity: 0;
     /* Mais uma vez, definindo a opacidade inicial como 0 */
@@ -245,7 +245,7 @@ body {
     /* Borda arredondada */
     text-transform: uppercase;
     /* Transforma o texto em maiúsculas */
-    color: #FFF;
+    color: #fff;
     /* Cor do texto em branco */
     font-size: 16px;
     /* Tamanho da fonte */
@@ -253,7 +253,7 @@ body {
     /* Peso da fonte */
     cursor: pointer;
     /* Mostra uma mão ao passar o mouse (cursor de clique) */
-    transition: all .4s;
+    transition: all 0.4s;
     /* Transição suave para animações */
     margin: 12px 0;
     /* Margens */
@@ -276,7 +276,7 @@ body {
 
 .popup1-button:active,
 .popup1 .close-popup1-button:active {
-    transform: scale(.8);
+    transform: scale(0.8);
     /* Reduz a escala do botão quando pressionado */
 }
 
@@ -354,11 +354,11 @@ body {
     /* Largura fixa do popup */
     box-sizing: border-box;
     /* Outra vez, garante que o preenchimento não afete o tamanho total */
-    transition: all .4s;
+    transition: all 0.4s;
     /* Outra transição suave */
     z-index: -1;
     /* Z-index negativo novamente */
-    transform: scale(.4);
+    transform: scale(0.4);
     /* Escala do popup para torná-lo pequeno */
     opacity: 0;
     /* Mais uma vez, definindo a opacidade inicial como 0 */
@@ -386,7 +386,7 @@ body {
     /* Borda arredondada */
     text-transform: uppercase;
     /* Transforma o texto em maiúsculas */
-    color: #FFF;
+    color: #fff;
     /* Cor do texto em branco */
     font-size: 16px;
     /* Tamanho da fonte */
@@ -394,7 +394,7 @@ body {
     /* Peso da fonte */
     cursor: pointer;
     /* Mostra uma mão ao passar o mouse (cursor de clique) */
-    transition: all .4s;
+    transition: all 0.4s;
     /* Transição suave para animações */
     margin: 12px 0;
     /* Margens */
@@ -419,7 +419,7 @@ body {
 
 .popup2-button:active,
 .popup2 .close-popup2-button:active {
-    transform: scale(.8);
+    transform: scale(0.8);
     /* Reduz a escala do botão quando pressionado */
 }
 
