@@ -1,4 +1,11 @@
 <?php
+
+// Verificar se o usuário está logado
+if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true) {
+    header("Location: ../View/login.php"); // Redirecionar para a página de login se não estiver logado
+    exit();
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['atualizar'])) {
         $idRec = $_POST['idRec'];

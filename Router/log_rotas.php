@@ -1,6 +1,12 @@
 <?php
 session_start();
 
+// Verificar se o usuário já está logado
+if (isset($_SESSION['usuario_logado']) && $_SESSION['usuario_logado'] === true) {
+    header("Location: ../View/inicio.php"); // Redirecionar para a página inicial
+    exit();
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     require_once('../Controller/CConexao.php'); // Verifique o caminho correto do arquivo
 
@@ -20,7 +26,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if ($conn) {
             if (verificarCredenciais($conn, $username, $password)) {
-                session_start();
                 $_SESSION['usuario_logado'] = true;
 
                 // Recupere o nome do usuário do banco de dados (substitua com sua consulta SQL)

@@ -2,6 +2,12 @@
 // Inclua o arquivo de conexão ao banco de dados.
 include '../Controller/CConexao.php';
 
+// Verificar se o usuário está logado
+if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true) {
+    header("Location: ../View/login.php"); // Redirecionar para a página de login se não estiver logado
+    exit();
+}
+
 // Inicialize a instância da classe de conexão.
 $conexao = new CConexao();
 $conn = $conexao->getConnection();
@@ -205,7 +211,6 @@ if ($stmtLivrosParaDevolucao->rowCount() > 0) {
     echo '<tr>';
     echo '<th><center>ID</center></th>';
     echo '<th><center>Leitor</center></th>';
-    echo '<th><center>ID Aluno</center></th>';
     echo '<th><center>Turma</center></th>';
     echo '<th><center>Livro</center></th>';
     echo '<th><center>Data de Devolução</center></th>';
@@ -221,7 +226,7 @@ if ($stmtLivrosParaDevolucao->rowCount() > 0) {
 
         switch ($row['Estado']) {
             case 0:
-                $estado = "Dentro do prazo.";
+                $estado = "A prazo";
                 $classeCSS = "status process";
                 break;
             case 1:
@@ -243,9 +248,8 @@ if ($stmtLivrosParaDevolucao->rowCount() > 0) {
         }
 
         echo '<tr>';
-        echo '<td><center>' . $row['idEmprestimo'] . '</center></td>';
-        echo '<td><center>' . $row['Leitor'] . '</center></td>';
         echo '<td><center>' . $row['idAluno'] . '</center></td>';
+        echo '<td><center>' . $row['Leitor'] . '</center></td>';
         echo '<td><center>' . $row['Turma'] . '</center></td>';
         echo '<td><center>' . $row['Livro'] . '</center></td>';
         echo '<td><center>' . $row['DataDevolucao'] . '</center></td>';

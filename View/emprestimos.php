@@ -2,6 +2,12 @@
 		// Inclua o arquivo de conexão ao banco de dados.
 		include '../Controller/CConexao.php';
 
+		// Verificar se o usuário está logado
+		if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true) {
+			header("Location: ../View/login.php"); // Redirecionar para a página de login se não estiver logado
+			exit();
+		}
+
 		// Inicialize a instância da classe de conexão.
 		$conexao = new CConexao();
 		$conn = $conexao->getConnection();
@@ -103,14 +109,14 @@
 					<input type="checkbox" id="switch-mode" hidden>
 					<label for="switch-mode" class="switch-mode"></label>
 					<a href="#" class="profile">
-    <?php
-	require ('../Controller/Utils.php');
-	
-$conexao = new CConexao();
-$conn = $conexao->getConnection();
-    
-    ?>
-</a>
+						<?php
+						require('../Controller/Utils.php');
+
+						$conexao = new CConexao();
+						$conn = $conexao->getConnection();
+
+						?>
+					</a>
 				</nav>
 				</head>
 
@@ -211,14 +217,14 @@ $conn = $conexao->getConnection();
 									<input type="text" id="searchInput" class="searchInput" placeholder="Pesquisar...">
 
 									<button class="pdf-button" id="pdf-button" aria-label="botão pdf" onclick="abrirAluno()">
-								<i class="fas fa-file-pdf"></i></button>
+										<i class="fas fa-file-pdf"></i></button>
 
-								<script>
-				function abrirAluno() {
-					var urlDoPDF = "../pdf/emprestimoPdf.php";
-					window.open(urlDoPDF, '_blank');
-				}
-			</script>
+									<script>
+										function abrirAluno() {
+											var urlDoPDF = "../pdf/emprestimoPdf.php";
+											window.open(urlDoPDF, '_blank');
+										}
+									</script>
 
 								</div>
 								<?php
@@ -301,6 +307,7 @@ $conn = $conexao->getConnection();
 											echo "<td><center>" . $row["Quantidade_emp"] . "</center></td>";
 											echo "<td><center>" . $row["UserUsuario"] . "</center></td>";
 											echo "<td><center><button class='edit-button'><i class='fas fa-pencil-alt'></i></button></center></td>";
+											echo "<td><div class='container'><center><button class='delete-button' type='submit' onclick='handlePopup(true)'><i class='fas fa-trash-alt'></i></button></center><div class='popup' id='popup'><img src='../img/decisao.png' aria-label='popup decisão'><h2 class='title'>Aviso!</h2><p class='desc'>Deseja mesmo excluir?</p><button class='close-popup-button' type='submit' onclick='handlePopup(false)'>Fechar</button><a href='../Controller/CExcluir_emp.php?id={$row["idEmprestimo"]}'><button class='close-popup-button'>Excluir</button></a></div></div></div></td>";
 											echo "</tr>";
 										}
 
