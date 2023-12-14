@@ -1,11 +1,5 @@
 <?php
 
-// Verificar se o usuário está logado
-if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true) {
-    header("Location: ../View/login.php"); // Redirecionar para a página de login se não estiver logado
-    exit();
-}
-
     require_once('../Controller/CAlter_usu.php'); // Inclua o arquivo que contém a classe CAlter_usu
 var_Dump($_POST);
 if (isset($_POST['Editar'])) {
