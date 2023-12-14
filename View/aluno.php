@@ -225,25 +225,25 @@ include('../Controller/CConexao.php');
 
 							// Consulta para obter os dados da tabela de usuários com o nome da turma
 							$sql = "SELECT 
-	aluno.NomeAluno,
-	aluno.idAluno,
-	aluno.Turma_idTurma,
-	aluno.EmailAluno,
-	'aluno' AS tipo,
-	turma.nomeTurma,
-	turma.AnoTurma  -- Aqui inclua o campo AnoTurma da tabela turma
-FROM aluno
-LEFT JOIN turma ON aluno.Turma_idTurma = turma.idTurma 
-UNION
-SELECT
-	prof.NomeProf AS NomeAluno,
-	prof.idProf AS idAluno,
-	NULL AS Turma_idTurma,
-	prof.EmailProf AS EmailAluno,
-	'prof' AS tipo,
-	NULL AS nomeTurma,
-	NULL AS AnoTurma  -- Adicione o campo AnoTurma para professores como NULL
-FROM prof";
+            aluno.NomeAluno,
+            aluno.idAluno,
+            aluno.Turma_idTurma,
+            aluno.EmailAluno,
+            'aluno' AS tipo,
+            turma.nomeTurma,
+            turma.AnoTurma
+        FROM aluno
+        LEFT JOIN turma ON aluno.Turma_idTurma = turma.idTurma 
+        UNION
+        SELECT
+            prof.NomeProf,
+            prof.idProf AS idAluno,
+            NULL AS Turma_idTurma,
+            prof.EmailProf AS EmailAluno,
+            'prof' AS tipo,
+            NULL AS nomeTurma,
+            NULL AS AnoTurma
+        FROM prof";
 
 
 							$result = $conn->query($sql);
@@ -294,14 +294,14 @@ FROM prof";
 										}
 										echo "</center></td>";
 
-										echo "<td><center>";
+										
 										if (array_key_exists('idAluno', $row)) {
-											echo "<div class='popup' id='popup" . $row["idAluno"] . "' style='display: none;'><img src='../img/decisao.png' alt='Imagem com ponto de interrogação indicando dous caminhos a serem seguidos'><h2 class='title'>Aviso!</h2><p class='desc'>Deseja mesmo excluir?</p><button class='close-popup-button' type='submit' onclick='handlePopup(false)' aria-label='botão fechar'>Fechar</button><button class='close-popup-button' aria-label='botão excluir'>Excluir</button></div><button class='delete-button' data-id='" . $row["idAluno"] . "' onclick='handleDeleteWithPopup(" . $row["idAluno"] . ")'><i class='fas fa-trash-alt'></i></button>";
+											echo "<td><div class='container'><center><button class='delete-button' type='button' onclick='handlePopup(true)' aria-label='botão excluir'><i class='fas fa-trash-alt'></i></button></center><div class='popup' id='popup'><img src='../img/decisao.png' aria-label='popup decisão'><h2 class='title'>Aviso!</h2><p class='desc'>Deseja mesmo excluir?</p><button class='close-popup-button' type='button' onclick='handlePopup(false)'>Fechar</button><a href='../Controller/CExcluir_aluno.php?id={$row["idAluno"]}'><button class='close-popup-button'>Excluir</button></a></div></div></div></td>";
 										}
 										if (array_key_exists('idProf', $row)) {
-											echo "<div class='popup' id='popup" . $row["idProf"] . "' style='display: none;'><img src='../img/decisao.png' alt='Imagem com ponto de interrogação indicando dous caminhos a serem seguidos'><h2 class='title'>Aviso!</h2> <p class='desc'>Deseja mesmo excluir?</p><button class='close-popup-button' type='submit' onclick='handlePopup(false)' aria-label='botão fechar'>Fechar</button><button class='close-popup-button' aria-label='botão excluir'>Excluir</button></div><button class='delete-button' data-id='" . $row["idProf"] . "' onclick='handleDeleteWithPopup(" . $row["idProf"] . ")'><i class='fas fa-trash-alt'></i></button>";
+											echo "<td><div class='container'><center><button class='delete-button' type='button' onclick='handlePopup(true)' aria-label='botão excluir'><i class='fas fa-trash-alt'></i></button></center><div class='popup' id='popup'><img src='../img/decisao.png' aria-label='popup decisão'><h2 class='title'>Aviso!</h2><p class='desc'>Deseja mesmo excluir?</p><button class='close-popup-button' type='button' onclick='handlePopup(false)'>Fechar</button><a href='../Controller/CExcluir_prof.php?id={$row["idProf"]}'><button class='close-popup-button'>Excluir</button></a></div></div></div></td>";
 										}
-										echo "</center></td>";
+										
 
 										echo "<td><center>";
 										if (array_key_exists('idAluno', $row)) {
@@ -362,6 +362,49 @@ FROM prof";
 <!-- Exemplo de como incluir o jQuery -->
 <script src="../ArquivosExternos/Ajax.js"></script>
 <script>
+// Localize os elementos que representam linhas da tabela
+let tableRows = document.querySelectorAll('tbody tr');
+
+// Para cada linha na tabela
+tableRows.forEach(row => {
+  let idAluno = row.dataset.idAluno;
+  let idProf = row.dataset.idProf;
+
+  if (idAluno) {
+    let editCell = row.querySelector('.edit-button').parentNode.parentNode.parentNode;
+    let deleteCell = criarBotaoExcluir('aluno', idAluno);
+    let historyCell = row.querySelector('.historico-button').parentNode.parentNode.parentNode;
+
+    // Insira o botão de Excluir após o botão de Edição
+    editCell.parentNode.insertBefore(deleteCell, editCell.nextSibling);
+
+    // Insira o botão de Histórico após o botão de Excluir
+    deleteCell.parentNode.insertBefore(historyCell, deleteCell.nextSibling);
+  }
+
+  if (idProf) {
+    let editCell = row.querySelector('.edit-button').parentNode.parentNode.parentNode;
+    let deleteCell = criarBotaoExcluir('prof', idProf);
+    let historyCell = row.querySelector('.historico-button').parentNode.parentNode.parentNode;
+
+    // Insira o botão de Excluir após o botão de Edição
+    editCell.parentNode.insertBefore(deleteCell, editCell.nextSibling);
+
+    // Insira o botão de Histórico após o botão de Excluir
+    deleteCell.parentNode.insertBefore(historyCell, deleteCell.nextSibling);
+  }
+});
+
+function criarBotaoExcluir(tipo, id) {
+  // Crie e retorne o elemento do botão de Excluir com base no tipo (aluno ou prof)
+  // Use a variável 'id' para personalizar o link de exclusão
+  let container = document.createElement('td');
+  container.innerHTML = `<div class='container'><center><button class='delete-button' type='button' onclick='handlePopup(true)' aria-label='botão excluir'><i class='fas fa-trash-alt'></i></button></center><div class='popup' id='popup'><img src='../img/decisao.png' aria-label='popup decisão'><h2 class='title'>Aviso!</h2><p class='desc'>Deseja mesmo excluir?</p><button class='close-popup-button' type='button' onclick='handlePopup(false)'>Fechar</button><a href='../Controller/CExcluir_${tipo}.php?id=${id}'><button class='close-popup-button'>Excluir</button></a></div></div>`;
+  return container;
+}
+</script>
+
+<script>
 	$(document).ready(function() {
 		// Capturar clique no botão de edição
 		$('.edit-button').click(function() {
@@ -388,8 +431,8 @@ FROM prof";
 				$('#NomeProf').val('');
 				$('#EmailProf').val('');
 				$('#MateriaProf').val('');
-			} else if (tipo === 'Professor') {
-				$('#escolha').val('Professor');
+			} else if (tipo === 'Prof') {
+				$('#escolha').val('Prof');
 				$('#Turma_idTurma').val('');
 				$('#NomeProf').val(nome);
 				$('#EmailProf').val(email);
@@ -407,34 +450,7 @@ FROM prof";
 		});
 	});
 </script>
-<script>
-	$(document).ready(function() {
-		// Capturar clique no botão de exclusão
-		$('.delete-button').click(function() {
-			var id = $(this).data('id'); // Obter o ID do item a ser excluído
 
-			handlePopup(true); // Mostrar o popup de confirmação
-
-			// Preencher o link de exclusão com o ID correto
-			var linkExclusao = '../Controller/CExcluir_usuario.php?id=' + id;
-			$('#popup a').attr('href', linkExclusao);
-		});
-
-		// Aqui, pode adicionar funções para os botões de edição e histórico se desejado
-
-		// Exemplo de função para botão de edição
-		$('.edit-button').click(function() {
-			var id = $(this).data('id'); // Obter o ID do item a ser editado
-			// Adicionar lógica para ação de edição se necessário
-		});
-
-		// Exemplo de função para botão de histórico
-		$('.historico-button').click(function() {
-			var id = $(this).data('id'); // Obter o ID do item para visualizar o histórico
-			// Adicionar lógica para ação de histórico se necessário
-		});
-	});
-</script>
 
 
 

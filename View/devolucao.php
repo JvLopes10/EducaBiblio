@@ -166,8 +166,7 @@ $conn = $conexao->getConnection();
 							<option value="">Selecione um aluno</option>
 							<!-- Opções de alunos serão preenchidas dinamicamente com JavaScript -->
 						</select>
-						<button class="search-button">
-							<i class="fas fa-search"></i></button>
+						
 					</form>
 				</div>
 			</section>
@@ -191,7 +190,7 @@ $conn = $conexao->getConnection();
 						<table>
 						<?php
 // Consulta SQL para buscar os livros que estão emprestados e ainda não foram devolvidos
-$queryLivrosParaDevolucao = "SELECT emprestimo.idEmprestimo, aluno.NomeAluno AS Leitor, turma.NomeTurma AS Turma, livro.NomeLivro AS Livro, emprestimo.StatusEmprestimo AS Estado, devolucao.DataDevolucao
+$queryLivrosParaDevolucao = "SELECT emprestimo.idEmprestimo, aluno.NomeAluno AS Leitor, aluno.idAluno as idAluno, turma.NomeTurma AS Turma, livro.NomeLivro AS Livro, emprestimo.StatusEmprestimo AS Estado, devolucao.DataDevolucao
     FROM emprestimo
     INNER JOIN aluno ON emprestimo.aluno_idAluno = aluno.idAluno
     INNER JOIN livro ON emprestimo.livro_idLivro = livro.idLivro
@@ -206,6 +205,7 @@ if ($stmtLivrosParaDevolucao->rowCount() > 0) {
     echo '<tr>';
     echo '<th><center>ID</center></th>';
     echo '<th><center>Leitor</center></th>';
+    echo '<th><center>ID Aluno</center></th>';
     echo '<th><center>Turma</center></th>';
     echo '<th><center>Livro</center></th>';
     echo '<th><center>Data de Devolução</center></th>';
@@ -245,6 +245,7 @@ if ($stmtLivrosParaDevolucao->rowCount() > 0) {
         echo '<tr>';
         echo '<td><center>' . $row['idEmprestimo'] . '</center></td>';
         echo '<td><center>' . $row['Leitor'] . '</center></td>';
+        echo '<td><center>' . $row['idAluno'] . '</center></td>';
         echo '<td><center>' . $row['Turma'] . '</center></td>';
         echo '<td><center>' . $row['Livro'] . '</center></td>';
         echo '<td><center>' . $row['DataDevolucao'] . '</center></td>';
@@ -263,7 +264,7 @@ if ($stmtLivrosParaDevolucao->rowCount() > 0) {
             echo '<h2 class="title"></h2>';
             echo '<p class="desc">O livro foi realmente devolvido?</p>';
             echo '<button class="close-popup-button" type="submit" onclick="handlePopup(false)">Fechar</button>';
-            echo '<a href="../Controller/CDevolver.livro.php?id=' . $row['idEmprestimo'] . '"><button class="close-popup-button">Confirmar Devolução</button></a>';
+            echo '<a href="../Controller/CDevolver_livro.php?id=' . $row['idEmprestimo'] . '"><button class="close-popup-button">Confirmar Devolução</button></a>';
             echo '</div>';
             echo '</div>';
         }
@@ -335,6 +336,23 @@ if ($stmtLivrosParaDevolucao->rowCount() > 0) {
 <script src="../JS/popup.js"></script>
 <script scr="../ArquivosExternos/ajax.js"></script>
 <script src="../ArquivosExternos/jquery.js"></script>
+<script>
+    $('#aluno_idAluno').on('change', function() {
+    const selectedAlunoId = $(this).val().toLowerCase();
+
+    $('table tbody tr').filter(function() {
+        const alunoId = $(this).find('td:nth-child(3)').text().trim().toLowerCase(); // Supondo que o ID do aluno esteja na terceira coluna
+
+        if (selectedAlunoId !== '' && alunoId !== selectedAlunoId) {
+            $(this).hide(); // Esconde as linhas que não correspondem ao aluno selecionado
+        } else {
+            $(this).show(); // Exibe as linhas que correspondem ao aluno selecionado ou mostra todas se nenhum estiver selecionado
+        }
+    });
+});
+
+
+</script>   
 <script>
     $(document).ready(function() {
         $("#Turma_idTurma").change(function() {
