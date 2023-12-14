@@ -2,11 +2,47 @@
 
 include 'config.php';
 
-// Verifica se o ID do aluno foi fornecido na URL
-if(isset($_GET['idAluno'])) {
+// Verifica se o parâmetro 'idAluno' está presente na requisição
+if (isset($_GET['idAluno'])) {
     $idAluno = $_GET['idAluno'];
 
-    // Sua consulta SQL modificada para filtrar pelo ID do aluno
+    // Modifica a consulta SQL para filtrar pelo ID do aluno
+    $sql = "SELECT
+    emprestimo.idEmprestimo,
+    aluno.NomeAluno AS Estudante,
+    DATE_FORMAT(emprestimo.DataEmprestimo, '%d/%m/%Y') AS DataEmprestimoFormatada,
+    IFNULL(DATE_FORMAT(devolucao.DataDevolucao, '%d/%m/%Y'), '--/--/----') AS DataDevolucaoFormatada,
+    IFNULL(DATE_FORMAT(devolucao.DataDevolvida, '%d/%m/%Y'), '--/--/----') AS DataDevolvidaFormatada,
+    CASE
+        WHEN emprestimo.StatusEmprestimo = 0 THEN 'Dentro do prazo'
+        WHEN emprestimo.StatusEmprestimo = 1 THEN 'Pendente'
+        WHEN emprestimo.StatusEmprestimo = 2 THEN 'Devolvido'
+        ELSE 'Status não definido'
+    END AS Estado,
+    livro.idLivro,
+    livro.NomeLivro,
+    livro.EditoraLivro,
+    livro.IBSMLivro,
+    livro.QuantidadeLivros,
+    genero.NomeGenero AS GeneroLivro,
+    idioma.Idioma AS IdiomaLivro,
+    livro.FotoLivro,
+    livro.CaminhoFotoLivro,
+    livro.LocalLivro,
+    livro.PrateleiraLivro,
+    livro.ColunaLivro,
+    autor.NomeAutor
+FROM emprestimo
+LEFT JOIN aluno ON emprestimo.aluno_idAluno = aluno.idAluno
+LEFT JOIN devolucao ON emprestimo.idEmprestimo = devolucao.emprestimo_idEmprestimo
+LEFT JOIN livro ON emprestimo.livro_idLivro = livro.idLivro
+LEFT JOIN genero ON livro.Genero_idGenero = genero.idGenero
+LEFT JOIN autor ON livro.Autor_idAutor = autor.idAutor
+LEFT JOIN idioma ON livro.Idioma_idIdioma = idioma.idIdioma
+WHERE aluno.idAluno = $idAluno;
+";
+} else {
+    // Se 'idAluno' não estiver presente, mostra todos os empréstimos (consulta original)
     $sql = "SELECT
                 emprestimo.idEmprestimo,
                 aluno.NomeAluno AS Estudante,
@@ -14,121 +50,116 @@ if(isset($_GET['idAluno'])) {
                 IFNULL(DATE_FORMAT(devolucao.DataDevolucao, '%d/%m/%Y'), '--/--/----') AS DataDevolucaoFormatada,
                 IFNULL(DATE_FORMAT(devolucao.DataDevolvida, '%d/%m/%Y'), '--/--/----') AS DataDevolvidaFormatada,
                 CASE
-                    WHEN emprestimo.StatusEmprestimo = 0 THEN 'Dentro do prazo'
+                    WHEN emprestimo.StatusEmprestimo = 0 THEN 'A prazo'
                     WHEN emprestimo.StatusEmprestimo = 1 THEN 'Pendente'
                     WHEN emprestimo.StatusEmprestimo = 2 THEN 'Devolvido'
                     ELSE 'Status não definido'
                 END AS Estado
             FROM emprestimo
             LEFT JOIN aluno ON emprestimo.aluno_idAluno = aluno.idAluno
-            LEFT JOIN devolucao ON emprestimo.idEmprestimo = devolucao.emprestimo_idEmprestimo
-            WHERE aluno.idAluno = $idAluno";
-
-    $res = $conn->query($sql);
-
-    if ($res->num_rows > 0) {
-        $html = "<html>
-        <head>
-        <title>EducaBiblio</title>
-        <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-        h1 {
-            text-align: center;
-            color: #ffffff;
-            margin-bottom: 20px;
-            background-color: rgba(76,175,80); 
-            padding: 10px; 
-        }
-        #library-info {
-            text-align: center;
-            margin: 20px 0;
-        }
-        table {
-            border-collapse: collapse;
-            width: 100%;
-            margin-top: 20px;
-            background-color: #fff;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-        th, td {
-            border: 1px solid #333;
-            padding: 12px;
-            text-align: center;
-        }
-        th {
-            background-color: #4CAF50;
-            color: white;
-            font-weight: bolder;
-        }
-        tbody tr:nth-child(even) {
-            background-color: #f2f2f2; /* Light Gray */
-        }
-        tbody tr:nth-child(odd) {
-            background-color: #fff; /* White */
-        }
-        .footer {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            text-align: center;
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px;
-            font-weight: bold;
-        }
-    </style>
-        </head>
-        <body>
-        <div id='library-info'>
-        <h1>Tabela de Empréstimos</h1>
-        <p>
-            Bem-vindo ao EducaBiblio, o seu sistema de biblioteca dedicado à promoção da educação e leitura! Abaixo, apresentamos os registros dos empréstimos realizados.
-        </p>
-    </div>
-    <table>
-        <thead>
-            <tr>
-            <th>Leitor/th>
-            <th>Livro</th>
-            <th>Data do Empréstimo</th>
-            <th>Data de Devolução</th>
-            <th>Data em que foi Devolvido</th>
-            <th>Estado</th>
-            </tr>
-            </tr>
-        </thead>
-        <tbody>";
-
-while ($row = $res->fetch_object()) {
-    $html .= "<tr>";
-    $html .= "<td>" . $row->Estudante . "</td>";
-    $html .= "<td>" . $row->NomeLivro . "</td>";
-    $html .= "<td>" . $row->DataEmprestimoFormatada . "</td>";
-    $html .= "<td>" . $row->DataDevolucaoFormatada . "</td>";
-    $html .= "<td>" . $row->DataDevolvidaFormatada . "</td>";
-    $html .= "<td>" . $row->Estado . "</td>";
-
-    $html .= "</tr>";
+            LEFT JOIN devolucao ON emprestimo.idEmprestimo = devolucao.emprestimo_idEmprestimo";
 }
 
-$html .= "</tbody>
-    </table>
-    <div class='footer'>
-        Governo do Ceará - Educação e Leitura
-    </div>
-        </body>
-        </html>";
-    } else {
-        $html = 'Não há dados a serem exibidos para este aluno.';
+$res = $conn->query($sql);
+
+if ($res->num_rows > 0) {
+    $html = "<html>
+    <head>
+    <title>EducaBiblio</title>
+        <style>
+            body {
+                font-family: 'Arial', sans-serif;
+                margin: 0;
+                padding: 0;
+            }
+            h1 {
+                text-align: center;
+                color: #ffffff;
+                margin-bottom: 20px;
+                background-color: rgba(76,175,80); 
+                padding: 10px; 
+            }
+            #library-info {
+                text-align: center;
+                margin: 20px 0;
+            }
+            table {
+                border-collapse: collapse;
+                width: 100%;
+                margin-top: 20px;
+                background-color: #fff;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            }
+            th, td {
+                border: 1px solid #333;
+                padding: 12px;
+                text-align: center;
+            }
+            th {
+                background-color: #4CAF50;
+                color: white;
+                font-weight: bolder;
+            }
+            tbody tr:nth-child(even) {
+                background-color: #f2f2f2; /* Light Gray */
+            }
+            tbody tr:nth-child(odd) {
+                background-color: #fff; /* White */
+            }
+            .footer {
+                position: fixed;
+                bottom: 0;
+                width: 100%;
+                text-align: center;
+                background-color: #4CAF50;
+                color: white;
+                padding: 10px;
+                font-weight: bold;
+            }
+        </style>
+    </head>
+    <body>
+        <div id='library-info'>
+            <h1>Histórico de empréstimos</h1>
+            <p>
+                Bem-vindo ao EducaBiblio, o seu sistema de biblioteca dedicado à promoção da educação e leitura! Abaixo, apresentamos o histórico de empréstimos já feitos pelo estudante.
+            </p>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                <th>Estudante</th>
+                <th>Livro</th>
+                <th>Data do Empréstimo</th>
+                <th>Data de Devolução</th>
+                <th>Data em que foi Devolvido</th>
+                <th>Estado</th>
+                </tr>
+            </thead>
+            <tbody>";
+
+    while ($row = $res->fetch_object()) {
+        $html .= "<tr>";
+
+        $html .= "<td>" . $row->Estudante . "</td>";
+        $html .= "<td>" . $row->NomeLivro . "</td>";
+        $html .= "<td>" . $row->DataEmprestimoFormatada . "</td>";
+        $html .= "<td>" . $row->DataDevolucaoFormatada . "</td>";
+        $html .= "<td>" . $row->DataDevolvidaFormatada . "</td>";
+        $html .= "<td>" . $row->Estado . "</td>";
+
+        $html .= "</tr>";
     }
 
-    // ... (o resto do seu código para criar e exibir o PDF)
+    $html .= "</tbody>
+        </table>
+        <div class='footer'>
+            Governo do Ceará - Educação e Leitura
+        </div>
+    </body>
+    </html>";
 } else {
-    $html = 'ID do aluno não fornecido.';
+    $html = 'Não há dados a serem exibidos.';
 }
 
 use Dompdf\Dompdf;
@@ -145,6 +176,4 @@ $dompdf->setPaper('A4', 'portrait');
 
 $dompdf->render();
 
-$dompdf->stream("Tabela de empréstimo", array("Attachment" => false));
-
-?>
+$dompdf->stream("Histórico", array("Attachment" => false));

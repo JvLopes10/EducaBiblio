@@ -3,8 +3,8 @@ include('../Controller/CConexao.php');
 
 // Verificar se o usuário está logado
 if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true) {
-    header("Location: ../View/login.php"); // Redirecionar para a página de login se não estiver logado
-    exit();
+	header("Location: ../View/login.php"); // Redirecionar para a página de login se não estiver logado
+	exit();
 }
 
 ?>
@@ -135,14 +135,14 @@ if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true)
 			<input type="checkbox" id="switch-mode" hidden>
 			<label for="switch-mode" class="switch-mode"></label>
 			<a href="#" class="profile">
-    <?php
-	require ('../Controller/Utils.php');
-	
-$conexao = new CConexao();
-$conn = $conexao->getConnection();
-    
-    ?>
-</a>
+				<?php
+				require('../Controller/Utils.php');
+
+				$conexao = new CConexao();
+				$conn = $conexao->getConnection();
+
+				?>
+			</a>
 		</nav>
 
 		</head>
@@ -196,12 +196,12 @@ $conn = $conexao->getConnection();
 							<button class="pdf-button" id="pdf-button" aria-label="botão pdf" onclick="abrirAluno()">
 								<i class="fas fa-file-pdf"></i></button>
 
-								<script>
-				function abrirAluno() {
-					var urlDoPDF = "../pdf/turmaPdf.php";
-					window.open(urlDoPDF, '_blank');
-				}
-			</script>
+							<script>
+								function abrirAluno() {
+									var urlDoPDF = "../pdf/turmaPdf.php";
+									window.open(urlDoPDF, '_blank');
+								}
+							</script>
 
 						</div>
 						<table>
@@ -226,7 +226,7 @@ $conn = $conexao->getConnection();
 							} else {
 								if ($result->rowCount() > 0) {
 									$user = $result->fetchAll(PDO::FETCH_ASSOC);
-									$UsuarioPorPagina = 4;
+									$UsuarioPorPagina = 3;
 									$paginaAtual = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
 									$indiceInicial = ($paginaAtual - 1) * $UsuarioPorPagina;
 									$UsuarioExibidos = array_slice($user, $indiceInicial, $UsuarioPorPagina);

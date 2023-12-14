@@ -7,4 +7,3 @@ include '../Controller/CEmp_livros.php';
 $emprestimoController = new CEmprestimoController();
 $emprestimoController->emprestarLivro();
 header("Location: ../View/emprestimos.php");
-?>

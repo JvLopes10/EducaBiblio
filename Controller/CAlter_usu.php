@@ -1,8 +1,10 @@
 <?php
 require_once('CConexao.php');
 
-class CAlter_usu {
-    public function atualizarUsuario($idUsuario, $UserUsuario, $NomeUsuario, $EmailUsuario, $SenhaUsuario, $FotoUsuario, $caminhoFoto) {
+class CAlter_usu
+{
+    public function atualizarUsuario($idUsuario, $UserUsuario, $NomeUsuario, $EmailUsuario, $SenhaUsuario, $FotoUsuario, $caminhoFoto)
+    {
         try {
             // Crie uma instância da classe de conexão
             $conexao = new CConexao();

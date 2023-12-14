@@ -71,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt->execute();
 
             // Redirecionamento após o cadastro
-           header("Location: ../View/livros.php");
+            header("Location: ../View/livros.php");
             exit(); // Terminar o script após o redirecionamento
         } catch (PDOException $e) {
             echo "Erro ao cadastrar o livro: " . $e->getMessage();
@@ -82,4 +82,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 // Redirecionamento padrão se a condição acima não for atendida
 header("Location: ../View/livros.php");
 exit(); // Terminar o script após o redirecionamento
-?>

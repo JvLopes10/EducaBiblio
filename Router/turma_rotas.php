@@ -16,4 +16,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         echo 'A classe CCad_turma não foi encontrada.';
     }
 }
-?>

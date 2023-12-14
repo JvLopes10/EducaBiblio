@@ -111,4 +111,3 @@ function obterIdDoUsuario($conn, $username)
         return null; // Ou outra indicação de erro, se necessário
     }
 }
-?>

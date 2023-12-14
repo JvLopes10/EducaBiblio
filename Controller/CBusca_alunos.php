@@ -3,7 +3,7 @@ include 'CConexao.php';
 
 if (isset($_GET['turmaId'])) {
     $turmaId = $_GET['turmaId'];
-    
+
     $conexao = new CConexao();
     $conn = $conexao->getConnection();
 
@@ -23,4 +23,3 @@ if (isset($_GET['turmaId'])) {
 } else {
     echo "<option value=''>Turma inválida</option>";
 }
-?>

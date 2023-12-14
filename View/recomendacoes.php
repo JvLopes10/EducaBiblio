@@ -3,8 +3,8 @@ include('../Controller/CConexao.php');
 
 // Verificar se o usuário está logado
 if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true) {
-    header("Location: ../View/login.php"); // Redirecionar para a página de login se não estiver logado
-    exit();
+	header("Location: ../View/login.php"); // Redirecionar para a página de login se não estiver logado
+	exit();
 }
 
 ?>
@@ -135,14 +135,14 @@ if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true)
 			<input type="checkbox" id="switch-mode" hidden>
 			<label for="switch-mode" class="switch-mode"></label>
 			<a href="#" class="profile">
-    <?php
-	require ('../Controller/Utils.php');
-	
-$conexao = new CConexao();
-$conn = $conexao->getConnection();
-    
-    ?>
-</a>
+				<?php
+				require('../Controller/Utils.php');
+
+				$conexao = new CConexao();
+				$conn = $conexao->getConnection();
+
+				?>
+			</a>
 		</nav>
 
 		</head>

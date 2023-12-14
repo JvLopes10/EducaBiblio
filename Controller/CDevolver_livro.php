@@ -71,4 +71,3 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
     echo "ID do empréstimo não fornecido.";
     header("Location: ../view/devolucao.php");
 }
-?>

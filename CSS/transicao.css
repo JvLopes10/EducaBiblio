@@ -9,7 +9,7 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-image: linear-gradient(180deg, #b9f27d 0, #a4ec79 16.67%, #8be373 33.33%, #6cd86c 50%, #47cd66 66.67%, #00c464 83.33%, #00bd65 100%);
+    background-image: linear-gradient( 180deg, #b9f27d 0, #a4ec79 16.67%, #8be373 33.33%, #6cd86c 50%, #47cd66 66.67%, #00c464 83.33%, #00bd65 100%);
     opacity: 0;
     animation: fadeIn 3s cubic-bezier(0.645, 0.045, 0.355, 1) forwards;
 }
@@ -24,7 +24,6 @@ body {
     0% {
         opacity: 0;
     }
-
     100% {
         opacity: 1;
     }
@@ -35,7 +34,6 @@ body {
         opacity: 0;
         transform: translateY(-20px);
     }
-
     100% {
         opacity: 1;
         transform: translateY(0);
@@ -47,7 +45,6 @@ body {
         opacity: 0;
         transform: scale(0.5);
     }
-
     100% {
         opacity: 1;
         transform: scale(1.25);

@@ -1,9 +1,11 @@
 <?php
 include('../Controller/CConexao.php'); // Inclui o arquivo de conexão
 
-class CCad_prof {
+class CCad_prof
+{
     // Função para cadastrar um professor no banco de dados
-    public function cadastrarProfessor($nome, $email, $materia) {
+    public function cadastrarProfessor($nome, $email, $materia)
+    {
         // Conecte-se ao banco de dados
         $conexao = new CConexao();
         $conn = $conexao->getConnection();
@@ -22,4 +24,3 @@ class CCad_prof {
         }
     }
 }
-?>

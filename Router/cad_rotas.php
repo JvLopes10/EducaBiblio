@@ -37,8 +37,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Credenciais incorretas, exiba uma mensagem de erro
             $_SESSION['erro_login'] = "Nome de usuário ou senha incorretos.";
             header("Location: ../View/login.php?erro=1");
-            
-
         }
     }
 }

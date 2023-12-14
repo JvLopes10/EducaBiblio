@@ -17,7 +17,7 @@ if (isset($_GET['id'])) {
         $sql = "DELETE FROM usuario WHERE idUsuario = :idUsuario";
         $stmt = $conn->prepare($sql);
         $stmt->bindParam(':idUsuario', $idUsuario);
-        
+
         // Executa a consulta para excluir o usuário
         $stmt->execute();
 
@@ -40,4 +40,3 @@ if (isset($_GET['id'])) {
     // header("Location: alguma_pagina.php");
     exit();
 }
-?>

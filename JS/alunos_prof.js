@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", function() {
     const escolhaSelect = document.getElementById("escolha");
     const nomeAlunoInput = document.getElementById("NomeAluno");
     const emailAlunoInput = document.getElementById("EmailAluno");

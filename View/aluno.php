@@ -3,8 +3,8 @@ include('../Controller/CConexao.php');
 
 // Verificar se o usuário está logado
 if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true) {
-    header("Location: ../View/login.php"); // Redirecionar para a página de login se não estiver logado
-    exit();
+	header("Location: ../View/login.php"); // Redirecionar para a página de login se não estiver logado
+	exit();
 }
 
 ?>
@@ -262,7 +262,7 @@ if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true)
 							} else {
 								if ($result->rowCount() > 0) {
 									$user = $result->fetchAll(PDO::FETCH_ASSOC);
-									$UsuarioPorPagina = 4;
+									$UsuarioPorPagina = 3;
 									$paginaAtual = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
 									$indiceInicial = ($paginaAtual - 1) * $UsuarioPorPagina;
 									$UsuarioExibidos = array_slice($user, $indiceInicial, $UsuarioPorPagina);
@@ -301,50 +301,49 @@ if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true)
 										}
 										echo "</center></td>";
 
-										
+
 										if (array_key_exists('idAluno', $row)) {
 											echo "<td><div class='container'><center><button class='delete-button' type='button' onclick='handlePopup(true)' aria-label='botão excluir'><i class='fas fa-trash-alt'></i></button></center><div class='popup' id='popup'><img src='../img/decisao.png' aria-label='popup decisão'><h2 class='title'>Aviso!</h2><p class='desc'>Deseja mesmo excluir?</p><button class='close-popup-button' type='button' onclick='handlePopup(false)'>Fechar</button><a href='../Controller/CExcluir_aluno.php?id={$row["idAluno"]}'><button class='close-popup-button'>Excluir</button></a></div></div></div></td>";
 										}
 										if (array_key_exists('idProf', $row)) {
 											echo "<td><div class='container'><center><button class='delete-button' type='button' onclick='handlePopup(true)' aria-label='botão excluir'><i class='fas fa-trash-alt'></i></button></center><div class='popup' id='popup'><img src='../img/decisao.png' aria-label='popup decisão'><h2 class='title'>Aviso!</h2><p class='desc'>Deseja mesmo excluir?</p><button class='close-popup-button' type='button' onclick='handlePopup(false)'>Fechar</button><a href='../Controller/CExcluir_prof.php?id={$row["idProf"]}'><button class='close-popup-button'>Excluir</button></a></div></div></div></td>";
 										}
-										
+
 
 										echo "<td><center>";
 										if (array_key_exists('idAluno', $row)) {
 											echo "<button class='historico-button' data-id='" . $row["idAluno"] . "'>"
-												 . "<a href='../pdf/registrosAluPdf.php?idAluno=" . $row["idAluno"] . "'>"
-												 . "<i class='fas fa-history'></i></a></button>";
+												. "<a class='button-link' href='../pdf/registrosAluPdf.php?idAluno=" . $row["idAluno"] . "'>"
+												. "<i class='fas fa-history'></i></a></button>";
 										}
-										
-										}
-										if (array_key_exists('idProf', $row)) {
-											echo "<button class='historico-button' data-id='" . $row["idProf"] . "'><i class='fas fa-history'></i></button>";
-										}
-										echo "</center></td>";
-
-										echo "</tr>";
 									}
-
-			
-									
-
-
-									echo "</tbody>";
-									echo "</table>";
-
-									// Adiciona links de paginação
-									echo "<div class='pagination'>";
-									$totalUser = count($user);
-									$totalPaginas = ceil($totalUser / $UsuarioPorPagina);
-									for ($i = 1; $i <= $totalPaginas; $i++) {
-										$classeAtiva = ($i === $paginaAtual) ? "active" : "";
-										echo "<a class='page-link $classeAtiva' href='usuarios.php?pagina=$i'>$i</a>";
+									if (array_key_exists('idProf', $row)) {
+										echo "<button class='historico-button' data-id='" . $row["idProf"] . "'><i class='fas fa-history'></i></button>";
 									}
-									echo "</div>";
+									echo "</center></td>";
 
-									// Botão Fechar do popup fora da tabela
-								
+									echo "</tr>";
+								}
+
+
+
+
+
+								echo "</tbody>";
+								echo "</table>";
+
+								// Adiciona links de paginação
+								echo "<div class='pagination'>";
+								$totalUser = count($user);
+								$totalPaginas = ceil($totalUser / $UsuarioPorPagina);
+								for ($i = 1; $i <= $totalPaginas; $i++) {
+									$classeAtiva = ($i === $paginaAtual) ? "active" : "";
+									echo "<a class='page-link $classeAtiva' href='aluno.php?pagina=$i'>$i</a>";
+								}
+								echo "</div>";
+
+								// Botão Fechar do popup fora da tabela
+
 							}
 
 							$conn = null; // Fecha a conexão
@@ -357,7 +356,14 @@ if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true)
 				<footer class="footer">
 					© Copyright 2023 por <span>EducaBiblio</span> | Todos os direitos reservados
 				</footer>
-
+				<style>
+					#button-link {
+						color: inherit;
+						/* Use a cor padrão do texto do pai */
+						text-decoration: none;
+						/* Remover sublinhado padrão */
+					}
+				</style>
 			</main>
 	</section>
 </body>
@@ -374,46 +380,46 @@ if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true)
 <!-- Exemplo de como incluir o jQuery -->
 <script src="../ArquivosExternos/Ajax.js"></script>
 <script>
-// Localize os elementos que representam linhas da tabela
-let tableRows = document.querySelectorAll('tbody tr');
+	// Localize os elementos que representam linhas da tabela
+	let tableRows = document.querySelectorAll('tbody tr');
 
-// Para cada linha na tabela
-tableRows.forEach(row => {
-  let idAluno = row.dataset.idAluno;
-  let idProf = row.dataset.idProf;
+	// Para cada linha na tabela
+	tableRows.forEach(row => {
+		let idAluno = row.dataset.idAluno;
+		let idProf = row.dataset.idProf;
 
-  if (idAluno) {
-    let editCell = row.querySelector('.edit-button').parentNode.parentNode.parentNode;
-    let deleteCell = criarBotaoExcluir('aluno', idAluno);
-    let historyCell = row.querySelector('.historico-button').parentNode.parentNode.parentNode;
+		if (idAluno) {
+			let editCell = row.querySelector('.edit-button').parentNode.parentNode.parentNode;
+			let deleteCell = criarBotaoExcluir('aluno', idAluno);
+			let historyCell = row.querySelector('.historico-button').parentNode.parentNode.parentNode;
 
-    // Insira o botão de Excluir após o botão de Edição
-    editCell.parentNode.insertBefore(deleteCell, editCell.nextSibling);
+			// Insira o botão de Excluir após o botão de Edição
+			editCell.parentNode.insertBefore(deleteCell, editCell.nextSibling);
 
-    // Insira o botão de Histórico após o botão de Excluir
-    deleteCell.parentNode.insertBefore(historyCell, deleteCell.nextSibling);
-  }
+			// Insira o botão de Histórico após o botão de Excluir
+			deleteCell.parentNode.insertBefore(historyCell, deleteCell.nextSibling);
+		}
 
-  if (idProf) {
-    let editCell = row.querySelector('.edit-button').parentNode.parentNode.parentNode;
-    let deleteCell = criarBotaoExcluir('prof', idProf);
-    let historyCell = row.querySelector('.historico-button').parentNode.parentNode.parentNode;
+		if (idProf) {
+			let editCell = row.querySelector('.edit-button').parentNode.parentNode.parentNode;
+			let deleteCell = criarBotaoExcluir('prof', idProf);
+			let historyCell = row.querySelector('.historico-button').parentNode.parentNode.parentNode;
 
-    // Insira o botão de Excluir após o botão de Edição
-    editCell.parentNode.insertBefore(deleteCell, editCell.nextSibling);
+			// Insira o botão de Excluir após o botão de Edição
+			editCell.parentNode.insertBefore(deleteCell, editCell.nextSibling);
 
-    // Insira o botão de Histórico após o botão de Excluir
-    deleteCell.parentNode.insertBefore(historyCell, deleteCell.nextSibling);
-  }
-});
+			// Insira o botão de Histórico após o botão de Excluir
+			deleteCell.parentNode.insertBefore(historyCell, deleteCell.nextSibling);
+		}
+	});
 
-function criarBotaoExcluir(tipo, id) {
-  // Crie e retorne o elemento do botão de Excluir com base no tipo (aluno ou prof)
-  // Use a variável 'id' para personalizar o link de exclusão
-  let container = document.createElement('td');
-  container.innerHTML = `<div class='container'><center><button class='delete-button' type='button' onclick='handlePopup(true)' aria-label='botão excluir'><i class='fas fa-trash-alt'></i></button></center><div class='popup' id='popup'><img src='../img/decisao.png' aria-label='popup decisão'><h2 class='title'>Aviso!</h2><p class='desc'>Deseja mesmo excluir?</p><button class='close-popup-button' type='button' onclick='handlePopup(false)'>Fechar</button><a href='../Controller/CExcluir_${tipo}.php?id=${id}'><button class='close-popup-button'>Excluir</button></a></div></div>`;
-  return container;
-}
+	function criarBotaoExcluir(tipo, id) {
+		// Crie e retorne o elemento do botão de Excluir com base no tipo (aluno ou prof)
+		// Use a variável 'id' para personalizar o link de exclusão
+		let container = document.createElement('td');
+		container.innerHTML = `<div class='container'><center><button class='delete-button' type='button' onclick='handlePopup(true)' aria-label='botão excluir'><i class='fas fa-trash-alt'></i></button></center><div class='popup' id='popup'><img src='../img/decisao.png' aria-label='popup decisão'><h2 class='title'>Aviso!</h2><p class='desc'>Deseja mesmo excluir?</p><button class='close-popup-button' type='button' onclick='handlePopup(false)'>Fechar</button><a href='../Controller/CExcluir_${tipo}.php?id=${id}'><button class='close-popup-button'>Excluir</button></a></div></div>`;
+		return container;
+	}
 </script>
 
 <script>
@@ -467,11 +473,11 @@ function criarBotaoExcluir(tipo, id) {
 
 
 <script>
-				function abrirAluno() {
-					var urlDoPDF = "../pdf/registrosAluPdf.php";
-					window.open(urlDoPDF, '_blank');
-				}
-			</script>
+	function abrirAluno() {
+		var urlDoPDF = "../pdf/registrosAluPdf.php";
+		window.open(urlDoPDF, '_blank');
+	}
+</script>
 
 
 

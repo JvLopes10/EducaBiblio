@@ -2,11 +2,11 @@
 		// Inclua o arquivo de conexão ao banco de dados.
 		include '../Controller/CConexao.php';
 
-// Verificar se o usuário está logado
-if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true) {
-    header("Location: ../View/login.php"); // Redirecionar para a página de login se não estiver logado
-    exit();
-}
+		// Verificar se o usuário está logado
+		if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true) {
+			header("Location: ../View/login.php"); // Redirecionar para a página de login se não estiver logado
+			exit();
+		}
 
 		// Inicialize a instância da classe de conexão.
 		$conexao = new CConexao();
@@ -109,14 +109,14 @@ if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true)
 					<input type="checkbox" id="switch-mode" hidden>
 					<label for="switch-mode" class="switch-mode"></label>
 					<a href="#" class="profile">
-    <?php
-	require ('../Controller/Utils.php');
-	
-$conexao = new CConexao();
-$conn = $conexao->getConnection();
-    
-    ?>
-</a>
+						<?php
+						require('../Controller/Utils.php');
+
+						$conexao = new CConexao();
+						$conn = $conexao->getConnection();
+
+						?>
+					</a>
 				</nav>
 				</head>
 
@@ -217,14 +217,14 @@ $conn = $conexao->getConnection();
 									<input type="text" id="searchInput" class="searchInput" placeholder="Pesquisar...">
 
 									<button class="pdf-button" id="pdf-button" aria-label="botão pdf" onclick="abrirAluno()">
-								<i class="fas fa-file-pdf"></i></button>
+										<i class="fas fa-file-pdf"></i></button>
 
-								<script>
-				function abrirAluno() {
-					var urlDoPDF = "../pdf/emprestimoPdf.php";
-					window.open(urlDoPDF, '_blank');
-				}
-			</script>
+									<script>
+										function abrirAluno() {
+											var urlDoPDF = "../pdf/emprestimoPdf.php";
+											window.open(urlDoPDF, '_blank');
+										}
+									</script>
 
 								</div>
 								<?php
@@ -278,7 +278,6 @@ $conn = $conexao->getConnection();
 										echo "<th><center>Quantidade</center></th>";
 										echo "<th><center>Usuário</center></th>";
 										echo "<th><center>Editar</center></th>";
-										echo "<th><center>Excluir</center></th>";
 										echo "</tr>";
 										echo "</thead>";
 										echo "<tbody>";

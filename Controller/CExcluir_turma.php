@@ -12,8 +12,18 @@ if (isset($_GET['id'])) {
         $conexao = new CConexao();
         $conn = $conexao->getConnection();
 
+<<<<<<< HEAD
         // Desativar temporariamente a verificação de chaves estrangeiras
         $conn->exec('SET FOREIGN_KEY_CHECKS = 0;');
+=======
+        // Prepara a consulta SQL para excluir o turma com o ID fornecido
+        $sql = "DELETE FROM turma WHERE IdTurma  = :IdTurma";
+        $stmt = $conn->prepare($sql);
+        $stmt->bindParam(':IdTurma', $IdTurma);
+
+        // Executa a consulta para excluir o turma
+        $stmt->execute();
+>>>>>>> e693ae6a83a6b77e59f346ec18f93417370e1f84
 
         // Excluir registros de devolução associados aos empréstimos do aluno específico
         $sqlExcluirDevolucoes = "DELETE devolucao FROM devolucao
@@ -53,4 +63,3 @@ if (isset($_GET['id'])) {
     echo "ID do aluno não fornecido.";
     exit();
 }
-?>

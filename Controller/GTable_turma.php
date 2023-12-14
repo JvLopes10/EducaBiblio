@@ -15,4 +15,3 @@ $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // Retornar os resultados como JSON
 echo json_encode($result);
-?>

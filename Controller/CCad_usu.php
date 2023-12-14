@@ -1,20 +1,23 @@
 <?php
-class UsuarioController {
+class UsuarioController
+{
     private $conexao;
 
-    public function __construct() {
+    public function __construct()
+    {
         // Inicializa a conexão com o banco de dados
         require_once('CConexao.php');
         $conexaoObj = new CConexao();
         $this->conexao = $conexaoObj->getConnection();
     }
 
-    public function salvarUsuario($postData) {
+    public function salvarUsuario($postData)
+    {
         // Extrai dados do formulário
         $nome = $postData['NomeUsuario'];
         $usuario = $postData['UserUsuario'];
         $email = $postData['EmailUsuario'];
-        $senha = $postData['SenhaUsuario']; 
+        $senha = $postData['SenhaUsuario'];
 
         // Validação simples (você deve aprimorar a validação de acordo com suas necessidades)
         if (empty($nome) || empty($usuario) || empty($email) || empty($senha)) {
@@ -45,7 +48,8 @@ class UsuarioController {
         }
     }
 
-    private function emailJaEmUso($email) {
+    private function emailJaEmUso($email)
+    {
         // Verifique se o email já está em uso no banco de dados
         $sql = "SELECT COUNT(*) FROM usuario WHERE EmailUsuario = :email";
         $stmt = $this->conexao->prepare($sql);
@@ -55,4 +59,3 @@ class UsuarioController {
         return ($count > 0);
     }
 }
-?>

@@ -4,7 +4,7 @@
 // Verifica se o ID do aluno foi enviado via parâmetro GET
 if (isset($_GET['id'])) {
     $Idaluno = $_GET['id'];
-    
+
 
     // Aqui você deve incluir o arquivo que contém a classe de conexão
     require_once('CConexao.php');
@@ -18,7 +18,7 @@ if (isset($_GET['id'])) {
         $sql = "DELETE FROM aluno WHERE IdAluno  = :IdAluno";
         $stmt = $conn->prepare($sql);
         $stmt->bindParam(':IdAluno', $IdAluno);
-        
+
         // Executa a consulta para excluir o aluno
         $stmt->execute();
 
@@ -41,4 +41,3 @@ if (isset($_GET['id'])) {
     // header("Location: alguma_pagina.php");
     exit();
 }
-?>

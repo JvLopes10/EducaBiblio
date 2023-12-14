@@ -35,6 +35,4 @@ class CAtualizar_turma
         }
     }
 }
-var_dump($_POST); 
-
-?>
+var_dump($_POST);

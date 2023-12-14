@@ -1,6 +1,6 @@
 <?php
 
-    require_once('../Controller/CAlter_usu.php'); // Inclua o arquivo que contém a classe CAlter_usu
+require_once('../Controller/CAlter_usu.php'); // Inclua o arquivo que contém a classe CAlter_usu
 var_Dump($_POST);
 if (isset($_POST['Editar'])) {
     // Recupere os dados do formulário

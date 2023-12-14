@@ -1,6 +1,12 @@
 <?php
 try {
    
+// Verificar se o usuário está logado
+if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true) {
+    header("Location: ../View/login.php"); // Redirecionar para a página de login se não estiver logado
+    exit();
+}
+
 
     // Verifica se a ação é POST e se o campo 'action' está definido
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['updateAction']) && $_POST['updateAction'] === 'Atualizar') {
@@ -24,9 +30,9 @@ try {
                 header('Location: ../View/turma.php');
                 exit();
             } else {
-              //  header('Location: ../Controller/CAtualizar_turma.php');
-                 echo 'Erro ao atualizar a turma.';
-                 var_dump($_POST); 
+                //  header('Location: ../Controller/CAtualizar_turma.php');
+                echo 'Erro ao atualizar a turma.';
+                var_dump($_POST);
             }
         } else {
             echo 'A classe CAtualizar_turma não foi encontrada.';
@@ -36,4 +42,3 @@ try {
     echo "Erro na atualização do usuário: " . $e->getMessage();
     return false;
 }
-?>
