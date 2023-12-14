@@ -1,6 +1,12 @@
 <?php
 include('../Controller/CConexao.php');
 
+// Verificar se o usuário está logado
+if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true) {
+    header("Location: ../View/login.php"); // Redirecionar para a página de login se não estiver logado
+    exit();
+}
+
 ?>
 
 <!DOCTYPE html>

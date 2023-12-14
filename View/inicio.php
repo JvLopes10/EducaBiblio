@@ -3,6 +3,12 @@ include('../Controller/CConexao.php');
 include('../Controller/CLog_usu.php');
 require '../Controller/CGet_rec.php';
 
+// Verificar se o usuário está logado
+if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true) {
+    header("Location: ../View/login.php"); // Redirecionar para a página de login se não estiver logado
+    exit();
+}
+
 
 $conexao = new CConexao();
 $conn = $conexao->getConnection();
@@ -348,7 +354,7 @@ foreach ($livrosRecomendados as $livroRecomendado) {
             IFNULL(DATE_FORMAT(devolucao.DataDevolucao, '%d/%m/%Y'), '--/--/----') AS DataDevolucaoFormatada,
             IFNULL(DATE_FORMAT(devolucao.DataDevolvida, '%d/%m/%Y'), '--/--/----') AS DataDevolvidaFormatada,
             CASE
-                WHEN emprestimo.StatusEmprestimo = 0 THEN 'Dentro do prazo'
+                WHEN emprestimo.StatusEmprestimo = 0 THEN 'A prazo'
                 WHEN emprestimo.StatusEmprestimo = 1 THEN 'Pendente'
                 WHEN emprestimo.StatusEmprestimo = 2 THEN 'Devolvido'
                 ELSE 'Status não definido'
@@ -390,7 +396,7 @@ foreach ($livrosRecomendados as $livroRecomendado) {
 										echo "<td><center>" . $emprestimo['DataDevolucaoFormatada'] . "</center></td>";
 										echo "<td><center>" . $emprestimo['DataDevolvidaFormatada'] . "</center></td>";
 										echo "<td><center><span class='status ";
-										echo ($emprestimo['Estado'] === 'Dentro do prazo') ? 'process' : (($emprestimo['Estado'] === 'Pendente') ? 'pending' : 'completed');
+										echo ($emprestimo['Estado'] === 'A prazo') ? 'process' : (($emprestimo['Estado'] === 'Pendente') ? 'pending' : 'completed');
 										echo "'>" . $emprestimo['Estado'] . "</span></center></td>";
 										echo "</tr>";
 									}

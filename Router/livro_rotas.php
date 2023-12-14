@@ -1,5 +1,12 @@
 <?php
 include('../Controller/CConexao.php');
+
+// Verificar se o usuário está logado
+if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true) {
+    header("Location: ../View/login.php"); // Redirecionar para a página de login se não estiver logado
+    exit();
+}
+
 // Verifica se a requisição é do tipo POST
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['action']) && $_POST['action'] === 'Cadastrar') {
