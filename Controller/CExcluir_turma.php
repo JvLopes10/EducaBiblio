@@ -1,43 +1,56 @@
 <?php
-// excluir_usuario.php
+// excluir_aluno.php
 
-// Verifica se o ID do turma foi enviado via parâmetro GET
 if (isset($_GET['id'])) {
-    $IdTurma = $_GET['id'];
+    $IdAluno = $_GET['id'];
 
-    // Aqui você deve incluir o arquivo que contém a classe de conexão
+    // Incluir o arquivo que contém a classe de conexão
     require_once('CConexao.php');
 
     try {
-        // Cria uma instância da classe de conexão
+        // Criar uma instância da classe de conexão
         $conexao = new CConexao();
         $conn = $conexao->getConnection();
 
-        // Prepara a consulta SQL para excluir o turma com o ID fornecido
-        $sql = "DELETE FROM turma WHERE IdTurma  = :IdTurma";
-        $stmt = $conn->prepare($sql);
-        $stmt->bindParam(':IdTurma', $IdTurma);
-        
-        // Executa a consulta para excluir o turma
-        $stmt->execute();
+        // Desativar temporariamente a verificação de chaves estrangeiras
+        $conn->exec('SET FOREIGN_KEY_CHECKS = 0;');
 
-        // Verifica se a exclusão foi realizada com sucesso
-        if ($stmt->rowCount() > 0) {
-            // Redireciona de volta para a página de turmas após a exclusão
-            header("Location: ../view/turma.php");
+        // Excluir registros de devolução associados aos empréstimos do aluno específico
+        $sqlExcluirDevolucoes = "DELETE devolucao FROM devolucao
+                                INNER JOIN emprestimo ON devolucao.emprestimo_idEmprestimo = emprestimo.idEmprestimo
+                                WHERE emprestimo.aluno_idAluno = :IdAluno";
+        $stmtExcluirDevolucoes = $conn->prepare($sqlExcluirDevolucoes);
+        $stmtExcluirDevolucoes->bindParam(':IdAluno', $IdAluno);
+        $stmtExcluirDevolucoes->execute();
+
+        // Excluir registros de empréstimo associados ao aluno específico
+        $sqlExcluirEmprestimos = "DELETE FROM emprestimo WHERE aluno_idAluno = :IdAluno";
+        $stmtExcluirEmprestimos = $conn->prepare($sqlExcluirEmprestimos);
+        $stmtExcluirEmprestimos->bindParam(':IdAluno', $IdAluno);
+        $stmtExcluirEmprestimos->execute();
+
+        // Excluir o aluno
+        $sqlExcluirAluno = "DELETE FROM aluno WHERE idAluno = :IdAluno";
+        $stmtExcluirAluno = $conn->prepare($sqlExcluirAluno);
+        $stmtExcluirAluno->bindParam(':IdAluno', $IdAluno);
+        $stmtExcluirAluno->execute();
+
+        // Reativar a verificação de chaves estrangeiras
+        $conn->exec('SET FOREIGN_KEY_CHECKS = 1;');
+
+        // Verificar se a exclusão do aluno foi realizada com sucesso
+        if ($stmtExcluirAluno->rowCount() > 0) {
+            // Redirecionar de volta para a página de alunos após a exclusão
+            header("Location: ../view/alunos.php");
             exit();
         } else {
-            echo "Falha ao excluir o turma.";
-            header("Location: ../view/turma.php");
+            echo "Falha ao excluir o aluno.";
         }
     } catch (PDOException $e) {
-        echo "Erro na exclusão do turma: " . $e->getMessage();
+        echo "Erro ao excluir aluno e suas dependências: " . $e->getMessage();
     }
 } else {
-    // Se o ID não foi fornecido, exibe uma mensagem de erro ou redireciona para outra página
-    echo "ID do turma não fornecido.";
-    // Ou redirecione para a página de turmas ou outra página
-    // header("Location: alguma_pagina.php");
+    echo "ID do aluno não fornecido.";
     exit();
 }
 ?>
