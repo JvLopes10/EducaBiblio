@@ -281,7 +281,7 @@ $conn = $conexao->getConnection();
 							} else {
 								if ($result->rowCount() > 0) {
 									$livros = $result->fetchAll(PDO::FETCH_ASSOC);
-									$livrosPorPagina = 4;
+									$livrosPorPagina = 3;
 									$paginaAtual = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
 									$indiceInicial = ($paginaAtual - 1) * $livrosPorPagina;
 									$livrosExibidos = array_slice($livros, $indiceInicial, $livrosPorPagina);

@@ -896,7 +896,7 @@ p {
     border-radius: 10px;
     outline: none;
     height: 30px;
-    color: #fff;
+    color: #fff !important;
     cursor: pointer;
     transition: 0.6s;
     display: block;
@@ -909,6 +909,18 @@ p {
 .historico-button:hover {
     background-position: right;
     background-color: #26b626;
+}
+
+.historico-button a {
+    color: #fff !important;
+    text-decoration: none;
+}
+
+#button-link {
+    color: inherit;
+    /* Use a cor padrão do texto do pai */
+    text-decoration: none;
+    /* Remover sublinhado padrão */
 }
 
 .footer {

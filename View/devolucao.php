@@ -277,7 +277,7 @@ if ($stmtLivrosParaDevolucao->rowCount() > 0) {
     echo '</table>';
      // Adição do sistema de paginação
      echo "<div class='pagination'>";
-     $livrosPorPagina = 5;
+     $livrosPorPagina = 3;
      $totalLivros = $stmtLivrosParaDevolucao->rowCount();
      $totalPaginas = ceil($totalLivros / $livrosPorPagina);
      $paginaAtual = isset($_GET['pagina']) ? $_GET['pagina'] : 1;

@@ -256,7 +256,7 @@ include('../Controller/CConexao.php');
 							} else {
 								if ($result->rowCount() > 0) {
 									$user = $result->fetchAll(PDO::FETCH_ASSOC);
-									$UsuarioPorPagina = 4;
+									$UsuarioPorPagina = 3;
 									$paginaAtual = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
 									$indiceInicial = ($paginaAtual - 1) * $UsuarioPorPagina;
 									$UsuarioExibidos = array_slice($user, $indiceInicial, $UsuarioPorPagina);
@@ -305,11 +305,11 @@ include('../Controller/CConexao.php');
 										
 
 										echo "<td><center>";
-										if (array_key_exists('idAluno', $row)) {
-											echo "<button class='historico-button' data-id='" . $row["idAluno"] . "'>"
-												 . "<a href='../pdf/registrosAluPdf.php?idAluno=" . $row["idAluno"] . "'>"
-												 . "<i class='fas fa-history'></i></a></button>";
-										}
+if (array_key_exists('idAluno', $row)) {
+    echo "<button class='historico-button' data-id='" . $row["idAluno"] . "'>"
+         . "<a class='button-link' href='../pdf/registrosAluPdf.php?idAluno=" . $row["idAluno"] . "'>"
+         . "<i class='fas fa-history'></i></a></button>";
+}
 										
 										}
 										if (array_key_exists('idProf', $row)) {
@@ -333,7 +333,7 @@ include('../Controller/CConexao.php');
 									$totalPaginas = ceil($totalUser / $UsuarioPorPagina);
 									for ($i = 1; $i <= $totalPaginas; $i++) {
 										$classeAtiva = ($i === $paginaAtual) ? "active" : "";
-										echo "<a class='page-link $classeAtiva' href='usuarios.php?pagina=$i'>$i</a>";
+										echo "<a class='page-link $classeAtiva' href='aluno.php?pagina=$i'>$i</a>";
 									}
 									echo "</div>";
 
@@ -351,7 +351,13 @@ include('../Controller/CConexao.php');
 				<footer class="footer">
 					© Copyright 2023 por <span>EducaBiblio</span> | Todos os direitos reservados
 				</footer>
+				<style>
+					#button-link {
+    color: inherit;  /* Use a cor padrão do texto do pai */
+    text-decoration: none;  /* Remover sublinhado padrão */
+}
 
+</style>
 			</main>
 	</section>
 </body>

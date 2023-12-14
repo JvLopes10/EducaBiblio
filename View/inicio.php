@@ -334,7 +334,7 @@ foreach ($livrosRecomendados as $livroRecomendado) {
 							$conn = $conexao->getConnection();
 
 							// Definir o número de registros por página
-							$registrosPorPagina = 4;
+							$registrosPorPagina = 3;
 
 							// Determinar a página atual
 							$paginaAtual = isset($_GET['pagina']) ? $_GET['pagina'] : 1;

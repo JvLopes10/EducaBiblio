@@ -228,7 +228,7 @@ $conn = $conexao->getConnection();
 							} else {
 								if ($result->rowCount() > 0) {
 									$user = $result->fetchAll(PDO::FETCH_ASSOC);
-									$UsuarioPorPagina = 4;
+									$UsuarioPorPagina = 3;
 									$paginaAtual = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
 									$indiceInicial = ($paginaAtual - 1) * $UsuarioPorPagina;
 									$UsuarioExibidos = array_slice($user, $indiceInicial, $UsuarioPorPagina);
