@@ -1,12 +1,6 @@
 <?php
 session_start();
 
-// Verificar se o usuário já está logado
-if (isset($_SESSION['usuario_logado']) && $_SESSION['usuario_logado'] === true) {
-    header("Location: ../View/inicio.php"); // Redirecionar para a página inicial
-    exit();
-}
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     require_once('../Controller/CConexao.php'); // Verifique o caminho correto do arquivo
 
