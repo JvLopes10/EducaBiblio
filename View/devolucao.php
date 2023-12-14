@@ -306,7 +306,7 @@ if ($stmtLivrosParaDevolucao->rowCount() > 0) {
      echo "</div>";
  
  } else {
-     echo 'Nenhum livro disponível para devolução.';
+     echo '<center>Nenhum livro disponível para devolução.</center>';
  }
  ?>
 

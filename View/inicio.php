@@ -16,12 +16,12 @@ include('../Controller/CPendencias.php'); // Inclua o arquivo CPendencias.php aq
 <html lang="pt-br">
 
 <head>
+<title>EducaBiblio</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<script src="../ArquivosExternos/icons.js"></script>
 	<link rel="shortcut icon" href="../img/icon1.png" type="image/x-icon">
 	<link rel="stylesheet" href="../CSS/style.css">
-	<title>EducaBiblio</title>
 </head>
 <style>
 	.pagination {
@@ -411,7 +411,7 @@ foreach ($livrosRecomendados as $livroRecomendado) {
 									}
 									echo "</div>";
 								} else {
-									echo "<p>Nenhum empréstimo encontrado.</p>";
+									echo "<p><center>Nenhum empréstimo encontrado.</center></p>";
 								}
 							}
 

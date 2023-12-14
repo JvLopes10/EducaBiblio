@@ -1,0 +1,150 @@
+<?php
+
+include 'config.php';
+
+// Verifica se o ID do aluno foi fornecido na URL
+if(isset($_GET['idAluno'])) {
+    $idAluno = $_GET['idAluno'];
+
+    // Sua consulta SQL modificada para filtrar pelo ID do aluno
+    $sql = "SELECT
+                emprestimo.idEmprestimo,
+                aluno.NomeAluno AS Estudante,
+                DATE_FORMAT(emprestimo.DataEmprestimo, '%d/%m/%Y') AS DataEmprestimoFormatada,
+                IFNULL(DATE_FORMAT(devolucao.DataDevolucao, '%d/%m/%Y'), '--/--/----') AS DataDevolucaoFormatada,
+                IFNULL(DATE_FORMAT(devolucao.DataDevolvida, '%d/%m/%Y'), '--/--/----') AS DataDevolvidaFormatada,
+                CASE
+                    WHEN emprestimo.StatusEmprestimo = 0 THEN 'Dentro do prazo'
+                    WHEN emprestimo.StatusEmprestimo = 1 THEN 'Pendente'
+                    WHEN emprestimo.StatusEmprestimo = 2 THEN 'Devolvido'
+                    ELSE 'Status não definido'
+                END AS Estado
+            FROM emprestimo
+            LEFT JOIN aluno ON emprestimo.aluno_idAluno = aluno.idAluno
+            LEFT JOIN devolucao ON emprestimo.idEmprestimo = devolucao.emprestimo_idEmprestimo
+            WHERE aluno.idAluno = $idAluno";
+
+    $res = $conn->query($sql);
+
+    if ($res->num_rows > 0) {
+        $html = "<html>
+        <head>
+        <title>EducaBiblio</title>
+        <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            text-align: center;
+            color: #ffffff;
+            margin-bottom: 20px;
+            background-color: rgba(76,175,80); 
+            padding: 10px; 
+        }
+        #library-info {
+            text-align: center;
+            margin: 20px 0;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            border: 1px solid #333;
+            padding: 12px;
+            text-align: center;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+            font-weight: bolder;
+        }
+        tbody tr:nth-child(even) {
+            background-color: #f2f2f2; /* Light Gray */
+        }
+        tbody tr:nth-child(odd) {
+            background-color: #fff; /* White */
+        }
+        .footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            font-weight: bold;
+        }
+    </style>
+        </head>
+        <body>
+        <div id='library-info'>
+        <h1>Tabela de Empréstimos</h1>
+        <p>
+            Bem-vindo ao EducaBiblio, o seu sistema de biblioteca dedicado à promoção da educação e leitura! Abaixo, apresentamos os registros dos empréstimos realizados.
+        </p>
+    </div>
+    <table>
+        <thead>
+            <tr>
+            <th>Leitor/th>
+            <th>Livro</th>
+            <th>Data do Empréstimo</th>
+            <th>Data de Devolução</th>
+            <th>Data em que foi Devolvido</th>
+            <th>Estado</th>
+            </tr>
+            </tr>
+        </thead>
+        <tbody>";
+
+while ($row = $res->fetch_object()) {
+    $html .= "<tr>";
+    $html .= "<td>" . $row->Estudante . "</td>";
+    $html .= "<td>" . $row->NomeLivro . "</td>";
+    $html .= "<td>" . $row->DataEmprestimoFormatada . "</td>";
+    $html .= "<td>" . $row->DataDevolucaoFormatada . "</td>";
+    $html .= "<td>" . $row->DataDevolvidaFormatada . "</td>";
+    $html .= "<td>" . $row->Estado . "</td>";
+
+    $html .= "</tr>";
+}
+
+$html .= "</tbody>
+    </table>
+    <div class='footer'>
+        Governo do Ceará - Educação e Leitura
+    </div>
+        </body>
+        </html>";
+    } else {
+        $html = 'Não há dados a serem exibidos para este aluno.';
+    }
+
+    // ... (o resto do seu código para criar e exibir o PDF)
+} else {
+    $html = 'ID do aluno não fornecido.';
+}
+
+use Dompdf\Dompdf;
+
+require_once 'dompdf/autoload.inc.php';
+
+$dompdf = new Dompdf();
+
+$dompdf->loadHtml($html);
+
+$dompdf->set_option('defaultFont', 'sans');
+
+$dompdf->setPaper('A4', 'portrait');
+
+$dompdf->render();
+
+$dompdf->stream("Tabela de empréstimo", array("Attachment" => false));
+
+?>

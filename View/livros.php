@@ -337,7 +337,7 @@ $conn = $conexao->getConnection();
 									}
 									echo "</div>";
 								} else {
-									echo "<tr><td colspan='8'>Nenhum livro encontrado.</td></tr>";
+									echo "<tr><td colspan='8'><center>Nenhum livro encontrado.</center></td></tr>";
 								}
 							}
 

@@ -145,7 +145,7 @@ include('../Controller/CConexao.php');
 
 		<body>
 
-			<section class="tabela">:
+			<section class="tabela">
 				<div class="row">
 					<form action="../Router/alunos_rotas.php" method="post">
 						<h3>Cadastro de leitores</h3>
@@ -206,12 +206,12 @@ include('../Controller/CConexao.php');
 							<h3>Tabela de leitores</h3>
 							<input type="text" id="searchInput" class="searchInput" placeholder="Pesquisar...">
 
-							<button class="pdf-button" id="pdf-button" aria-label="botão pdf" onclick="abrirAluno()">
+							<button class="pdf-button" id="pdf-button" aria-label="botão pdf" onclick="abrirAluno2()">
 								<i class="fas fa-file-pdf"></i></button>
 
 						</div>
 						<script>
-							function abrirAluno() {
+							function abrirAluno2() {
 								var urlDoPDF = "../pdf/alunoPdf.php";
 								window.open(urlDoPDF, '_blank');
 							}
@@ -244,6 +244,7 @@ SELECT
 	NULL AS nomeTurma,
 	NULL AS AnoTurma  -- Adicione o campo AnoTurma para professores como NULL
 FROM prof";
+
 
 
 							$result = $conn->query($sql);
@@ -305,7 +306,7 @@ FROM prof";
 
 										echo "<td><center>";
 										if (array_key_exists('idAluno', $row)) {
-											echo "<button class='historico-button' data-id='" . $row["idAluno"] . "'><i class='fas fa-history'></i></button>";
+											echo "<button class='historico-button' onclick='abrirAluno()' data-id='" . $row["idAluno"] . "'><i class='fas fa-history'></i></button>";
 										}
 										if (array_key_exists('idProf', $row)) {
 											echo "<button class='historico-button' data-id='" . $row["idProf"] . "'><i class='fas fa-history'></i></button>";
@@ -314,6 +315,9 @@ FROM prof";
 
 										echo "</tr>";
 									}
+
+			
+									
 
 
 									echo "</tbody>";
@@ -331,7 +335,7 @@ FROM prof";
 
 									// Botão Fechar do popup fora da tabela
 								} else {
-									echo "<p>Nenhum usuário encontrado.</p>";
+									echo "<p><center>Nenhum usuário encontrado.</center></p>";
 								}
 							}
 
@@ -438,7 +442,12 @@ FROM prof";
 
 
 
-
+<script>
+				function abrirAluno() {
+					var urlDoPDF = "../pdf/registrosAluPdf.php";
+					window.open(urlDoPDF, '_blank');
+				}
+			</script>
 
 
 
