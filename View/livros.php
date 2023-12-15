@@ -153,7 +153,7 @@ if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true)
 				<div class="row">
 					<form action="../router/livro_rotas.php" method="post" enctype="multipart/form-data">
 						<h3>Cadastro de livros</h3>
-						<input type="text" placeholder="ID" name="idLivro" required maxlength="50" class="box3" autocomplete="off" readonly>
+						<input type="text" placeholder="ID" name="idLivro" required maxlength="50" class="box2" autocomplete="off" readonly>
 						<style>
 
 						</style>
@@ -185,7 +185,6 @@ if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true)
 							<option value="Não">Material não didático</option>
 						</select>
 
-						<input type="file" name="FotoLivro" id="FotoLivro" class="box">
 						<input type="text" placeholder="Localização" name="LocalLivro" id="LocalLivro" class="box" autocomplete="off">
 						<select id="PrateleiraLivro" name="PrateleiraLivro" class="box select-dark-mode">
 							<option>Prateleira</option>
@@ -302,7 +301,6 @@ if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true)
 									echo "<th><center>Gênero</center></th>";
 									echo "<th><center>Idioma</center></th>";
 									echo "<th><center>Quantidade</center></th>";
-									echo "<th><center>Imagem</center></th>";
 									echo "<th><center>Localização</center></th>";
 									echo "<th><center>Editar</center></th>";
 									echo "<th><center>Excluir</center></th>";
@@ -319,7 +317,6 @@ if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true)
 										echo "<td><center>" . $row["GeneroLivro"] . "</center></td>";
 										echo "<td><center>" . $row["IdiomaLivro"] . "</center></td>";
 										echo "<td><center>" . $row["QuantidadeLivros"] . "</center></td>";
-										echo "<td><center><img src='" . $row["CaminhoFotoLivro"] . "' alt='Imagem do Livro' /></center></td>";
 										echo "<td><div class='container'><center><button class='historico-button' type='button' onclick='handlePopup1(\"" . $row["LocalLivro"] . "\", \"" . $row["PrateleiraLivro"] . "\", \"" . $row["ColunaLivro"] . "\")'><i class='fas fa-map-marker-alt'></i></button></center><div class='popup1' id='popup1'><img src='../img/livro.png'><h2 class='title'>Localização</h2><p class='desc'><b>✧ Localização: </b>" . $row["LocalLivro"] . "</p><p class='desc'><b>✧ Prateleira: </b>" . $row["PrateleiraLivro"] . "</p><p class='desc'><b>✧ Coluna: </b>" . $row["ColunaLivro"] . "</p><button class='close-popup1-button' type='button' onclick='handlePopup1(false)'>Fechar</button></div></div></div></td>";
 
 										echo "<td><center><button class='edit-button'><i class='fas fa-pencil-alt'></i></button></center></td>";
