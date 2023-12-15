@@ -245,7 +245,7 @@ $conn = $conexao->getConnection();
                                             $classeCSS = "status completed";
                                             break;
                                         case 4:
-                                            $estado = "Devolvido com pendencia.";
+                                            $estado = "Devolvido com pendência.";
                                             $classeCSS = "status process";
                                             break;
                                         default:
@@ -265,7 +265,7 @@ $conn = $conexao->getConnection();
 
                                     if ($row['Estado'] == 2 || $row['Estado'] == 4) {
                                         echo '<div class="container">';
-                                        echo '<center><a href="#"><button class="close-popup-button">X</button></a></center>';
+                                        echo '<center>-</center>';
                                         echo '</div>';
                                     } else {
                                         echo '<div class="container">';
@@ -275,7 +275,7 @@ $conn = $conexao->getConnection();
                                         echo '<h2 class="title"></h2>';
                                         echo '<p class="desc">O livro foi realmente devolvido?</p>';
                                         echo '<button class="close-popup-button" type="submit" onclick="handlePopup(false)">Fechar</button>';
-                                        echo '<a href="../Controller/CDevolver_livro.php?id=' . $row['idEmprestimo'] . '"><button class="close-popup-button">Confirmar Devolução</button></a>';
+                                        echo '<a href="../Controller/CDevolver_livro.php?id=' . $row['idEmprestimo'] . '"><button class="close-popup-button">Devolver</button></a>';
                                         echo '</div>';
                                         echo '</div>';
                                     }

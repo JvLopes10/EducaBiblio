@@ -43,9 +43,9 @@ body {
 .popup {
     position: absolute;
     /* Define a posição como absoluta para posicionamento personalizado */
-    top: -200%;
+    top: -2%;
     /* Inicialmente, o topo está fora da tela */
-    right: 395%;
+    right: 500%;
     /* Inicialmente, a direita está fora da tela */
     padding: 5%;
     /* Preenchimento interno do popup */
@@ -183,9 +183,9 @@ body {
 .popup1 {
     position: absolute;
     /* Define a posição como absoluta para posicionamento personalizado */
-    top: -280%;
+    top: -200%;
     /* Inicialmente, o topo está fora da tela */
-    right: 150%;
+    right: 250%;
     /* Inicialmente, a direita está fora da tela */
     padding: 5%;
     /* Preenchimento interno do popup */
