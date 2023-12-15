@@ -313,7 +313,7 @@ if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true)
 										echo "<td><center>";
 										if (array_key_exists('idAluno', $row)) {
 											echo "<button class='historico-button' data-id='" . $row["idAluno"] . "'>"
-												. "<a class='button-link' href='../pdf/registrosAluPdf.php?idAluno=" . $row["idAluno"] . "'>"
+												. "<a class='button-link' href='../pdf/registrosAluPdf.php?idAluno=" . $row["idAluno"] . "' target='_blank'>"
 												. "<i class='fas fa-history'></i></a></button>";
 										}
 									}
