@@ -278,7 +278,6 @@
 										echo "<th><center>Quantidade</center></th>";
 										echo "<th><center>Usuário</center></th>";
 										echo "<th><center>Editar</center></th>";
-										echo "<th><center>Excluir</center></th>";
 										echo "</tr>";
 										echo "</thead>";
 										echo "<tbody>";
@@ -308,7 +307,6 @@
 											echo "<td><center>" . $row["Quantidade_emp"] . "</center></td>";
 											echo "<td><center>" . $row["UserUsuario"] . "</center></td>";
 											echo "<td><center><button class='edit-button'><i class='fas fa-pencil-alt'></i></button></center></td>";
-											echo "<td><div class='container'><center><button class='delete-button' type='submit' onclick='handlePopup(true)'><i class='fas fa-trash-alt'></i></button></center><div class='popup' id='popup'><img src='../img/decisao.png' aria-label='popup decisão'><h2 class='title'>Aviso!</h2><p class='desc'>Deseja mesmo excluir?</p><button class='close-popup-button' type='submit' onclick='handlePopup(false)'>Fechar</button><a href='../Controller/CExcluir_emp.php?id={$row["idEmprestimo"]}'><button class='close-popup-button'>Excluir</button></a></div></div></div></td>";
 											echo "</tr>";
 										}
 
