@@ -274,10 +274,11 @@
 										echo "<th><center>Turma</center></th>";
 										echo "<th><center>Leitor</center></th>";
 										echo "<th><center>Data de empréstimo</center></th>";
-										echo "<th><center>Data prevista para devolução</center></th>";
+										echo "<th><center>Data para devolução</center></th>";
 										echo "<th><center>Quantidade</center></th>";
 										echo "<th><center>Usuário</center></th>";
 										echo "<th><center>Editar</center></th>";
+										echo "<th><center>Excluir</center></th>";
 										echo "</tr>";
 										echo "</thead>";
 										echo "<tbody>";
