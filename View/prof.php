@@ -85,13 +85,13 @@ if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true)
 					<span class="text">Devoluções</span>
 				</a>
 			</li>
-			<li class="active">
+			<li>
 				<a href="aluno.php">
 					<i class="fas fa-graduation-cap"></i>
 					<span class="text">Alunos</span>
 				</a>
 			</li>
-			<li>
+			<li class="active">
 				<a href="prof.php">
 					<i class="fas fa-graduation-cap"></i>
 					<span class="text">Professores</span>
@@ -159,30 +159,12 @@ if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true)
 
 			<section class="tabela">
 				<div class="row">
-					<form action="../Router/alunos_rotas.php" method="post">
-						<h3>Cadastro de leitores</h3>
-						<input type="text" placeholder="ID" name="id" maxlength="50" class="box3" autocomplete="off" readonly>
-
-						<input type="text" placeholder="Nome" name="NomeAluno" id="NomeAluno" maxlength="50" class="box" autocomplete="off">
-						<input type="email" placeholder="E-mail" name="EmailAluno" id="EmailAluno" maxlength="50" class="box" autocomplete="off">
-
-						<select id="Turma_idTurma" name="Turma_idTurma" class="box select-dark-mode">
-							<option value="0">Turma</option>
-
-							<?php
-
-							include('../Controller/CGet_turma.php');
-							$turma = getTurmasFromDB(); // Chama a função para obter as turmas do banco
-
-							foreach ($turma as $idTurma => $nomeTurma) {
-								echo "<option value=\"$idTurma\">$nomeTurma</option>";
-							}
-
-
-							?>
-
-						</select>
-
+					<form action="../Router/prof_rotas.php" method="post">
+						<h3>Cadastro de Professores</h3>
+						<input type="text" placeholder="ID" name="idProf" id="idProf" maxlength="50" class="box3 autocomplete="off" readonly>
+						<input type="text" placeholder="Nome" name="NomeProf" id="NomeProf" maxlength="50" class="box" autocomplete="off">
+						<input type="email" placeholder="E-mail" name="EmailProf" id="EmailProf" maxlength="50" class="box" autocomplete="off">
+						<input type="text" placeholder="Materia" name="MateriaProf" id="MateriaProf" maxlength="50" class="box" autocomplete="off">
 						<center><input type="submit" value="Enviar" class="inline-btn" name="action"></center>
 					</form>
 				</div>
@@ -204,7 +186,7 @@ if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true)
 				<div class="table-data">
 					<div class="order">
 						<div class="head">
-							<h3>Tabela de leitores</h3>
+							<h3>Tabela de Professores</h3>
 							<input type="text" id="searchInput" class="searchInput" placeholder="Pesquisar...">
 
 							<button class="pdf-button" id="pdf-button" aria-label="botão pdf" onclick="abrirAluno2()">
@@ -219,86 +201,62 @@ if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true)
 						</script>
 						<table>
 
-							<?php
-							// Inicializa a conexão com o banco de dados
-							$conexao = new CConexao();
-							$conn = $conexao->getConnection();
+						<?php
 
-							// Consulta para obter os dados dos alunos com o nome da turma
-							$sql = "SELECT 
-        aluno.NomeAluno,
-        aluno.idAluno,
-        aluno.Turma_idTurma,
-        aluno.EmailAluno,
-        'aluno' AS tipo,
-        turma.nomeTurma,
-        turma.AnoTurma
-    FROM aluno
-    LEFT JOIN turma ON aluno.Turma_idTurma = turma.idTurma ";
+// Aqui você já deve ter sua conexão com o banco de dados configurada
 
-							$result = $conn->query($sql);
+// Consulta SQL para obter os dados dos professores
+$sql = "SELECT * FROM prof";
+$result = $conn->query($sql);
 
-							if ($result === false) {
-								// Use errorInfo para obter informações sobre o erro
-								$errorInfo = $conn->errorInfo();
-								echo "Erro na consulta SQL: " . $errorInfo[2];
-							} else {
-								if ($result->rowCount() > 0) {
-									$user = $result->fetchAll(PDO::FETCH_ASSOC);
-									$UsuarioPorPagina = 3;
-									$paginaAtual = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
-									$indiceInicial = ($paginaAtual - 1) * $UsuarioPorPagina;
-									$UsuarioExibidos = array_slice($user, $indiceInicial, $UsuarioPorPagina);
+if ($result === false) {
+    // Use errorInfo para obter informações sobre o erro
+    $errorInfo = $conn->errorInfo();
+    echo "Erro na consulta SQL: " . $errorInfo[2];
+} else {
+    if ($result->rowCount() > 0) {
+        $professores = $result->fetchAll(PDO::FETCH_ASSOC);
 
-									// Exibir a tabela de alunos com o nome da turma
-									echo "<table>";
-									echo "<thead>";
-									echo "<tr>";
-									echo "<th><center>Nome</center></th>";
-									echo "<th><center>ID</center></th>";
-									echo "<th><center>Email</center></th>";
-									echo "<th><center>Turma</center></th>";
-									echo "<th><center>Editar</center></th>";
-									echo "<th><center>Excluir</center></th>";
-									echo "<th><center>Histórico</center></th>";
-									echo "</tr>";
-									echo "</thead>";
-									echo "<tbody>";
+        // Exibir a tabela com os dados dos professores
+        echo "<table>";
+        echo "<thead>";
+        echo "<tr>";
+        echo "<th><center>ID</center></th>";
+        echo "<th><center>Nome</center></th>";
+        echo "<th><center>Email</center></th>";
+        echo "<th><center>Materia</center></th>";
+		echo "<th><center>Editar</center></th>";
+		echo "<th><center>Excluir</center></th>";
+		echo "<th><center>Histórico</center></th>";
+        echo "</tr>";
+        echo "</thead>";
+        echo "<tbody>";
 
-									foreach ($UsuarioExibidos as $row) {
-										echo "<tr>";
-										echo "<td><center>" . $row["NomeAluno"] . "</center></td>";
-										echo "<td><center>" . $row["idAluno"] . "</center></td>";
-										echo "<td><center>" . $row["EmailAluno"] . "</center></td>";
-										echo "<td><center>" . ($row["nomeTurma"] ? $row["AnoTurma"] . ' º ' . $row["nomeTurma"] : "Não se aplica") . "</center></td>";
+        foreach ($professores as $row) {
+            echo "<tr>";
+            echo "<td><center>" . $row["idProf"] . "</center></td>";
+            echo "<td><center>" . $row["NomeProf"] . "</center></td>";
+            echo "<td><center>" . $row["EmailProf"] . "</center></td>";
+            echo "<td><center>" . $row["MateriaProf"] . "</center></td>";
+			echo "<td><center><button class='edit-button' data-id='" . $row["idProf"] . "'><i class='fas fa-pencil-alt'></i></button></center> 	</td>";
+			echo "<td><center><div class='container'><center><button class='delete-button' type='button' onclick='handlePopup(true)' aria-label='botão excluir'><i class='fas fa-trash-alt'></i></button></center><div class='popup' id='popup'><img src='../img/decisao.png' aria-label='popup decisão'><h2 class='title'>Aviso!</h2><p class='desc'>Deseja mesmo excluir?</p><button class='close-popup-button' type='button' onclick='handlePopup(false)'>Fechar</button><a href='../Controller/CExcluir_prof.php?id={$row["idProf"]}'><button class='close-popup-button'>Excluir</button></a></div></div></div></center></td>";
+			echo "<td><center><button class='historico-button' data-id='" . $row["idProf"] . "'><i class='fas fa-history'></i></button></center></td>";
+            echo "</tr>";
+        }
 
-										echo "<td><center><button class='edit-button' data-id='" . $row["idAluno"] . "'><i class='fas fa-pencil-alt'></i></button></center></td>";
-										echo "<td><center><div class='container'><center><button class='delete-button' type='button' onclick='handlePopup(true)' aria-label='botão excluir'><i class='fas fa-trash-alt'></i></button></center><div class='popup' id='popup'><img src='../img/decisao.png' aria-label='popup decisão'><h2 class='title'>Aviso!</h2><p class='desc'>Deseja mesmo excluir?</p><button class='close-popup-button' type='button' onclick='handlePopup(false)'>Fechar</button><a href='../Controller/CExcluir_aluno.php?id={$row["idAluno"]}'><button class='close-popup-button'>Excluir</button></a></div></div></div></center></td>";
-										echo "<td><center><button class='historico-button' data-id='" . $row["idAluno"] . "'>" . "<a class='button-link' href='../pdf/registrosAluPdf.php?idAluno=" . $row["idAluno"] . "'>" . "<i class='fas fa-history'></i></a></button></center></td>";
+        echo "</tbody>";
+        echo "</table>";
 
-										
-										echo "</tr>";
-									}
+        // Você pode adicionar recursos de paginação, se necessário
+    } else {
+        echo "Não foram encontrados professores na base de dados.";
+    }
+}
 
-									echo "</tbody>";
-									echo "</table>";
+// Lembre-se de fechar a conexão ao final
+$conn = null;
+?>
 
-									// Adiciona links de paginação
-									echo "<div class='pagination'>";
-									$totalUser = count($user);
-									$totalPaginas = ceil($totalUser / $UsuarioPorPagina);
-									for ($i = 1; $i <= $totalPaginas; $i++) {
-										$classeAtiva = ($i === $paginaAtual) ? "active" : "";
-										echo "<a class='page-link $classeAtiva' href='aluno.php?pagina=$i'>$i</a>";
-									}
-									echo "</div>";
-
-									// Botão Fechar do popup fora da tabela
-								}
-							}
-
-							$conn = null; // Fecha a conexão
-							?>
 
 
 							</tbody>
@@ -330,19 +288,58 @@ if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true)
 		$('#turmaTable').DataTable(); // Inicializa o DataTables para a tabela de turma
 	});
 </script>
-<script>
-	$('#searchInput').on('keyup', function() {
-		const value = $(this).val().toLowerCase();
 
-		$('table tbody tr').filter(function() {
-			$(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+<script>
+	$(document).ready(function() {
+		// Capturar clique no botão de exclusão
+		$('.delete-button').click(function() {
+			// Obter o ID do item a ser excluído
+			var id = $(this).closest('tr').find('td:eq(0)').text(); // Considerando que o ID está na segunda coluna
+
+			// Mostrar o popup de confirmação
+			handlePopup(true);
+
+			// Preencher o link de exclusão com o ID correto
+			var linkExclusao = '../Controller/CExcluir_prof.php?id=' + id;
+			$('#popup a').attr('href', linkExclusao);
 		});
 	});
 </script>
 
+<script>
+	$(document).ready(function() {
+		// Capturar clique no botão de edição
+		$('.edit-button').click(function() {
+			// Obter o ID do item a ser editado
+			var id = $(this).data('id');
 
+			// Encontrar os dados correspondentes na tabela de usuários e preencher o formulário
+			$('table tbody tr').each(function() {
+				var rowId = $(this).find('td:eq(0)').text(); // Considerando que o ID está na segunda coluna
+				if (rowId == id) {
+					var nome = $(this).find('td:eq(1)').text();
+					var email = $(this).find('td:eq(2)').text();
+					var materia = $(this).find('td:eq(3)').text();
 
+					// Preencher os campos do formulário com os dados obtidos
+					$('#idProf').val(id);
+					$('#NomeProf').val(nome);
+					$('#EmailProf').val(email);
+					$('#MateriaProf').val(materia);
 
+					// Alterar o modo de ação para editar
+					$('#modoAcao').val('editar');
+					// Alterar o valor do botão para refletir a ação de edição
+					$('input[type="submit"]').val('Editar');
+					// Alterar a rota do formulário para a rota de atualização de usuários
+					$('form').attr('action', '../Router/profedit_rotas.php'); // Alterar a action do formulário para a rota correta
+					// Alterar o nome do botão para identificar a ação como atualização
+					$('input[type="submit"]').attr('name', 'Editar');
+				}
+			});
+		});
+	});
+</script>
 <script>
 	function abrirAluno() {
 		var urlDoPDF = "../pdf/registrosAluPdf.php";

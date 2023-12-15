@@ -64,6 +64,12 @@
 						</a>
 					</li>
 					<li>
+				<a href="prof.php">
+					<i class="fas fa-graduation-cap"></i>
+					<span class="text">Professores</span>
+				</a>
+			</li>
+					<li>
 						<a href="turma.php">
 							<i class="fas fa-users"></i>
 							<span class="text">Turma</span>
@@ -263,6 +269,10 @@
 								} else {
 									if ($result->rowCount() > 0) {
 										$emprestimos = $result->fetchAll(PDO::FETCH_ASSOC);
+										$emprestimosPorPagina = 3;
+										$paginaAtual = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
+										$indiceInicial = ($paginaAtual - 1) * $emprestimosPorPagina;
+										$emprestimosExibidos = array_slice($emprestimos, $indiceInicial, $emprestimosPorPagina);
 
 										// Exibir a tabela de empréstimos
 										echo "<table>";
@@ -314,8 +324,20 @@
 
 										echo "</tbody>";
 										echo "</table>";
+										// Adiciona links de paginação
+										echo "<div class='pagination'>";
+										$totalemprestimos = count($emprestimos);
+										$totalPaginas = ceil($totalemprestimos / $emprestimosPorPagina);
+										for ($i = 1; $i <= $totalPaginas; $i++) {
+											$classeAtiva = ($i === $paginaAtual) ? "active" : "";
+											echo "<a class='page-link $classeAtiva' href='emprestimos.php?pagina=$i'>$i</a>";
+										}
+										echo "</div>";
+
+										// Botão Fechar do popup fora da tabela
+
 									} else {
-										echo "<p><center>Nenhum empréstimo encontrado.</center></p>";
+										echo "<p><center>enhum usuário encontrado.</center></p>";
 									}
 								}
 

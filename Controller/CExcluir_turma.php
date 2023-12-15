@@ -12,10 +12,6 @@ if (isset($_GET['id'])) {
         $conexao = new CConexao();
         $conn = $conexao->getConnection();
 
-<<<<<<< HEAD
-        // Desativar temporariamente a verificação de chaves estrangeiras
-        $conn->exec('SET FOREIGN_KEY_CHECKS = 0;');
-=======
         // Prepara a consulta SQL para excluir o turma com o ID fornecido
         $sql = "DELETE FROM turma WHERE IdTurma  = :IdTurma";
         $stmt = $conn->prepare($sql);
@@ -23,7 +19,6 @@ if (isset($_GET['id'])) {
 
         // Executa a consulta para excluir o turma
         $stmt->execute();
->>>>>>> e693ae6a83a6b77e59f346ec18f93417370e1f84
 
         // Excluir registros de devolução associados aos empréstimos do aluno específico
         $sqlExcluirDevolucoes = "DELETE devolucao FROM devolucao
@@ -51,10 +46,11 @@ if (isset($_GET['id'])) {
         // Verificar se a exclusão do aluno foi realizada com sucesso
         if ($stmtExcluirAluno->rowCount() > 0) {
             // Redirecionar de volta para a página de alunos após a exclusão
-            header("Location: ../view/alunos.php");
+            header("Location: ../view/turma.php");
             exit();
         } else {
-            echo "Falha ao excluir o aluno.";
+            header("Location: ../view/turma.php");
+            echo "Não foi possivel exxcluir turma";
         }
     } catch (PDOException $e) {
         echo "Erro ao excluir aluno e suas dependências: " . $e->getMessage();

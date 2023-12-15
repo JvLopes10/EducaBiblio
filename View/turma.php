@@ -88,6 +88,12 @@ if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true)
 					<span class="text">Alunos</span>
 				</a>
 			</li>
+			<li>
+				<a href="prof.php">
+					<i class="fas fa-graduation-cap"></i>
+					<span class="text">Professores</span>
+				</a>
+			</li>
 			<li class="active">
 				<a href="turma.php">
 					<i class="fas fa-users"></i>
@@ -225,11 +231,11 @@ if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true)
 								echo "Erro na consulta SQL: " . $errorInfo[2];
 							} else {
 								if ($result->rowCount() > 0) {
-									$user = $result->fetchAll(PDO::FETCH_ASSOC);
-									$UsuarioPorPagina = 3;
+									$turm = $result->fetchAll(PDO::FETCH_ASSOC);
+									$TurmaPorPagina = 3;
 									$paginaAtual = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
-									$indiceInicial = ($paginaAtual - 1) * $UsuarioPorPagina;
-									$UsuarioExibidos = array_slice($user, $indiceInicial, $UsuarioPorPagina);
+									$indiceInicial = ($paginaAtual - 1) * $TurmaPorPagina;
+									$TurmasExibidos = array_slice($turm, $indiceInicial, $TurmaPorPagina);
 
 									// Exibir a tabela de usuários
 									echo "<table>";
@@ -245,7 +251,7 @@ if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true)
 									echo "</thead>";
 									echo "<tbody>";
 
-									foreach ($UsuarioExibidos as $row) {
+									foreach ($TurmasExibidos as $row) {
 										echo "<tr>";
 										echo "<td><center>" . $row["IdTurma"] . "</center></td>";
 										echo "<td><center>" . $row["AnoTurma"] . "</center></td>";
@@ -261,8 +267,8 @@ if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true)
 
 									// Adiciona links de paginação
 									echo "<div class='pagination'>";
-									$totalUser = count($user);
-									$totalPaginas = ceil($totalUser / $UsuarioPorPagina);
+									$totalturm = count($turm);
+									$totalPaginas = ceil($totalturm / $TurmaPorPagina);
 									for ($i = 1; $i <= $totalPaginas; $i++) {
 										$classeAtiva = ($i === $paginaAtual) ? "active" : "";
 										echo "<a class='page-link $classeAtiva' href='turma.php?pagina=$i'>$i</a>";

@@ -95,6 +95,12 @@ $conn = $conexao->getConnection();
                 </a>
             </li>
             <li>
+				<a href="prof.php">
+					<i class="fas fa-graduation-cap"></i>
+					<span class="text">Professores</span>
+				</a>
+			</li>
+            <li>
                 <a href="turma.php">
                     <i class="fas fa-users"></i>
                     <span class="text">Turma</span>
