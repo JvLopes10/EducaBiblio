@@ -45,7 +45,7 @@ body {
     /* Define a posição como absoluta para posicionamento personalizado */
     top: -2%;
     /* Inicialmente, o topo está fora da tela */
-    right: 500%;
+    right: 470%;
     /* Inicialmente, a direita está fora da tela */
     padding: 5%;
     /* Preenchimento interno do popup */
@@ -101,7 +101,7 @@ body {
     /* Alinhar itens ao centro */
     border: none;
     /* Remove a borda */
-    padding: 8px 30px;
+    padding: 8px 20px;
     /* Preenchimento interno */
     border-radius: 16px;
     /* Borda arredondada */
@@ -117,7 +117,7 @@ body {
     /* Mostra uma mão ao passar o mouse (cursor de clique) */
     transition: all 0.4s;
     /* Transição suave para animações */
-    margin: 8px 0;
+    margin: 10px 0;
     /* Margens */
     margin-top: 22px;
     /* Margem superior */

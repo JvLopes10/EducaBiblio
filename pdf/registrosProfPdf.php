@@ -2,25 +2,7 @@
 
 include 'config.php';
 
-$sql = "SELECT aluno.NomeAluno,
-aluno.idAluno,
-aluno.Turma_idTurma,
-aluno.EmailAluno,
-'aluno' AS tipo,
-turma.nomeTurma,
-turma.AnoTurma  
-FROM aluno
-LEFT JOIN turma ON aluno.Turma_idTurma = turma.idTurma 
-UNION
-SELECT
-prof.NomeProf AS NomeAluno,
-prof.idProf AS idAluno,
-NULL AS Turma_idTurma,
-prof.EmailProf AS EmailAluno,
-'prof' AS tipo,
-NULL AS nomeTurma,
-NULL AS AnoTurma  
-FROM prof";
+$sql = "SELECT * FROM prof";
 
 $res = $conn->query($sql);
 
@@ -93,6 +75,7 @@ if ($res->num_rows > 0) {
                 <th>ID</th>
                 <th>Nome</th>
                 <th>E-mail</th>
+                <th>Tipo</th>
                 <th>Série</th>
                 <th>Turma</th>
                 </tr>
@@ -104,6 +87,7 @@ if ($res->num_rows > 0) {
         $html .= "<td>" . $row->idAluno . "</td>";
         $html .= "<td>" . $row->NomeAluno . "</td>";
         $html .= "<td>" . $row->EmailAluno . "</td>";
+        $html .= "<td>" . $row->tipo . "</td>";
         $html .= "<td>" . $row->AnoTurma . "</td>";
         $html .= "<td>" . $row->nomeTurma . "</td>";
 
