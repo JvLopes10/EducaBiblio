@@ -161,11 +161,11 @@ if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true)
 				<div class="row">
 					<form action="../Router/alunos_rotas.php" method="post">
 						<h3>Cadastro de leitores</h3>
-						<input type="text" placeholder="ID" name="id" maxlength="50" class="box3" autocomplete="off" readonly>
+						<input type="text" placeholder="ID" name="idAluno" id="idAluno" maxlength="50" class="box3" autocomplete="off" readonly>
 
 						<input type="text" placeholder="Nome" name="NomeAluno" id="NomeAluno" maxlength="50" class="box" autocomplete="off">
 						<input type="email" placeholder="E-mail" name="EmailAluno" id="EmailAluno" maxlength="50" class="box" autocomplete="off">
-
+<input type=hidden id="escolha" name="escolha" value="Aluno">
 						<select id="Turma_idTurma" name="Turma_idTurma" class="box select-dark-mode">
 							<option value="0">Turma</option>
 
@@ -370,7 +370,40 @@ if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true)
 	});
 </script>
 
+<script>
+	$(document).ready(function() {
+		// Capturar clique no botão de edição
+		$('.edit-button').click(function() {
+			// Obter o ID do item a ser editado
+			var id = $(this).data('id');
 
+			// Encontrar os dados correspondentes na tabela de usuários e preencher o formulário
+			$('table tbody tr').each(function() {
+				var rowId = $(this).find('td:eq(1)').text(); // Considerando que o ID está na segunda coluna
+				if (rowId == id) {
+					var nome = $(this).find('td:eq(0)').text();
+					var email = $(this).find('td:eq(2)').text();
+					var turma = $(this).find('td:eq(3)').text();
+
+					// Preencher os campos do formulário com os dados obtidos
+					$('#idAluno').val(id);
+					$('#NomeAluno').val(nome);
+					$('#EmailAluno').val(email);
+					$('#Turma_idTurma').val(turma);
+
+					// Alterar o modo de ação para editar
+					$('#modoAcao').val('editar');
+					// Alterar o valor do botão para refletir a ação de edição
+					$('input[type="submit"]').val('Editar');
+					// Alterar a rota do formulário para a rota de atualização de usuários
+					$('form').attr('action', '../Router/usu_rotas.php'); // Alterar a action do formulário para a rota correta
+					// Alterar o nome do botão para identificar a ação como atualização
+					$('input[type="submit"]').attr('name', 'Editar');
+				}
+			});
+		});
+	});
+</script>
 
 
 <script>
