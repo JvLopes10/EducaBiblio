@@ -355,6 +355,24 @@ if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true)
 <script src="../JS/script.js"></script>
 <script src="../JS/popup.js"></script>
 <script src="../ArquivosExternos/Ajax.js"></script>
+
+<script>
+	$(document).ready(function() {
+		// Capturar clique no botão de exclusão
+		$('.delete-button').click(function() {
+			// Obter o ID do item a ser excluído
+			var id = $(this).closest('tr').find('td:eq(1)').text(); // Considerando que o ID está na segunda coluna
+
+			// Mostrar o popup de confirmação
+			handlePopup(true);
+
+			// Preencher o link de exclusão com o ID correto
+			var linkExclusao = '../Controller/CExcluir_aluno.php?id=' + id;
+			$('#popup a').attr('href', linkExclusao);
+		});
+	});
+</script>
+
 <script>
 	$(document).ready(function() {
 		$('#turmaTable').DataTable(); // Inicializa o DataTables para a tabela de turma

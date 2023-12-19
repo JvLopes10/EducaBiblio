@@ -95,11 +95,11 @@ $conn = $conexao->getConnection();
                 </a>
             </li>
             <li>
-                <a href="prof.php">
-                    <i class="fas fa-graduation-cap"></i>
-                    <span class="text">Professores</span>
-                </a>
-            </li>
+				<a href="prof.php">
+					<i class="fas fa-graduation-cap"></i>
+					<span class="text">Professores</span>
+				</a>
+			</li>
             <li>
                 <a href="turma.php">
                     <i class="fas fa-users"></i>
@@ -201,125 +201,126 @@ $conn = $conexao->getConnection();
 
                         </div>
                         <table>
-                            <?php
-                            // Consulta SQL para buscar os livros que estão emprestados e ainda não foram devolvidos
-                            $queryLivrosParaDevolucao = "SELECT emprestimo.idEmprestimo, aluno.NomeAluno AS Leitor, aluno.idAluno as idAluno, turma.NomeTurma AS Turma, livro.NomeLivro AS Livro, emprestimo.StatusEmprestimo AS Estado, devolucao.DataDevolucao
+                        <?php
+$queryLivrosParaDevolucao = "SELECT emprestimo.idEmprestimo, aluno.NomeAluno AS Leitor, aluno.idAluno as idAluno, turma.NomeTurma AS Turma, livro.NomeLivro AS Livro, emprestimo.StatusEmprestimo AS Estado, devolucao.DataDevolucao
     FROM emprestimo
     INNER JOIN aluno ON emprestimo.aluno_idAluno = aluno.idAluno
     INNER JOIN livro ON emprestimo.livro_idLivro = livro.idLivro
     INNER JOIN turma ON aluno.Turma_idTurma = turma.IdTurma
     LEFT JOIN devolucao ON emprestimo.idEmprestimo = devolucao.emprestimo_idEmprestimo";
 
-                            $stmtLivrosParaDevolucao = $conn->query($queryLivrosParaDevolucao);
+$stmtLivrosParaDevolucao = $conn->query($queryLivrosParaDevolucao);
 
-                            if ($stmtLivrosParaDevolucao->rowCount() > 0) {
-                                echo '<table>';
-                                echo '<thead>';
-                                echo '<tr>';
-                                echo '<th><center>ID</center></th>';
-                                echo '<th><center>Leitor</center></th>';
-                                echo '<th><center>Turma</center></th>';
-                                echo '<th><center>Livro</center></th>';
-                                echo '<th><center>Data de Devolução</center></th>';
-                                echo '<th><center>Estado</center></th>';
-                                echo '<th><center>Ações</center></th>';
-                                echo '</tr>';
-                                echo '</thead>';
-                                echo '<tbody>';
+if ($stmtLivrosParaDevolucao->rowCount() > 0) {
+    echo '<table>';
+    echo '<thead>';
+    echo '<tr>';
+    echo '<th><center>ID</center></th>';
+    echo '<th><center>Leitor</center></th>';
+    echo '<th><center>Turma</center></th>';
+    echo '<th><center>Livro</center></th>';
+    echo '<th><center>Data de Devolução</center></th>';
+    echo '<th><center>Estado</center></th>';
+    echo '<th><center>Ações</center></th>';
+    echo '</tr>';
+    echo '</thead>';
+    echo '<tbody>';
 
-                                while ($row = $stmtLivrosParaDevolucao->fetch(PDO::FETCH_ASSOC)) {
-                                    $estado = "";
-                                    $classeCSS = "";
+    while ($row = $stmtLivrosParaDevolucao->fetch(PDO::FETCH_ASSOC)) {
+        $estado = "";
+        $classeCSS = "";
 
-                                    switch ($row['Estado']) {
-                                        case 0:
-                                            $estado = "A prazo";
-                                            $classeCSS = "status process";
-                                            break;
-                                        case 1:
-                                            $estado = "Pendente.";
-                                            $classeCSS = "status pending";
-                                            break;
-                                        case 2:
-                                            $estado = "Devolvido.";
-                                            $classeCSS = "status completed";
-                                            break;
-                                        case 4:
-                                            $estado = "Devolvido com pendência.";
-                                            $classeCSS = "status process";
-                                            break;
-                                        default:
-                                            $estado = "Estado desconhecido.";
-                                            $classeCSS = "status unknown";
-                                            break;
-                                    }
+        switch ($row['Estado']) {
+            case 0:
+                $estado = "A prazo";
+                $classeCSS = "status process";
+                break;
+            case 1:
+                $estado = "Pendente.";
+                $classeCSS = "status pending";
+                break;
+            case 2:
+                $estado = "Devolvido.";
+                $classeCSS = "status completed";
+                break;
+            case 4:
+                $estado = "Devolvido com pendência.";
+                $classeCSS = "status process";
+                break;
+            default:
+                $estado = "Estado desconhecido.";
+                $classeCSS = "status unknown";
+                break;
+        }
 
-                                    echo '<tr>';
-                                    echo '<td><center>' . $row['idAluno'] . '</center></td>';
-                                    echo '<td><center>' . $row['Leitor'] . '</center></td>';
-                                    echo '<td><center>' . $row['Turma'] . '</center></td>';
-                                    echo '<td><center>' . $row['Livro'] . '</center></td>';
-                                    echo '<td><center>' . $row['DataDevolucao'] . '</center></td>';
-                                    echo '<td><center><span class="' . $classeCSS . '">' . $estado . '</span></center></td>';
-                                    echo '<td>';
+        echo '<tr>';
+        echo '<td><center>' . $row['idAluno'] . '</center></td>';
+        echo '<td><center>' . $row['Leitor'] . '</center></td>';
+        echo '<td><center>' . $row['Turma'] . '</center></td>';
+        echo '<td><center>' . $row['Livro'] . '</center></td>';
+        echo '<td><center>' . $row['DataDevolucao'] . '</center></td>';
+        echo '<td><center><span class="' . $classeCSS . '">' . $estado . '</span></center></td>';
+        echo '<td>';
 
-                                    if ($row['Estado'] == 2 || $row['Estado'] == 4) {
-                                        echo '<div class="container">';
-                                        echo '<center>-</center>';
-                                        echo '</div>';
-                                    } else {
-                                        echo '<div class="container">';
-                                        echo '<center><button class="historico-button" type="submit" onclick="handlePopup(true)"><i class="fas fa-check"></i></button></center>';
-                                        echo '<div class="popup" id="popup">';
-                                        echo '<img src="../img/livro2.png">';
-                                        echo '<h2 class="title"></h2>';
-                                        echo '<p class="desc">O livro foi realmente devolvido?</p>';
-                                        echo '<button class="close-popup-button" type="submit" onclick="handlePopup(false)">Fechar</button>';
-                                        echo '<a href="../Controller/CDevolver_livro.php?id=' . $row['idEmprestimo'] . '"><button class="close-popup-button">Devolver</button></a>';
-                                        echo '</div>';
-                                        echo '</div>';
-                                    }
+        if ($row['Estado'] == 2 || $row['Estado'] == 4) {
+            echo '<div class="container">';
+            echo '<center>-</center>';
+            echo '</div>';
+        } else {
+            echo '<div class="container">';
+            echo '<center><button class="historico-button" type="submit" onclick="handlePopup(true)"><i class="fas fa-check"></i></button></center>';
+            echo '<div class="popup" id="popup">';
+            echo '<img src="../img/livro2.png">';
+            echo '<h2 class="title"></h2>';
+            echo '<p class="desc">O livro foi realmente devolvido?</p>';
+            echo '<button class="close-popup-button" type="submit" onclick="handlePopup(false)">Fechar</button>';
+            echo '<a href="../Controller/CDevolver_livro.php?id=' . $row['idEmprestimo'] . '"><button class="close-popup-button">Devolver</button></a>';
+            echo '</div>';
+            echo '</div>';
+        }
 
-                                    echo '</td>';
-                                    echo '</tr>';
-                                }
+        echo '</td>';
+        echo '</tr>';
+    }
 
-                                echo '</tbody>';
-                                echo '</table>';
-                                // Adição do sistema de paginação
-                                echo "<div class='pagination'>";
-                                $livrosPorPagina = 3;
-                                $totalLivros = $stmtLivrosParaDevolucao->rowCount();
-                                $totalPaginas = ceil($totalLivros / $livrosPorPagina);
-                                $paginaAtual = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
+    echo '</tbody>';
+    echo '</table>';
 
-                                $range = 2; // Define quantos links de página para mostrar ao redor da página atual
-                                $inicio = $paginaAtual - $range;
-                                $fim = $paginaAtual + $range;
+    // Adição do sistema de paginação
+    echo "<div class='pagination'>";
+    $livrosPorPagina = 3;
+    $totalLivros = $stmtLivrosParaDevolucao->rowCount();
+    $totalPaginas = ceil($totalLivros / $livrosPorPagina);
+    $paginaAtual = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
 
-                                if ($inicio <= 0) {
-                                    $fim += abs($inicio) + 1;
-                                    $inicio = 1;
-                                }
+    $range = 2;
+    $inicio = $paginaAtual - $range;
+    $fim = $paginaAtual + $range;
 
-                                if ($fim > $totalPaginas) {
-                                    $fim = $totalPaginas;
-                                    if ($fim - 2 * $range > 0) {
-                                        $inicio = $fim - 2 * $range;
-                                    } else {
-                                        $inicio = 1;
-                                    }
-                                }
+    if ($inicio <= 0) {
+        $fim += abs($inicio) + 1;
+        $inicio = 1;
+    }
 
-                                for ($i = $inicio; $i <= $fim; $i++) {
-                                    $classeAtiva = ($i == $paginaAtual) ? "active" : "";
-                                    echo "<a class='page-link $classeAtiva' href='devolucao.php?pagina=$i'>$i</a>";
-                                }
-                                echo "</div>";
-                            } else {
-                                echo '<center>Nenhum livro disponível para devolução.</center>';
-                            }
-                            ?>
+    if ($fim > $totalPaginas) {
+        $fim = $totalPaginas;
+        if ($fim - 2 * $range > 0) {
+            $inicio = $fim - 2 * $range;
+        } else {
+            $inicio = 1;
+        }
+    }
+
+    for ($i = $inicio; $i <= $fim; $i++) {
+        $classeAtiva = ($i == $paginaAtual) ? "active" : "";
+        echo "<a class='page-link $classeAtiva' href='devolucao.php?pagina=$i'>$i</a>";
+    }
+    echo "</div>";
+} else {
+    echo '<center>Nenhum livro disponível para devolução.</center>';
+}
+?>
+
 
 
 
