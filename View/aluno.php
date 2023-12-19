@@ -325,7 +325,7 @@ if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true)
 
 									// Botão Fechar do popup fora da tabela
 								}
-							}
+						
 
 							$conn = null; // Fecha a conexão
 							?>

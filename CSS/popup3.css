@@ -43,9 +43,9 @@ body {
 .popup {
     position: absolute;
     /* Define a posição como absoluta para posicionamento personalizado */
-    top: -450%;
+    top: -2%;
     /* Inicialmente, o topo está fora da tela */
-    right: 180%;
+    right: 500%;
     /* Inicialmente, a direita está fora da tela */
     padding: 5%;
     /* Preenchimento interno do popup */
@@ -61,11 +61,9 @@ body {
     /* Z-index negativo para ficar por trás de outros elementos */
     opacity: 0;
     /* Inicialmente, o popup é invisível */
-    position: absolute;
-    /* Repetição da propriedade 'position' (redundante, pode ser removida) */
     background-color: var(--pop-up);
     /* Cor de fundo usando a variável personalizada */
-    padding: 20px 30px;
+    padding: 10px 50px;
     /* Mais preenchimento interno */
     border-radius: 8px;
     /* Mais borda arredondada */
@@ -88,13 +86,17 @@ body {
 }
 
 
-/* Estilos para o botão de fechamento do popup */
+/* Estilos para o botão de fechamento do primeiro popup */
 
 .popup .close-popup-button {
-    background-color: var(--verde);
-    /* Cor de fundo usando a variável personalizada verde */
+    background-color: var(--vermelho);
+    /* Cor de fundo usando a variável personalizada vermelha */
+    background-size: 200%;
+    /* Tamanho do plano de fundo */
     font-size: 20px;
     /* Tamanho da fonte */
+    margin: 1rem 0;
+    /* Margens superiores e inferiores */
     align-items: center;
     /* Alinhar itens ao centro */
     border: none;
@@ -115,22 +117,23 @@ body {
     /* Mostra uma mão ao passar o mouse (cursor de clique) */
     transition: all 0.4s;
     /* Transição suave para animações */
-    margin: 6px 0;
+    margin: 8px 0;
     /* Margens */
-    margin-top: 15px;
+    margin-top: 22px;
     /* Margem superior */
+    margin-right: 5px;
 }
 
 
-/* Estilos para o botão de fechamento do popup quando o mouse passa por cima (hover) */
+/* Estilos para o botão de fechamento do primeiro popup quando o mouse passa por cima (hover) */
 
 .popup .close-popup-button:hover {
-    background-color: #26b626;
-    /* Altera a cor de fundo para verde no hover */
+    background-color: #ca1111;
+    /* Altera a cor de fundo para vermelho escuro no hover */
 }
 
 
-/* Estilos para o botão de fechamento do popup quando pressionado (active) */
+/* Estilos para o botão de fechamento do primeiro popup quando pressionado (active) */
 
 .popup-button:active,
 .popup .close-popup-button:active {
@@ -139,7 +142,7 @@ body {
 }
 
 
-/* Estilos para o popup quando está aberto (opened) */
+/* Estilos para o primeiro popup quando está aberto (opened) */
 
 .popup.opened {
     z-index: 999;
@@ -151,7 +154,7 @@ body {
 }
 
 
-/* Estilos para imagens dentro do popup */
+/* Estilos para imagens dentro do primeiro popup */
 
 .popup img {
     border-radius: 0% !important;
@@ -159,15 +162,15 @@ body {
 }
 
 
-/* Estilos para o título dentro do popup */
+/* Estilos para o título dentro do primeiro popup */
 
 .popup h2.title {
-    color: var(--verde);
-    /* Define a cor do título usando a variável verde */
+    color: var(--vermelho);
+    /* Define a cor do título usando a variável vermelha */
 }
 
 
-/* Estilos para a descrição dentro do popup */
+/* Estilos para a descrição dentro do primeiro popup */
 
 .popup p.desc {
     color: var(--pop-upTexto);
