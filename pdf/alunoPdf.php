@@ -82,9 +82,9 @@ if ($res->num_rows > 0) {
     </head>
     <body>
         <div id='library-info'>
-            <h1>Tabela de Livros</h1>
+            <h1>Tabela de Alunos</h1>
             <p>
-                Bem-vindo ao EducaBiblio, o seu sistema de biblioteca dedicado à promoção da educação e leitura! Abaixo, apresentamos os registros dos livros cadastrados.
+                Bem-vindo ao EducaBiblio, o seu sistema de biblioteca dedicado à promoção da educação e leitura! Abaixo, apresentamos os registros dos alunos cadastrados.
             </p>
         </div>
         <table>
