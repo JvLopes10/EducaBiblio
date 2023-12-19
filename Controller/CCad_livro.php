@@ -55,8 +55,8 @@ class LivroController
 
     private function inserirLivro($conn, $dadosLivro, $idAutor)
     {
-        $sqlLivro = "INSERT INTO Livro (NomeLivro, IBSMLivro, LocalLivro, PrateleiraLivro, ColunaLivro, autor_idAutor, Genero_idGenero, Idioma_idIdioma, EditoraLivro, EdicaoLivro, CaminhoFotoLivro, QuantidadeLivros, DidaticoLivro)
-                     VALUES (:NomeLivro, :IBSMLivro, :LocalLivro, :PrateleiraLivro, :ColunaLivro, :autor_idAutor, :Genero_idGenero, :Idioma_idIdioma, :EditoraLivro, :EdicaoLivro, :CaminhoFotoLivro, :QuantidadeLivros, :DidaticoLivro)";
+        $sqlLivro = "INSERT INTO Livro (NomeLivro, IBSMLivro, LocalLivro, PrateleiraLivro, ColunaLivro, autor_idAutor, Genero_idGenero, Idioma_idIdioma, EditoraLivro, EdicaoLivro, QuantidadeLivros, DidaticoLivro)
+                     VALUES (:NomeLivro, :IBSMLivro, :LocalLivro, :PrateleiraLivro, :ColunaLivro, :autor_idAutor, :Genero_idGenero, :Idioma_idIdioma, :EditoraLivro, :EdicaoLivro, :QuantidadeLivros, :DidaticoLivro)";
         $stmtLivro = $conn->prepare($sqlLivro);
         $stmtLivro->bindParam(':NomeLivro', $dadosLivro['NomeLivro']);
         $stmtLivro->bindParam(':IBSMLivro', $dadosLivro['IBSMLivro']);
@@ -68,7 +68,6 @@ class LivroController
         $stmtLivro->bindParam(':Genero_idGenero', $dadosLivro['Genero_idGenero']);
         $stmtLivro->bindParam(':EditoraLivro', $dadosLivro['EditoraLivro']);
         $stmtLivro->bindParam(':EdicaoLivro', $dadosLivro['EdicaoLivro']);
-        $stmtLivro->bindParam(':CaminhoFotoLivro', $dadosLivro['FotoLivro']); // Caminho da imagem do livro
         $stmtLivro->bindParam(':QuantidadeLivros', $dadosLivro['QuantidadeLivros']);
         $stmtLivro->bindParam(':DidaticoLivro', $dadosLivro['DidaticoLivro']);
         $stmtLivro->execute();

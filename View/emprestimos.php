@@ -292,7 +292,7 @@
 										echo "</thead>";
 										echo "<tbody>";
 
-										foreach ($emprestimos as $row) {
+										foreach ($emprestimosExibidos as $row) {
 											echo "<tr>";
 											echo "<td><center>" . $row["TituloLivro"] . "</center></td>";
 											echo "<td><center>" . $row["NomeGenero"] . "</center></td>";

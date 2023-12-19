@@ -190,11 +190,6 @@ if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true)
 							<option value="Sim">Material didático</option>
 							<option value="Não">Material não didático</option>
 						</select>
-
-<<<<<<< HEAD
-						<input type="file" name="FotoLivro" id="FotoLivro" class="box" required>
-=======
->>>>>>> 20a0816b6418686068f5d692017e5dc9345c900e
 						<input type="text" placeholder="Localização" name="LocalLivro" id="LocalLivro" class="box" autocomplete="off">
 						<select id="PrateleiraLivro" name="PrateleiraLivro" class="box select-dark-mode">
 							<option>Prateleira</option>
@@ -272,8 +267,6 @@ if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true)
 			livro.QuantidadeLivros,
             genero.NomeGenero AS GeneroLivro,
             idioma.Idioma AS IdiomaLivro,
-            livro.FotoLivro,
-            livro.CaminhoFotoLivro,
             livro.LocalLivro,
             livro.PrateleiraLivro,
             livro.ColunaLivro,
