@@ -2,24 +2,10 @@
 
 include 'config.php';
 
-$sql = "SELECT aluno.NomeAluno,
-aluno.idAluno,
-aluno.Turma_idTurma,
-aluno.EmailAluno,
-'aluno' AS tipo,
-turma.nomeTurma,
-turma.AnoTurma  
-FROM aluno
-LEFT JOIN turma ON aluno.Turma_idTurma = turma.idTurma 
-UNION
-SELECT
-prof.NomeProf AS NomeAluno,
-prof.idProf AS idAluno,
-NULL AS Turma_idTurma,
-prof.EmailProf AS EmailAluno,
-'prof' AS tipo,
-NULL AS nomeTurma,
-NULL AS AnoTurma  
+$sql = "SELECT prof.idProf,
+prof.NomeProf,
+prof.EmailProf, 
+prof.MateriaProf
 FROM prof";
 
 $res = $conn->query($sql);
@@ -82,9 +68,9 @@ if ($res->num_rows > 0) {
     </head>
     <body>
         <div id='library-info'>
-            <h1>Tabela de Alunoa</h1>
+            <h1>Tabela de Professores</h1>
             <p>
-                Bem-vindo ao EducaBiblio, o seu sistema de biblioteca dedicado à promoção da educação e leitura! Abaixo, apresentamos os registros dos alunos cadastrados.
+                Bem-vindo ao EducaBiblio, o seu sistema de biblioteca dedicado à promoção da educação e leitura! Abaixo, apresentamos os registros dos professores cadastrados.
             </p>
         </div>
         <table>
@@ -93,19 +79,17 @@ if ($res->num_rows > 0) {
                 <th>ID</th>
                 <th>Nome</th>
                 <th>E-mail</th>
-                <th>Série</th>
-                <th>Turma</th>
+                <th>Disciplina</th>
                 </tr>
             </thead>
             <tbody>";
 
     while ($row = $res->fetch_object()) {
         $html .= "<tr>";
-        $html .= "<td>" . $row->idAluno . "</td>";
-        $html .= "<td>" . $row->NomeAluno . "</td>";
-        $html .= "<td>" . $row->EmailAluno . "</td>";
-        $html .= "<td>" . $row->AnoTurma . "</td>";
-        $html .= "<td>" . $row->nomeTurma . "</td>";
+        $html .= "<td>" . $row->idProf. "</td>";
+        $html .= "<td>" . $row->NomeProf . "</td>";
+        $html .= "<td>" . $row->EmailProf . "</td>";
+        $html .= "<td>" . $row->MateriaProf . "</td>";
 
 
         $html .= "</tr>";
