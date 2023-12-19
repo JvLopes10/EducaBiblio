@@ -219,13 +219,13 @@ if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true)
 						</script>
 						<table>
 
-							<?php
-							// Inicializa a conexão com o banco de dados
-							$conexao = new CConexao();
-							$conn = $conexao->getConnection();
+						<?php
+// Inicializa a conexão com o banco de dados
+$conexao = new CConexao();
+$conn = $conexao->getConnection();
 
-							// Consulta para obter os dados dos alunos com o nome da turma
-							$sql = "SELECT 
+// Consulta para obter os dados dos alunos com o nome da turma
+$sql = "SELECT 
         aluno.NomeAluno,
         aluno.idAluno,
         aluno.Turma_idTurma,
@@ -236,100 +236,93 @@ if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true)
     FROM aluno
     LEFT JOIN turma ON aluno.Turma_idTurma = turma.idTurma ";
 
-							$result = $conn->query($sql);
+$result = $conn->query($sql);
 
-							if ($result === false) {
-								// Use errorInfo para obter informações sobre o erro
-								$errorInfo = $conn->errorInfo();
-								echo "Erro na consulta SQL: " . $errorInfo[2];
-							} else {
-								if ($result->rowCount() > 0) {
-									$user = $result->fetchAll(PDO::FETCH_ASSOC);
-									$UsuarioPorPagina = 3;
-									$paginaAtual = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
-									$indiceInicial = ($paginaAtual - 1) * $UsuarioPorPagina;
-									$UsuarioExibidos = array_slice($user, $indiceInicial, $UsuarioPorPagina);
+if ($result === false) {
+    // Use errorInfo para obter informações sobre o erro
+    $errorInfo = $conn->errorInfo();
+    echo "Erro na consulta SQL: " . $errorInfo[2];
+} else {
+    if ($result->rowCount() > 0) {
+        $user = $result->fetchAll(PDO::FETCH_ASSOC);
+        $UsuarioPorPagina = 3;
+        $paginaAtual = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
+        $indiceInicial = ($paginaAtual - 1) * $UsuarioPorPagina;
+        $UsuarioExibidos = array_slice($user, $indiceInicial, $UsuarioPorPagina);
 
-									// Exibir a tabela de alunos com o nome da turma
-									echo "<table>";
-									echo "<thead>";
-									echo "<tr>";
-									echo "<th><center>Nome</center></th>";
-									echo "<th><center>ID</center></th>";
-									echo "<th><center>Email</center></th>";
-									echo "<th><center>Turma</center></th>";
-									echo "<th><center>Editar</center></th>";
-									echo "<th><center>Excluir</center></th>";
-									echo "<th><center>Histórico</center></th>";
-									echo "</tr>";
-									echo "</thead>";
-									echo "<tbody>";
+        // Exibir a tabela de alunos com o nome da turma
+        echo "<table>";
+        echo "<thead>";
+        echo "<tr>";
+        echo "<th><center>Nome</center></th>";
+        echo "<th><center>ID</center></th>";
+        echo "<th><center>Email</center></th>";
+        echo "<th><center>Turma</center></th>";
+        echo "<th><center>Editar</center></th>";
+        echo "<th><center>Excluir</center></th>";
+        echo "<th><center>Histórico</center></th>";
+        echo "</tr>";
+        echo "</thead>";
+        echo "<tbody>";
 
-									foreach ($UsuarioExibidos as $row) {
-										echo "<tr>";
-										echo "<td><center>" . $row["NomeAluno"] . "</center></td>";
-										echo "<td><center>" . $row["idAluno"] . "</center></td>";
-										echo "<td><center>" . $row["EmailAluno"] . "</center></td>";
-										echo "<td><center>" . ($row["nomeTurma"] ? $row["AnoTurma"] . ' º ' . $row["nomeTurma"] : "Não se aplica") . "</center></td>";
+        foreach ($UsuarioExibidos as $row) {
+            echo "<tr>";
+            echo "<td><center>" . $row["NomeAluno"] . "</center></td>";
+            echo "<td><center>" . $row["idAluno"] . "</center></td>";
+            echo "<td><center>" . $row["EmailAluno"] . "</center></td>";
+            echo "<td><center>" . ($row["nomeTurma"] ? $row["AnoTurma"] . ' º ' . $row["nomeTurma"] : "Não se aplica") . "</center></td>";
 
-										// Botões de edição, exclusão e histórico
-										echo "<td><center>";
-										if (array_key_exists('idAluno', $row)) {
-											echo "<button class='edit-button' data-id='" . $row["idAluno"] . "'><i class='fas fa-pencil-alt'></i></button>";
-										}
-										if (array_key_exists('idProf', $row)) {
-											echo "<button class='edit-button' data-id='" . $row["idProf"] . "'><i class='fas fa-pencil-alt'></i></button>";
-										}
-										echo "</center></td>";
+            // Botões de edição, exclusão e histórico
+            echo "<td><center>";
+            if (array_key_exists('idAluno', $row)) {
+                echo "<button class='edit-button' data-id='" . $row["idAluno"] . "'><i class='fas fa-pencil-alt'></i></button>";
+            }
+            if (array_key_exists('idProf', $row)) {
+                echo "<button class='edit-button' data-id='" . $row["idProf"] . "'><i class='fas fa-pencil-alt'></i></button>";
+            }
+            echo "</center></td>";
 
+            if (array_key_exists('idAluno', $row)) {
+                echo "<td><div class='container'><center><button class='delete-button' type='button' onclick='handlePopup(true)' aria-label='botão excluir'><i class='fas fa-trash-alt'></i></button></center><div class='popup' id='popup'><img src='../img/decisao.png' aria-label='popup decisão'><h2 class='title'>Aviso!</h2><p class='desc'>Deseja mesmo excluir?</p><button class='close-popup-button' type='button' onclick='handlePopup(false)'>Fechar</button><a href='../Controller/CExcluir_aluno.php?id={$row["idAluno"]}'><button class='close-popup-button'>Excluir</button></a></div></div></div></td>";
+            }
+            if (array_key_exists('idProf', $row)) {
+                echo "<td><div class='container'><center><button class='delete-button' type='button' onclick='handlePopup(true)' aria-label='botão excluir'><i class='fas fa-trash-alt'></i></button></center><div class='popup' id='popup'><img src='../img/decisao.png' aria-label='popup decisão'><h2 class='title'>Aviso!</h2><p class='desc'>Deseja mesmo excluir?</p><button class='close-popup-button' type='button' onclick='handlePopup(false)'>Fechar</button><a href='../Controller/CExcluir_prof.php?id={$row["idProf"]}'><button class='close-popup-button'>Excluir</button></a></div></div></div></td>";
+            }
 
-										if (array_key_exists('idAluno', $row)) {
-											echo "<td><div class='container'><center><button class='delete-button' type='button' onclick='handlePopup(true)' aria-label='botão excluir'><i class='fas fa-trash-alt'></i></button></center><div class='popup' id='popup'><img src='../img/decisao.png' aria-label='popup decisão'><h2 class='title'>Aviso!</h2><p class='desc'>Deseja mesmo excluir?</p><button class='close-popup-button' type='button' onclick='handlePopup(false)'>Fechar</button><a href='../Controller/CExcluir_aluno.php?id={$row["idAluno"]}'><button class='close-popup-button'>Excluir</button></a></div></div></div></td>";
-										}
-										if (array_key_exists('idProf', $row)) {
-											echo "<td><div class='container'><center><button class='delete-button' type='button' onclick='handlePopup(true)' aria-label='botão excluir'><i class='fas fa-trash-alt'></i></button></center><div class='popup' id='popup'><img src='../img/decisao.png' aria-label='popup decisão'><h2 class='title'>Aviso!</h2><p class='desc'>Deseja mesmo excluir?</p><button class='close-popup-button' type='button' onclick='handlePopup(false)'>Fechar</button><a href='../Controller/CExcluir_prof.php?id={$row["idProf"]}'><button class='close-popup-button'>Excluir</button></a></div></div></div></td>";
-										}
+            echo "<td><center>";
+            if (array_key_exists('idAluno', $row)) {
+                echo "<button class='historico-button' data-id='" . $row["idAluno"] . "'>"
+                    . "<a class='button-link' href='../pdf/registrosAluPdf.php?idAluno=" . $row["idAluno"] . "'>"
+                    . "<i class='fas fa-history'></i></a></button>";
+            }
+            if (array_key_exists('idProf', $row)) {
+                echo "<button class='historico-button' data-id='" . $row["idProf"] . "'><i class='fas fa-history'></i></button>";
+            }
+            echo "</center></td>";
 
+            echo "</tr>";
+        }
 
-										echo "<td><center>";
-										if (array_key_exists('idAluno', $row)) {
-											echo "<button class='historico-button' data-id='" . $row["idAluno"] . "'>"
-												. "<a class='button-link' href='../pdf/registrosAluPdf.php?idAluno=" . $row["idAluno"] . "'>"
-												. "<i class='fas fa-history'></i></a></button>";
-										}
-									}
-									if (array_key_exists('idProf', $row)) {
-										echo "<button class='historico-button' data-id='" . $row["idProf"] . "'><i class='fas fa-history'></i></button>";
-									}
-									echo "</center></td>";
+        echo "</tbody>";
+        echo "</table>";
 
-									echo "</tr>";
-								}
+        // Adiciona links de paginação
+        echo "<div class='pagination'>";
+        $totalUser = count($user);
+        $totalPaginas = ceil($totalUser / $UsuarioPorPagina);
+        for ($i = 1; $i <= $totalPaginas; $i++) {
+            $classeAtiva = ($i === $paginaAtual) ? "active" : "";
+            echo "<a class='page-link $classeAtiva' href='aluno.php?pagina=$i'>$i</a>";
+        }
+        echo "</div>";
 
+    } else {
+		echo "<p><center>Nenhum aluno encontrado.</center></p>";
+    }
+}
 
-
-
-
-									echo "</tbody>";
-									echo "</table>";
-
-									// Adiciona links de paginação
-									echo "<div class='pagination'>";
-									$totalUser = count($user);
-									$totalPaginas = ceil($totalUser / $UsuarioPorPagina);
-									for ($i = 1; $i <= $totalPaginas; $i++) {
-										$classeAtiva = ($i === $paginaAtual) ? "active" : "";
-										echo "<a class='page-link $classeAtiva' href='aluno.php?pagina=$i'>$i</a>";
-									}
-									echo "</div>";
-
-									// Botão Fechar do popup fora da tabela
-								}
-						
-
-							$conn = null; // Fecha a conexão
-							?>
-
+$conn = null; // Fecha a conexão
+?>
 
 							</tbody>
 						</table>

@@ -249,7 +249,7 @@ if ($result === false) {
 
         // Você pode adicionar recursos de paginação, se necessário
     } else {
-        echo "Não foram encontrados professores na base de dados.";
+		echo "<p><center>Nenhum professor encontrado.</center></p>";
     }
 }
 

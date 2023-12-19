@@ -201,13 +201,34 @@ $conn = $conexao->getConnection();
 
                         </div>
                         <table>
-                        <?php
-$queryLivrosParaDevolucao = "SELECT emprestimo.idEmprestimo, aluno.NomeAluno AS Leitor, aluno.idAluno as idAluno, turma.NomeTurma AS Turma, livro.NomeLivro AS Livro, emprestimo.StatusEmprestimo AS Estado, devolucao.DataDevolucao
+                       
+
+<?php
+// Variáveis de paginação
+$livrosPorPagina = 3;
+$paginaAtual = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
+$inicio = ($paginaAtual - 1) * $livrosPorPagina;
+
+// Query com LIMIT para paginação
+$queryLivrosSemLimite = "SELECT emprestimo.idEmprestimo, aluno.NomeAluno AS Leitor, aluno.idAluno as idAluno, turma.NomeTurma AS Turma, livro.NomeLivro AS Livro, emprestimo.StatusEmprestimo AS Estado, devolucao.DataDevolucao
     FROM emprestimo
     INNER JOIN aluno ON emprestimo.aluno_idAluno = aluno.idAluno
     INNER JOIN livro ON emprestimo.livro_idLivro = livro.idLivro
     INNER JOIN turma ON aluno.Turma_idTurma = turma.IdTurma
     LEFT JOIN devolucao ON emprestimo.idEmprestimo = devolucao.emprestimo_idEmprestimo";
+
+$stmtLivrosSemLimite = $conn->query($queryLivrosSemLimite);
+$totalLivros = $stmtLivrosSemLimite->rowCount();
+$totalPaginas = ceil($totalLivros / $livrosPorPagina);
+
+// Query com LIMIT para paginação
+$queryLivrosParaDevolucao = "SELECT emprestimo.idEmprestimo, aluno.NomeAluno AS Leitor, aluno.idAluno as idAluno, turma.NomeTurma AS Turma, livro.NomeLivro AS Livro, emprestimo.StatusEmprestimo AS Estado, devolucao.DataDevolucao
+    FROM emprestimo
+    INNER JOIN aluno ON emprestimo.aluno_idAluno = aluno.idAluno
+    INNER JOIN livro ON emprestimo.livro_idLivro = livro.idLivro
+    INNER JOIN turma ON aluno.Turma_idTurma = turma.IdTurma
+    LEFT JOIN devolucao ON emprestimo.idEmprestimo = devolucao.emprestimo_idEmprestimo
+    LIMIT $inicio, $livrosPorPagina";
 
 $stmtLivrosParaDevolucao = $conn->query($queryLivrosParaDevolucao);
 
@@ -285,49 +306,20 @@ if ($stmtLivrosParaDevolucao->rowCount() > 0) {
 
     echo '</tbody>';
     echo '</table>';
-
-    // Adição do sistema de paginação
-    echo "<div class='pagination'>";
-    $livrosPorPagina = 3;
-    $totalLivros = $stmtLivrosParaDevolucao->rowCount();
-    $totalPaginas = ceil($totalLivros / $livrosPorPagina);
-    $paginaAtual = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
-
-    $range = 2;
-    $inicio = $paginaAtual - $range;
-    $fim = $paginaAtual + $range;
-
-    if ($inicio <= 0) {
-        $fim += abs($inicio) + 1;
-        $inicio = 1;
-    }
-
-    if ($fim > $totalPaginas) {
-        $fim = $totalPaginas;
-        if ($fim - 2 * $range > 0) {
-            $inicio = $fim - 2 * $range;
-        } else {
-            $inicio = 1;
-        }
-    }
-
-    for ($i = $inicio; $i <= $fim; $i++) {
+// Sistema de paginação
+echo "<div class='pagination'>";
+if ($totalPaginas > 1) {
+    for ($i = 1; $i <= $totalPaginas; $i++) {
         $classeAtiva = ($i == $paginaAtual) ? "active" : "";
         echo "<a class='page-link $classeAtiva' href='devolucao.php?pagina=$i'>$i</a>";
     }
-    echo "</div>";
-} else {
-    echo '<center>Nenhum livro disponível para devolução.</center>';
+}
+echo "</div>";
+
+}else {
+    echo "<p><center>Nenhum emprestimo para devolução.</center></p>";
 }
 ?>
-
-
-
-
-
-
-
-
 
                         </table>
                     </div>

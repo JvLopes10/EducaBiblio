@@ -364,7 +364,7 @@
 										// Botão Fechar do popup fora da tabela
 
 									} else {
-										echo "<p><center>enhum usuário encontrado.</center></p>";
+										echo "<p><center>Nenhum emprestimo feito.</center></p>";
 									}
 								}
 

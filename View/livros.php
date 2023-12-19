@@ -320,7 +320,7 @@ if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true)
 										echo "<td><center>" . $row["GeneroLivro"] . "</center></td>";
 										echo "<td><center>" . $row["IdiomaLivro"] . "</center></td>";
 										echo "<td><center>" . $row["QuantidadeLivros"] . "</center></td>";
-										echo "<td><div class='container'><center><button class='historico-button' type='button' onclick='handlePopup1(\"" . $row["LocalLivro"] . "\", \"" . $row["PrateleiraLivro"] . "\", \"" . $row["ColunaLivro"] . "\")'><i class='fas fa-map-marker-alt'></i></button></center><div class='popup1' id='popup1'><img src='../img/livro.png'><h2 class='title'>Localização</h2><p class='desc'><b>✧ Localização: </b>" . $row["LocalLivro"] . "</p><p class='desc'><b>✧ Prateleira: </b>" . $row["PrateleiraLivro"] . "</p><p class='desc'><b>✧ Coluna: </b>" . $row["ColunaLivro"] . "</p><button class='close-popup1-button' type='button' onclick='handlePopup1(false)'>Fechar</button></div></div></div></td>";
+										echo "<td><div class='container'><center><button class='historico-button' type='button' onclick='handlePopup1(\"" . $row["LocalLivro"] . "\", \"" . $row["PrateleiraLivro"] . "\", \"" . $row["ColunaLivro"] . "\")'><i class='fas fa-map-marker-alt'></i></button></center><div class='popup1' id='popup1'><img src='../img/livro.png'><h2 class='title'>Localização</h2><p class='desc'><b>✧ Localização: </b></p><p class='desc'></p><p class='desc'></p><button class='close-popup1-button' type='button' onclick='handlePopup1(false)'>Fechar</button></div></div></div></td>";
 
 										echo "<td><center><button class='edit-button'><i class='fas fa-pencil-alt'></i></button></center></td>";
 										echo "<td><div class='container'><center><button class='delete-button' type='button' onclick='handlePopup(true)' aria-label='botão excluir'><i class='fas fa-trash-alt'></i></button></center><div class='popup' id='popup'><img src='../img/decisao.png' aria-label='popup decisão'><h2 class='title'>Aviso!</h2><p class='desc'>Deseja mesmo excluir?</p><button class='close-popup-button' type='button' onclick='handlePopup(false)'>Fechar</button><a href='../Controller/CExcluir_livros.php?id={$row["idLivro"]}'><button class='close-popup-button'>Excluir</button></a></div></div></div></td>";
@@ -426,6 +426,26 @@ if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true)
 			$(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
 		});
 	});
+</script>
+<script>
+	function handlePopup1(local, prateleira, coluna) {
+    const popup = document.getElementById("popup1");
+
+    if (popup.classList.contains("opened")) {
+        popup.classList.remove("opened");
+    } else {
+        const locationInfo = `
+            <b>✧ Localização:</b> ${local}<br>
+            <b>✧ Prateleira:</b> ${prateleira}<br>
+            <b>✧ Coluna:</b> ${coluna}<br>
+        `;
+
+        document.querySelector("#popup1 .desc").innerHTML = locationInfo;
+        popup.classList.add("opened");
+    }
+}
+
+
 </script>
 
 </body>
