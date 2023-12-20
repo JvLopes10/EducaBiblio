@@ -199,6 +199,36 @@ if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true)
 						<div class="head">
 							<h3>Tabela de turmas</h3>
 							<input type="text" id="searchInput" class="searchInput" placeholder="Pesquisar...">
+							<button class="murilo" id="murilo">
+								<i class="fas fa-calendar-check"></i>
+							</button>
+
+							<style>
+								.murilo {
+									width: 35px;
+									margin-bottom: 100px;
+									background-color: #ffce26;
+									background-size: 200%;
+									border: none;
+									outline: none;
+									border-radius: 25px;
+									outline: none;
+									height: 35px;
+									color: #fff;
+									font-weight: 600;
+									margin: 10px 0;
+									cursor: pointer;
+									transition: 0.6s;
+									display: block;
+									font-family: "Poppins", sans-serif;
+									font-size: 15px;
+									margin: 1rem 0;
+								}
+
+								.murilo:hover {
+									background-color: #ffbb00;
+								}
+							</style>
 							<button class="pdf-button" id="pdf-button" aria-label="botão pdf" onclick="abrirAluno()">
 								<i class="fas fa-file-pdf"></i></button>
 
