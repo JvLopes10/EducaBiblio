@@ -257,19 +257,19 @@ if ($stmtLivrosParaDevolucao->rowCount() > 0) {
                 $classeCSS = "status process";
                 break;
             case 1:
-                $estado = "Pendente.";
+                $estado = "Pendente";
                 $classeCSS = "status pending";
                 break;
             case 2:
-                $estado = "Devolvido.";
+                $estado = "Devolvido";
                 $classeCSS = "status completed";
                 break;
             case 4:
-                $estado = "Devolvido com pendência.";
+                $estado = "Devolvido com pendência";
                 $classeCSS = "status process";
                 break;
             default:
-                $estado = "Estado desconhecido.";
+                $estado = "Estado desconhecido";
                 $classeCSS = "status unknown";
                 break;
         }

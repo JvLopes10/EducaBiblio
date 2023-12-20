@@ -164,7 +164,7 @@ if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true)
 						<input type="text" placeholder="ID" name="idProf" id="idProf" maxlength="50" class="box3 autocomplete=" off" readonly>
 						<input type="text" placeholder="Nome" name="NomeProf" id="NomeProf" maxlength="50" class="box" autocomplete="off">
 						<input type="email" placeholder="E-mail" name="EmailProf" id="EmailProf" maxlength="50" class="box" autocomplete="off">
-						<input type="text" placeholder="Materia" name="MateriaProf" id="MateriaProf" maxlength="50" class="box" autocomplete="off">
+						<input type="text" placeholder="Disciplina" name="MateriaProf" id="MateriaProf" maxlength="50" class="box" autocomplete="off">
 						<center><input type="submit" value="Enviar" class="inline-btn" name="action"></center>
 					</form>
 				</div>
@@ -224,7 +224,7 @@ if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true)
 									echo "<th><center>ID</center></th>";
 									echo "<th><center>Nome</center></th>";
 									echo "<th><center>Email</center></th>";
-									echo "<th><center>Materia</center></th>";
+									echo "<th><center>Discicplina</center></th>";
 									echo "<th><center>Editar</center></th>";
 									echo "<th><center>Excluir</center></th>";
 									echo "<th><center>Histórico</center></th>";
