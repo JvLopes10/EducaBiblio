@@ -1,6 +1,7 @@
 <?php
 require_once 'CConexao.php';
-class CEmprestimoController
+
+class CEmprestimoControllerProf
 {
     public function emprestarLivro()
     {
@@ -9,32 +10,32 @@ class CEmprestimoController
             $dataEmprestimo = $_POST['DataEmprestimo'];
             $livroId = $_POST['livro_idLivro'];
             $usuarioId = $_POST['usuario_idUsuario'];
-            $alunoId = $_POST['aluno_idAluno'];
+            $profId = $_POST['prof_idProf']; // Novo campo para o ID do professor
             $quantidade = $_POST['quantidade'];
 
             // Conecte-se ao banco de dados
             $conexao = new CConexao();
             $conn = $conexao->getConnection();
 
-            // Verifique se já existe um empréstimo para o mesmo livro, aluno e data
-            $queryCheck = "SELECT COUNT(*) as count_emprestimo FROM emprestimo WHERE DataEmprestimo = :dataEmprestimo AND livro_idLivro = :livroId AND aluno_idAluno = :alunoId";
+            // Verifique se já existe um empréstimo para o mesmo livro, professor e data
+            $queryCheck = "SELECT COUNT(*) as count_emprestimo FROM emprestimo WHERE DataEmprestimo = :dataEmprestimo AND livro_idLivro = :livroId AND prof_idProf = :profId";
             $stmtCheck = $conn->prepare($queryCheck);
             $stmtCheck->bindParam(':dataEmprestimo', $dataEmprestimo);
             $stmtCheck->bindParam(':livroId', $livroId);
-            $stmtCheck->bindParam(':alunoId', $alunoId);
+            $stmtCheck->bindParam(':profId', $profId);
             $stmtCheck->execute();
             $result = $stmtCheck->fetch(PDO::FETCH_ASSOC);
 
             if ($result['count_emprestimo'] > 0) {
-                echo "Empréstimo já existe para este livro, aluno e data.";
+                echo "Empréstimo já existe para este livro, professor e data.";
             } else {
                 // Execute a inserção no banco de dados
-                $queryInsert = "INSERT INTO emprestimo (DataEmprestimo, livro_idLivro, usuario_idUsuario, aluno_idAluno, Quantidade_emp) VALUES (:dataEmprestimo, :livroId, :usuarioId, :alunoId, :quantidade)";
+                $queryInsert = "INSERT INTO emprestimo (DataEmprestimo, livro_idLivro, usuario_idUsuario, prof_idProf, Quantidade_emp) VALUES (:dataEmprestimo, :livroId, :usuarioId, :profId, :quantidade)";
                 $stmtInsert = $conn->prepare($queryInsert);
                 $stmtInsert->bindParam(':dataEmprestimo', $dataEmprestimo);
                 $stmtInsert->bindParam(':livroId', $livroId);
                 $stmtInsert->bindParam(':usuarioId', $usuarioId);
-                $stmtInsert->bindParam(':alunoId', $alunoId);
+                $stmtInsert->bindParam(':profId', $profId);
                 $stmtInsert->bindParam(':quantidade', $quantidade);
 
                 if ($stmtInsert->execute()) {

@@ -162,7 +162,7 @@ if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true)
 					<form action="../Router/alunos_rotas.php" method="post">
 						<h3>Cadastro de leitores</h3>
 						<input type="text" placeholder="ID" name="id" maxlength="50" class="box3" autocomplete="off" readonly>
-
+<input type="hidden" value="Aluno" id="escolha" name="escolha">
 						<input type="text" placeholder="Nome" name="NomeAluno" id="NomeAluno" maxlength="50" class="box" autocomplete="off">
 						<input type="email" placeholder="E-mail" name="EmailAluno" id="EmailAluno" maxlength="50" class="box" autocomplete="off">
 

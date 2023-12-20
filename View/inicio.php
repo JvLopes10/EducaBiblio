@@ -355,7 +355,8 @@ include('../Controller/CPendencias.php'); // Inclua o arquivo CPendencias.php aq
 							// Consulta para obter os dados de empréstimo paginados
 							$sql = "SELECT
             emprestimo.idEmprestimo,
-            aluno.NomeAluno AS Estudante,
+            aluno.NomeAluno AS NomeAluno,
+            prof.NomeProf AS NomeProfessor,
             DATE_FORMAT(emprestimo.DataEmprestimo, '%d/%m/%Y') AS DataEmprestimoFormatada,
             IFNULL(DATE_FORMAT(devolucao.DataDevolucao, '%d/%m/%Y'), '--/--/----') AS DataDevolucaoFormatada,
             IFNULL(DATE_FORMAT(devolucao.DataDevolvida, '%d/%m/%Y'), '--/--/----') AS DataDevolvidaFormatada,
@@ -367,8 +368,11 @@ include('../Controller/CPendencias.php'); // Inclua o arquivo CPendencias.php aq
             END AS Estado
         FROM emprestimo
         LEFT JOIN aluno ON emprestimo.aluno_idAluno = aluno.idAluno
+        LEFT JOIN prof ON emprestimo.prof_idProf = prof.idProf
         LEFT JOIN devolucao ON emprestimo.idEmprestimo = devolucao.emprestimo_idEmprestimo
         LIMIT $indiceInicial, $registrosPorPagina";
+
+				
 
 							$result = $conn->query($sql);
 
@@ -396,7 +400,7 @@ include('../Controller/CPendencias.php'); // Inclua o arquivo CPendencias.php aq
 
 									foreach ($dadosEmprestimo as $emprestimo) {
 										echo "<tr>";
-										echo "<td><center>" . $emprestimo['Estudante'] . "</center></td>";
+										echo "<td><center>" . ($emprestimo['NomeAluno'] ?? $emprestimo['NomeProfessor']) . "</center></td>";
 										echo "<td><center>" . $emprestimo['idEmprestimo'] . "</center></td>";
 										echo "<td><center>" . $emprestimo['DataEmprestimoFormatada'] . "</center></td>";
 										echo "<td><center>" . $emprestimo['DataDevolucaoFormatada'] . "</center></td>";
@@ -406,6 +410,8 @@ include('../Controller/CPendencias.php'); // Inclua o arquivo CPendencias.php aq
 										echo "'>" . $emprestimo['Estado'] . "</span></center></td>";
 										echo "</tr>";
 									}
+									
+									
 
 									echo "</tbody>";
 									echo "</table>";

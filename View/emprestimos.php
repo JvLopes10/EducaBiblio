@@ -180,6 +180,7 @@
 								</select>
 								<select id="Turma_idTurma" name="Turma_idTurma" class="box select-dark-mode" required>
 									<option value="">Selecione uma turma</option>
+									<option value="0">Professor</option>
 									<?php
 									// Preencha as opções de turma a partir do banco de dados.
 									$query = "SELECT IdTurma, AnodeInicio, AnoTurma, NomeTurma FROM turma";
@@ -196,9 +197,9 @@
 								<h4>Data do empréstimo:</h4>
 
 								
-								<input type="text" placeholder="Quantidade" name="quantidade" required class="box" autocomplete="off" required>
-
+								
 								<input type="date" placeholder="Data" name="DataEmprestimo" id="DataEmprestimo" required class="box" autocomplete="off" required>
+								<input type="text" placeholder="Quantidade" name="quantidade" required class="box" autocomplete="off" required>
 								<h4>Data da devolução:</h4>
 								<input type="date" placeholder="Data" name="data" required class="box" autocomplete="off" required>
 								
@@ -262,114 +263,139 @@
 
 								</div>
 								<?php
+// Conecta-se ao banco de dados
+$conexao = new CConexao();
+$conn = $conexao->getConnection();
 
-								// Conecte-se ao banco de dados
-								$conexao = new CConexao();
-								$conn = $conexao->getConnection();
+// Consultas SQL para buscar empréstimos de alunos e professores
+$sqlAlunos = "
+    SELECT
+        livro.NomeLivro AS TituloLivro,
+        genero.NomeGenero,
+        emprestimo.idEmprestimo,
+        turma.NomeTurma,
+        aluno.NomeAluno,
+        turma.AnoTurma,
+        emprestimo.DataEmprestimo,
+        devolucao.DataDevolucao,
+        emprestimo.Quantidade_emp,
+        usuario.UserUsuario
+    FROM emprestimo
+    LEFT JOIN aluno ON emprestimo.aluno_idAluno = aluno.idAluno
+    INNER JOIN livro ON emprestimo.livro_idLivro = livro.idLivro
+    INNER JOIN genero ON livro.Genero_idGenero = genero.idGenero
+    INNER JOIN turma ON aluno.Turma_idTurma = turma.IdTurma
+    INNER JOIN usuario ON emprestimo.usuario_idUsuario = usuario.idUsuario
+    LEFT JOIN devolucao ON emprestimo.idEmprestimo = devolucao.emprestimo_idEmprestimo";
 
-								// Consulta para obter os dados de empréstimo
-								$sql = "SELECT
-            livro.NomeLivro AS TituloLivro,
-            genero.NomeGenero,
-            emprestimo.idEmprestimo,
-            turma.NomeTurma,
-            aluno.NomeAluno,
-            emprestimo.DataEmprestimo,
-            devolucao.DataDevolucao,
-            emprestimo.Quantidade_emp,
-            usuario.UserUsuario,
-            usuario.EmailUsuario
-        FROM emprestimo
-        INNER JOIN livro ON emprestimo.livro_idLivro = livro.idLivro
-        INNER JOIN genero ON livro.Genero_idGenero = genero.idGenero
-        INNER JOIN aluno ON emprestimo.aluno_idAluno = aluno.idAluno
-        INNER JOIN turma ON aluno.Turma_idTurma = turma.IdTurma
-        INNER JOIN usuario ON emprestimo.usuario_idUsuario = usuario.idUsuario
-        LEFT JOIN devolucao ON emprestimo.idEmprestimo = devolucao.emprestimo_idEmprestimo";
+$sqlProfessores = "
+    SELECT
+        livro.NomeLivro AS TituloLivro,
+        genero.NomeGenero,
+        emprestimo.idEmprestimo,
+        'Professor' AS NomeTurma,
+        prof.NomeProf AS NomeLeitor,
+        NULL AS AnoTurma,
+        emprestimo.DataEmprestimo,
+        devolucao.DataDevolucao,
+        emprestimo.Quantidade_emp,
+        usuario.UserUsuario
+    FROM emprestimo
+    LEFT JOIN prof ON emprestimo.prof_idProf = prof.idProf
+    INNER JOIN livro ON emprestimo.livro_idLivro = livro.idLivro
+    INNER JOIN genero ON livro.Genero_idGenero = genero.idGenero
+    INNER JOIN usuario ON emprestimo.usuario_idUsuario = usuario.idUsuario
+    LEFT JOIN devolucao ON emprestimo.idEmprestimo = devolucao.emprestimo_idEmprestimo
+    WHERE prof.idProf IS NOT NULL"; // Usando a condição na tabela 'prof'
+
+// Consulta geral unindo empréstimos de alunos e professores
+$sql = "($sqlAlunos) UNION ($sqlProfessores)";
+
+$result = $conn->query($sql);
+
+if ($result === false) {
+    // Use errorInfo para obter informações sobre o erro
+    $errorInfo = $conn->errorInfo();
+    echo "Erro na consulta SQL: " . $errorInfo[2];
+} else {
+    if ($result->rowCount() > 0) {
+        $emprestimos = $result->fetchAll(PDO::FETCH_ASSOC);
+        $emprestimosPorPagina = 3;
+        $paginaAtual = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
+        $indiceInicial = ($paginaAtual - 1) * $emprestimosPorPagina;
+        $emprestimosExibidos = array_slice($emprestimos, $indiceInicial, $emprestimosPorPagina);
+
+        // Exibir a tabela de empréstimos
+        echo "<table>";
+        echo "<thead>";
+        echo "<tr>";
+        echo "<th><center>Livro</center></th>";
+        echo "<th><center>Gênero</center></th>";
+        echo "<th><center>ID</center></th>";
+        echo "<th><center>Turma</center></th>";
+        echo "<th><center>Leitor</center></th>";
+        echo "<th><center>Data de empréstimo</center></th>";
+        echo "<th><center>Data para devolução</center></th>";
+        echo "<th><center>Quantidade</center></th>";
+        echo "<th><center>Usuário</center></th>";
+        echo "<th><center>Editar</center></th>";
+        echo "</tr>";
+        echo "</thead>";
+        echo "<tbody>";
+
+        foreach ($emprestimosExibidos as $row) {
+            echo "<tr>";
+            echo "<td><center>" . $row["TituloLivro"] . "</center></td>";
+            echo "<td><center>" . $row["NomeGenero"] . "</center></td>";
+            echo "<td><center>" . $row["idEmprestimo"] . "</center></td>";
+
+            // Verifica se é um aluno ou um professor e exibe a informação correspondente
+            if (isset($row["NomeAluno"])) {
+                // Se for aluno, exibe o nome da turma e o nome do aluno
+                echo "<td><center>" . $row["AnoTurma"] . " " . $row["NomeTurma"] . "</center></td>";
+                echo "<td><center>" . $row["NomeAluno"] . "</center></td>";
+            } elseif (isset($row["NomeLeitor"])) {
+                // Se for professor, exibe somente o nome do professor
+                echo "<td><center>Professor</center></td>";
+                echo "<td><center>" . $row["NomeLeitor"] . "</center></td>";
+            }
+
+            // Verifica se a data de empréstimo está definida antes de formatar
+            echo "<td><center>" . ($row["DataEmprestimo"] ? date('d/m/Y', strtotime($row["DataEmprestimo"])) : "Data não disponível") . "</center></td>";
+
+            // Verifica se a data de devolução está definida antes de formatar
+            echo "<td><center>" . ($row["DataDevolucao"] ? date('d/m/Y', strtotime($row["DataDevolucao"])) : "Data não disponível") . "</center></td>";
+
+            echo "<td><center>" . $row["Quantidade_emp"] . "</center></td>";
+            echo "<td><center>" . $row["UserUsuario"] . "</center></td>";
+            echo "<td><center><button class='edit-button'><i class='fas fa-pencil-alt'></i></button></center></td>";
+            echo "</tr>";
+        }
+
+        echo "</tbody>";
+        echo "</table>";
+
+        // Adiciona links de paginação
+        echo "<div class='pagination'>";
+        $totalEmprestimos = count($emprestimos);
+        $totalPaginas = ceil($totalEmprestimos / $emprestimosPorPagina);
+        for ($i = 1; $i <= $totalPaginas; $i++) {
+            $classeAtiva = ($i === $paginaAtual) ? "active" : "";
+            echo "<a class='page-link $classeAtiva' href='emprestimos.php?pagina=$i'>$i</a>";
+        }
+        echo "</div>";
+    } else {
+        echo "<p><center>Nenhum empréstimo feito.</center></p>";
+    }
+}
+
+$conn = null; // Fecha a conexão
+?>
 
 
-								$result = $conn->query($sql);
-
-								if ($result === false) {
-									// Use errorInfo para obter informações sobre o erro
-									$errorInfo = $conn->errorInfo();
-									echo "Erro na consulta SQL: " . $errorInfo[2];
-								} else {
-									if ($result->rowCount() > 0) {
-										$emprestimos = $result->fetchAll(PDO::FETCH_ASSOC);
-										$emprestimosPorPagina = 3;
-										$paginaAtual = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
-										$indiceInicial = ($paginaAtual - 1) * $emprestimosPorPagina;
-										$emprestimosExibidos = array_slice($emprestimos, $indiceInicial, $emprestimosPorPagina);
-
-										// Exibir a tabela de empréstimos
-										echo "<table>";
-										echo "<thead>";
-										echo "<tr>";
-										echo "<th><center>Livro</center></th>";
-										echo "<th><center>Gênero</center></th>";
-										echo "<th><center>ID</center></th>";
-										echo "<th><center>Turma</center></th>";
-										echo "<th><center>Leitor</center></th>";
-										echo "<th><center>Data de empréstimo</center></th>";
-										echo "<th><center>Data para devolução</center></th>";
-										echo "<th><center>Quantidade</center></th>";
-										echo "<th><center>Usuário</center></th>";
-										echo "<th><center>Editar</center></th>";
-										echo "</tr>";
-										echo "</thead>";
-										echo "<tbody>";
-
-										foreach ($emprestimosExibidos as $row) {
-											echo "<tr>";
-											echo "<td><center>" . $row["TituloLivro"] . "</center></td>";
-											echo "<td><center>" . $row["NomeGenero"] . "</center></td>";
-											echo "<td><center>" . $row["idEmprestimo"] . "</center></td>";
-											echo "<td><center>" . $row["NomeTurma"] . "</center></td>";
-											echo "<td><center>" . $row["NomeAluno"] . "</center></td>";
-
-											// Verifica se a data de empréstimo está definida antes de formatar
-											if ($row["DataEmprestimo"] !== null) {
-												echo "<td><center>" . date('d/m/Y', strtotime($row["DataEmprestimo"])) . "</center></td>";
-											} else {
-												echo "<td><center>Data não disponível</center></td>";
-											}
-
-											// Verifica se a data de devolução está definida antes de formatar
-											if ($row["DataDevolucao"] !== null) {
-												echo "<td><center>" . date('d/m/Y', strtotime($row["DataDevolucao"])) . "</center></td>";
-											} else {
-												echo "<td><center>Data não disponível</center></td>";
-											}
-
-											echo "<td><center>" . $row["Quantidade_emp"] . "</center></td>";
-											echo "<td><center>" . $row["UserUsuario"] . "</center></td>";
-											echo "<td><center><button class='edit-button'><i class='fas fa-pencil-alt'></i></button></center></td>";
-											echo "</tr>";
-										}
 
 
-										echo "</tbody>";
-										echo "</table>";
-										// Adiciona links de paginação
-										echo "<div class='pagination'>";
-										$totalemprestimos = count($emprestimos);
-										$totalPaginas = ceil($totalemprestimos / $emprestimosPorPagina);
-										for ($i = 1; $i <= $totalPaginas; $i++) {
-											$classeAtiva = ($i === $paginaAtual) ? "active" : "";
-											echo "<a class='page-link $classeAtiva' href='emprestimos.php?pagina=$i'>$i</a>";
-										}
-										echo "</div>";
 
-										// Botão Fechar do popup fora da tabela
-
-									} else {
-										echo "<p><center>Nenhum emprestimo feito.</center></p>";
-									}
-								}
-
-								$conn = null; // Fecha a conexão
-								?>
 
 							</div>
 
@@ -393,29 +419,37 @@
 		<script src="../ArquivosExternos/Jquery.js"></script>
 		<script>
 			$(document).ready(function() {
-				$("#Turma_idTurma").change(function() {
-					var turmaId = $(this).val();
-					var alunoSelect = $("#aluno_idAluno");
+    $("#Turma_idTurma").change(function() {
+        var turmaId = $(this).val();
+        var alunoSelect = $("#aluno_idAluno");
 
-					if (turmaId) {
-						$.ajax({
-							type: "GET",
-							url: "../Controller/CBusca_alunos.php",
-							data: {
-								turmaId: turmaId
-							},
-							success: function(data) {
-								alunoSelect.html(data);
-							},
-							error: function() {
-								alunoSelect.html("<option value=''>Erro ao carregar alunos</option>");
-							}
-						});
-					} else {
-						alunoSelect.html("<option value=''>Selecione um aluno</option>");
-					}
-				});
-			});
+        // Verifica se o valor da turma é válido
+        if (turmaId !== null && turmaId !== '') {
+            var url = "../Controller/CBuscar_AlunoProf.php";
+
+            // Define os dados a serem enviados com base no valor da turma
+            var requestData = { turmaId: turmaId };
+            if (turmaId === '0') {
+                requestData.turmaId = '0';
+            }
+
+            // Envia a requisição AJAX
+            $.ajax({
+                type: "GET",
+                url: url,
+                data: requestData,
+                success: function(data) {
+                    alunoSelect.html(data);
+                },
+                error: function() {
+                    alunoSelect.html("<option value=''>Erro ao carregar alunos/professores</option>");
+                }
+            });
+        } 
+    });
+});
+
+
 		</script>
 		<script>
 			$(document).ready(function() {
