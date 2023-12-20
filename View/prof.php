@@ -93,7 +93,7 @@ if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true)
 			</li>
 			<li class="active">
 				<a href="prof.php">
-					<i class="fas fa-graduation-cap"></i>
+					<i class="fas fa-clipboard-list"></i>
 					<span class="text">Professores</span>
 				</a>
 			</li>

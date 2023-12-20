@@ -243,15 +243,7 @@ if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true)
 									echo "</tbody>";
 									echo "</table>";
 
-									// Adiciona links de paginação
-									echo "<div class='pagination'>";
-									$totalRec = count($rec);
-									$totalPaginas = ceil($totalRec / $RecPorPagina);
-									for ($i = 1; $i <= $totalPaginas; $i++) {
-										$classeAtiva = ($i === $paginaAtual) ? "active" : "";
-										echo "<a class='page-link $classeAtiva' href='recomendacoes.php?pagina=$i'>$i</a>";
-									}
-									echo "</div>";
+									
 
 									// Botão Fechar do popup fora da tabela
 

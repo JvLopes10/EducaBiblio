@@ -94,7 +94,7 @@
 					</li>
 					<li>
 				<a href="prof.php">
-					<i class="fas fa-graduation-cap"></i>
+					<i class="fas fa-clipboard-list"></i>
 					<span class="text">Professores</span>
 				</a>
 			</li>
@@ -194,11 +194,12 @@
 									<!-- Opções de alunos serão preenchidas dinamicamente com JavaScript -->
 								</select>
 								<h4>Data do empréstimo:</h4>
+								<input type="date" placeholder="DD/MM/AAAA" name="DataEmprestimo" id="DataEmprestimo" required class="box" autocomplete="off" required>
+
 
 								
 								<input type="text" placeholder="Quantidade" name="quantidade" required class="box" autocomplete="off" required>
 
-								<input type="date" placeholder="Data" name="DataEmprestimo" id="DataEmprestimo" required class="box" autocomplete="off" required>
 								<h4>Data da devolução:</h4>
 								<input type="date" placeholder="Data" name="data" required class="box" autocomplete="off" required>
 								
