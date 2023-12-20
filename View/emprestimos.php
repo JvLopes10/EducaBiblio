@@ -199,14 +199,8 @@
 
 
 								
-<<<<<<< HEAD
-								
-								<input type="date" placeholder="Data" name="DataEmprestimo" id="DataEmprestimo" required class="box" autocomplete="off" required>
-								<input type="text" placeholder="Quantidade" name="quantidade" required class="box" autocomplete="off" required>
-=======
 								<input type="text" placeholder="Quantidade" name="quantidade" required class="box" autocomplete="off" required>
 
->>>>>>> 3d1d6b52e4304cae4c2e6825f1f2554baaa26618
 								<h4>Data da devolução:</h4>
 								<input type="date" placeholder="Data" name="data" required class="box" autocomplete="off" required>
 								
