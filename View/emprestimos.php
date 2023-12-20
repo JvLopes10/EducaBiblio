@@ -25,6 +25,35 @@
 			<title>EducaBiblio</title>
 		</head>
 
+		<style>
+	.pagination {
+		text-align: center;
+		margin-top: 15px;
+
+	}
+
+	.page-link {
+		display: inline-block;
+		padding: 5px 10px;
+		margin: 2px;
+		border: 1px solid #333;
+		background-color: #fff;
+		color: #333;
+		text-decoration: none;
+		border-radius: 5px;
+		transition: background-color 0.3s, color 0.3s;
+	}
+
+	.page-link.active {
+		background-color: #333;
+		color: #fff;
+	}
+
+	.page-link:hover {
+		background-color: #333;
+		color: #fff;
+	}
+</style>
 		<body>
 
 			<section id="sidebar">
@@ -65,7 +94,7 @@
 					</li>
 					<li>
 				<a href="prof.php">
-					<i class="fas fa-clipboard-list"></i>
+					<i class="fas fa-graduation-cap"></i>
 					<span class="text">Professores</span>
 				</a>
 			</li>
@@ -166,14 +195,13 @@
 								</select>
 								<h4>Data do empréstimo:</h4>
 
-								<input type="date" placeholder="Data" name="DataEmprestimo" id="DataEmprestimo" required class="box" autocomplete="off" required>
+								
 								<input type="text" placeholder="Quantidade" name="quantidade" required class="box" autocomplete="off" required>
 
+								<input type="date" placeholder="Data" name="DataEmprestimo" id="DataEmprestimo" required class="box" autocomplete="off" required>
 								<h4>Data da devolução:</h4>
 								<input type="date" placeholder="Data" name="data" required class="box" autocomplete="off" required>
-
-
-
+								
 
 								<select id="usuario_idUsuario" name="usuario_idUsuario" class="box select-dark-mode" required>
 									<option value="">Selecione um usuário</option>
@@ -336,7 +364,7 @@
 										// Botão Fechar do popup fora da tabela
 
 									} else {
-										echo "<p><center>enhum usuário encontrado.</center></p>";
+										echo "<p><center>Nenhum emprestimo feito.</center></p>";
 									}
 								}
 

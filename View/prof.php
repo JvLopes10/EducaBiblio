@@ -23,7 +23,6 @@ if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true)
 	<script src="../JS/alunos_prof.js"></script>
 	<title>EducaBiblio</title>
 </head>
-
 <style>
 	.pagination {
 		text-align: center;
@@ -94,7 +93,7 @@ if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true)
 			</li>
 			<li class="active">
 				<a href="prof.php">
-					<i class="fas fa-clipboard-list"></i>
+					<i class="fas fa-graduation-cap"></i>
 					<span class="text">Professores</span>
 				</a>
 			</li>
@@ -196,7 +195,7 @@ if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true)
 						</div>
 						<script>
 							function abrirAluno2() {
-								var urlDoPDF = "../pdf/profPdf.php";
+								var urlDoPDF = "../pdf/alunoPdf.php";
 								window.open(urlDoPDF, '_blank');
 							}
 						</script>
@@ -241,8 +240,7 @@ if ($result === false) {
             echo "<td><center>" . $row["MateriaProf"] . "</center></td>";
 			echo "<td><center><button class='edit-button' data-id='" . $row["idProf"] . "'><i class='fas fa-pencil-alt'></i></button></center> 	</td>";
 			echo "<td><center><div class='container'><center><button class='delete-button' type='button' onclick='handlePopup(true)' aria-label='botão excluir'><i class='fas fa-trash-alt'></i></button></center><div class='popup' id='popup'><img src='../img/decisao.png' aria-label='popup decisão'><h2 class='title'>Aviso!</h2><p class='desc'>Deseja mesmo excluir?</p><button class='close-popup-button' type='button' onclick='handlePopup(false)'>Fechar</button><a href='../Controller/CExcluir_prof.php?id={$row["idProf"]}'><button class='close-popup-button'>Excluir</button></a></div></div></div></center></td>";
-			echo "<td><center><a href='../pdf/registrosProfPdf.php' target='_blank'><button class='historico-button' data-id='" . $row["idProf"] . "'><i class='fas fa-history'></i></button></a></center></td>";
-
+			echo "<td><center><button class='historico-button' data-id='" . $row["idProf"] . "'><i class='fas fa-history'></i></button></center></td>";
             echo "</tr>";
         }
 
@@ -251,7 +249,7 @@ if ($result === false) {
 
         // Você pode adicionar recursos de paginação, se necessário
     } else {
-        echo "Não foram encontrados professores na base de dados.";
+		echo "<p><center>Nenhum professor encontrado.</center></p>";
     }
 }
 
@@ -344,7 +342,7 @@ $conn = null;
 </script>
 <script>
 	function abrirAluno() {
-		var urlDoPDF = "../pdf/registrosProfPdf.php";
+		var urlDoPDF = "../pdf/registrosAluPdf.php";
 		window.open(urlDoPDF, '_blank');
 	}
 </script>

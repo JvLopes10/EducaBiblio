@@ -1,11 +1,11 @@
 <?php
-// excluir_usuario.php
+// excluir_livro.php
 
-// Verifica se o ID do usuário foi enviado via parâmetro GET
+// Verifica se o ID do livro foi enviado via parâmetro GET
 if (isset($_GET['id'])) {
     $idLivro = $_GET['id'];
 
-    // Aqui você deve incluir o arquivo que contém a classe de conexão
+    // Inclui o arquivo que contém a classe de conexão
     require_once('CConexao.php');
 
     try {
@@ -13,30 +13,41 @@ if (isset($_GET['id'])) {
         $conexao = new CConexao();
         $conn = $conexao->getConnection();
 
-        // Prepara a consulta SQL para excluir o usuário com o ID fornecido
-        $sql = "DELETE FROM livro WHERE idLivro  = :idLivro";
-        $stmt = $conn->prepare($sql);
-        $stmt->bindParam(':idLivro', $idLivro);
+        // Exclui os registros de devolucao associados aos empréstimos relacionados ao livro
+        $deleteDevolucaoQuery = "DELETE FROM devolucao WHERE emprestimo_idEmprestimo IN (SELECT idEmprestimo FROM emprestimo WHERE livro_idLivro = :idLivro)";
+        $stmtDeleteDevolucao = $conn->prepare($deleteDevolucaoQuery);
+        $stmtDeleteDevolucao->bindParam(':idLivro', $idLivro);
+        $stmtDeleteDevolucao->execute();
 
-        // Executa a consulta para excluir o usuário
-        $stmt->execute();
+        // Exclui os registros de emprestimo relacionados ao livro
+        $deleteEmprestimoQuery = "DELETE FROM emprestimo WHERE livro_idLivro = :idLivro";
+        $stmtDeleteEmprestimo = $conn->prepare($deleteEmprestimoQuery);
+        $stmtDeleteEmprestimo->bindParam(':idLivro', $idLivro);
+        $stmtDeleteEmprestimo->execute();
 
-        // Verifica se a exclusão foi realizada com sucesso
-        if ($stmt->rowCount() > 0) {
-            // Redireciona de volta para a página de usuários após a exclusão
+        // Exclui o livro
+        $deleteLivroQuery = "DELETE FROM livro WHERE idLivro = :idLivro";
+        $stmtDeleteLivro = $conn->prepare($deleteLivroQuery);
+        $stmtDeleteLivro->bindParam(':idLivro', $idLivro);
+        $stmtDeleteLivro->execute();
+
+        // Verifica se a exclusão do livro foi bem-sucedida
+        if ($stmtDeleteLivro->rowCount() > 0) {
+            // Redireciona de volta para a página de livros após a exclusão
             header("Location: ../view/livros.php");
             exit();
         } else {
-            echo "Falha ao excluir o livro.";
-            header("Location: ../view/livros.php");
+            // Se não houve exclusão, redireciona com mensagem de falha
+            header("Location: ../view/livros.php?error=Falha ao excluir o livro.");
+            exit();
         }
     } catch (PDOException $e) {
+        // Em caso de erro na exclusão, exibe mensagem de erro
         echo "Erro na exclusão do livro: " . $e->getMessage();
     }
 } else {
-    // Se o ID não foi fornecido, exibe uma mensagem de erro ou redireciona para outra página
-    echo "ID do usuário não fornecido.";
-    // Ou redirecione para a página de usuários ou outra página
-    // header("Location: alguma_pagina.php");
+    // Se o ID não foi fornecido, exibe uma mensagem de erro
+    echo "ID do livro não fornecido.";
     exit();
 }
+?>
