@@ -165,7 +165,7 @@ if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true)
 
 						<input type="text" placeholder="Nome" name="NomeAluno" id="NomeAluno" maxlength="50" class="box" autocomplete="off">
 						<input type="email" placeholder="E-mail" name="EmailAluno" id="EmailAluno" maxlength="50" class="box" autocomplete="off">
-<input type=hidden id="escolha" name="escolha" value="Aluno">
+						<input type=hidden id="escolha" name="escolha" value="Aluno">
 						<select id="Turma_idTurma" name="Turma_idTurma" class="box select-dark-mode">
 							<option value="0">Turma</option>
 
@@ -206,6 +206,37 @@ if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true)
 						<div class="head">
 							<h3>Tabela de leitores</h3>
 							<input type="text" id="searchInput" class="searchInput" placeholder="Pesquisar...">
+
+							<button class="murilo" id="murilo" onclick='handlePopup()'>
+								<i class="fas fa-calendar-check"></i>
+							</button>
+
+							<style>
+								.murilo {
+									width: 35px;
+									margin-bottom: 100px;
+									background-color: #ffce26;
+									background-size: 200%;
+									border: none;
+									outline: none;
+									border-radius: 25px;
+									outline: none;
+									height: 35px;
+									color: #fff;
+									font-weight: 600;
+									margin: 10px 0;
+									cursor: pointer;
+									transition: 0.6s;
+									display: block;
+									font-family: "Poppins", sans-serif;
+									font-size: 15px;
+									margin: 1rem 0;
+								}
+
+								.murilo:hover {
+									background-color: #ffbb00;
+								}
+							</style>
 
 							<button class="pdf-button" id="pdf-button" aria-label="botão pdf" onclick="abrirAluno2()">
 								<i class="fas fa-file-pdf"></i></button>
@@ -277,18 +308,13 @@ if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true)
 										if (array_key_exists('idAluno', $row)) {
 											echo "<button class='edit-button' data-id='" . $row["idAluno"] . "'><i class='fas fa-pencil-alt'></i></button>";
 										}
-										if (array_key_exists('idProf', $row)) {
-											echo "<button class='edit-button' data-id='" . $row["idProf"] . "'><i class='fas fa-pencil-alt'></i></button>";
-										}
 										echo "</center></td>";
 
 
 										if (array_key_exists('idAluno', $row)) {
 											echo "<td><div class='container'><center><button class='delete-button' type='button' onclick='handlePopup(true)' aria-label='botão excluir'><i class='fas fa-trash-alt'></i></button></center><div class='popup' id='popup'><img src='../img/decisao.png' aria-label='popup decisão'><h2 class='title'>Aviso!</h2><p class='desc'>Deseja mesmo excluir?</p><button class='close-popup-button' type='button' onclick='handlePopup(false)'>Fechar</button><a href='../Controller/CExcluir_aluno.php?id={$row["idAluno"]}'><button class='close-popup-button'>Excluir</button></a></div></div></div></td>";
 										}
-										if (array_key_exists('idProf', $row)) {
-											echo "<td><div class='container'><center><button class='delete-button' type='button' onclick='handlePopup(true)' aria-label='botão excluir'><i class='fas fa-trash-alt'></i></button></center><div class='popup' id='popup'><img src='../img/decisao.png' aria-label='popup decisão'><h2 class='title'>Aviso!</h2><p class='desc'>Deseja mesmo excluir?</p><button class='close-popup-button' type='button' onclick='handlePopup(false)'>Fechar</button><a href='../Controller/CExcluir_prof.php?id={$row["idProf"]}'><button class='close-popup-button'>Excluir</button></a></div></div></div></td>";
-										}
+
 
 
 										echo "<td><center>";
@@ -310,22 +336,22 @@ if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true)
 
 
 
-									echo "</tbody>";
-									echo "</table>";
+								echo "</tbody>";
+								echo "</table>";
 
-									// Adiciona links de paginação
-									echo "<div class='pagination'>";
-									$totalUser = count($user);
-									$totalPaginas = ceil($totalUser / $UsuarioPorPagina);
-									for ($i = 1; $i <= $totalPaginas; $i++) {
-										$classeAtiva = ($i === $paginaAtual) ? "active" : "";
-										echo "<a class='page-link $classeAtiva' href='aluno.php?pagina=$i'>$i</a>";
-									}
-									echo "</div>";
-
-									// Botão Fechar do popup fora da tabela
+								// Adiciona links de paginação
+								echo "<div class='pagination'>";
+								$totalUser = count($user);
+								$totalPaginas = ceil($totalUser / $UsuarioPorPagina);
+								for ($i = 1; $i <= $totalPaginas; $i++) {
+									$classeAtiva = ($i === $paginaAtual) ? "active" : "";
+									echo "<a class='page-link $classeAtiva' href='aluno.php?pagina=$i'>$i</a>";
 								}
-						
+								echo "</div>";
+
+								// Botão Fechar do popup fora da tabela
+							}
+
 
 							$conn = null; // Fecha a conexão
 							?>

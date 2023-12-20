@@ -2,7 +2,63 @@
 
 include 'config.php';
 
-$sql = "SELECT * FROM prof";
+// Verifica se o parâmetro 'idAluno' está presente na requisição
+if (isset($_GET['idProf'])) {
+    $idProf = $_GET['idProf'];
+
+    // Modifica a consulta SQL para filtrar pelo ID do aluno
+    $sql = "SELECT
+    emprestimo.idEmprestimo,
+    prof.NomeProf AS Estudante,
+    DATE_FORMAT(emprestimo.DataEmprestimo, '%d/%m/%Y') AS DataEmprestimoFormatada,
+    IFNULL(DATE_FORMAT(devolucao.DataDevolucao, '%d/%m/%Y'), '--/--/----') AS DataDevolucaoFormatada,
+    IFNULL(DATE_FORMAT(devolucao.DataDevolvida, '%d/%m/%Y'), '--/--/----') AS DataDevolvidaFormatada,
+    CASE
+        WHEN emprestimo.StatusEmprestimo = 0 THEN 'Dentro do prazo'
+        WHEN emprestimo.StatusEmprestimo = 1 THEN 'Pendente'
+        WHEN emprestimo.StatusEmprestimo = 2 THEN 'Devolvido'
+        ELSE 'Status não definido'
+    END AS Estado,
+    livro.idLivro,
+    livro.NomeLivro,
+    livro.EditoraLivro,
+    livro.IBSMLivro,
+    livro.QuantidadeLivros,
+    genero.NomeGenero AS GeneroLivro,
+    idioma.Idioma AS IdiomaLivro,
+    livro.FotoLivro,
+    livro.CaminhoFotoLivro,
+    livro.LocalLivro,
+    livro.PrateleiraLivro,
+    livro.ColunaLivro,
+    autor.NomeAutor
+FROM emprestimo
+LEFT JOIN prof ON emprestimo.prof_idProf = prof.idProf
+LEFT JOIN devolucao ON emprestimo.idEmprestimo = devolucao.emprestimo_idEmprestimo
+LEFT JOIN livro ON emprestimo.livro_idLivro = livro.idLivro
+LEFT JOIN genero ON livro.Genero_idGenero = genero.idGenero
+LEFT JOIN autor ON livro.Autor_idAutor = autor.idAutor
+LEFT JOIN idioma ON livro.Idioma_idIdioma = idioma.idIdioma
+WHERE prof.idProf = $idProf;
+";
+} else {
+    // Se 'idAluno' não estiver presente, mostra todos os empréstimos (consulta original)
+    $sql = "SELECT
+                emprestimo.idEmprestimo,
+                prof.NomeProf AS Estudante,
+                DATE_FORMAT(emprestimo.DataEmprestimo, '%d/%m/%Y') AS DataEmprestimoFormatada,
+                IFNULL(DATE_FORMAT(devolucao.DataDevolucao, '%d/%m/%Y'), '--/--/----') AS DataDevolucaoFormatada,
+                IFNULL(DATE_FORMAT(devolucao.DataDevolvida, '%d/%m/%Y'), '--/--/----') AS DataDevolvidaFormatada,
+                CASE
+                    WHEN emprestimo.StatusEmprestimo = 0 THEN 'A prazo'
+                    WHEN emprestimo.StatusEmprestimo = 1 THEN 'Pendente'
+                    WHEN emprestimo.StatusEmprestimo = 2 THEN 'Devolvido'
+                    ELSE 'Status não definido'
+                END AS Estado
+            FROM emprestimo
+            LEFT JOIN prof ON emprestimo.prof_idProf = prof.idProf
+            LEFT JOIN devolucao ON emprestimo.idEmprestimo = devolucao.emprestimo_idEmprestimo";
+}
 
 $res = $conn->query($sql);
 
@@ -64,33 +120,33 @@ if ($res->num_rows > 0) {
     </head>
     <body>
         <div id='library-info'>
-            <h1>Tabela de Livros</h1>
+            <h1>Histórico de empréstimos</h1>
             <p>
-                Bem-vindo ao EducaBiblio, o seu sistema de biblioteca dedicado à promoção da educação e leitura! Abaixo, apresentamos os registros dos livros cadastrados.
+                Bem-vindo ao EducaBiblio, o seu sistema de biblioteca dedicado à promoção da educação e leitura! Abaixo, apresentamos o histórico de empréstimos já feitos pelo professor.
             </p>
         </div>
         <table>
             <thead>
                 <tr>
-                <th>ID</th>
-                <th>Nome</th>
-                <th>E-mail</th>
-                <th>Tipo</th>
-                <th>Série</th>
-                <th>Turma</th>
+                <th>Professor</th>
+                <th>Livro</th>
+                <th>Data do Empréstimo</th>
+                <th>Data de Devolução</th>
+                <th>Data em que foi Devolvido</th>
+                <th>Estado</th>
                 </tr>
             </thead>
             <tbody>";
 
     while ($row = $res->fetch_object()) {
         $html .= "<tr>";
-        $html .= "<td>" . $row->idAluno . "</td>";
-        $html .= "<td>" . $row->NomeAluno . "</td>";
-        $html .= "<td>" . $row->EmailAluno . "</td>";
-        $html .= "<td>" . $row->tipo . "</td>";
-        $html .= "<td>" . $row->AnoTurma . "</td>";
-        $html .= "<td>" . $row->nomeTurma . "</td>";
 
+        $html .= "<td>" . $row->Estudante . "</td>";
+        $html .= "<td>" . $row->NomeLivro . "</td>";
+        $html .= "<td>" . $row->DataEmprestimoFormatada . "</td>";
+        $html .= "<td>" . $row->DataDevolucaoFormatada . "</td>";
+        $html .= "<td>" . $row->DataDevolvidaFormatada . "</td>";
+        $html .= "<td>" . $row->Estado . "</td>";
 
         $html .= "</tr>";
     }
@@ -120,4 +176,4 @@ $dompdf->setPaper('A4', 'portrait');
 
 $dompdf->render();
 
-$dompdf->stream("Tabela de leitores", array("Attachment" => false));
+$dompdf->stream("Histórico", array("Attachment" => false));

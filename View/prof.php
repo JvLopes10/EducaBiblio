@@ -162,7 +162,7 @@ if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true)
 				<div class="row">
 					<form action="../Router/prof_rotas.php" method="post">
 						<h3>Cadastro de Professores</h3>
-						<input type="text" placeholder="ID" name="idProf" id="idProf" maxlength="50" class="box3 autocomplete="off" readonly>
+						<input type="text" placeholder="ID" name="idProf" id="idProf" maxlength="50" class="box3 autocomplete=" off" readonly>
 						<input type="text" placeholder="Nome" name="NomeProf" id="NomeProf" maxlength="50" class="box" autocomplete="off">
 						<input type="email" placeholder="E-mail" name="EmailProf" id="EmailProf" maxlength="50" class="box" autocomplete="off">
 						<input type="text" placeholder="Materia" name="MateriaProf" id="MateriaProf" maxlength="50" class="box" autocomplete="off">
@@ -202,62 +202,63 @@ if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true)
 						</script>
 						<table>
 
-						<?php
+							<?php
 
-// Aqui você já deve ter sua conexão com o banco de dados configurada
+							// Aqui você já deve ter sua conexão com o banco de dados configurada
 
-// Consulta SQL para obter os dados dos professores
-$sql = "SELECT * FROM prof";
-$result = $conn->query($sql);
+							// Consulta SQL para obter os dados dos professores
+							$sql = "SELECT * FROM prof";
+							$result = $conn->query($sql);
 
-if ($result === false) {
-    // Use errorInfo para obter informações sobre o erro
-    $errorInfo = $conn->errorInfo();
-    echo "Erro na consulta SQL: " . $errorInfo[2];
-} else {
-    if ($result->rowCount() > 0) {
-        $professores = $result->fetchAll(PDO::FETCH_ASSOC);
+							if ($result === false) {
+								// Use errorInfo para obter informações sobre o erro
+								$errorInfo = $conn->errorInfo();
+								echo "Erro na consulta SQL: " . $errorInfo[2];
+							} else {
+								if ($result->rowCount() > 0) {
+									$professores = $result->fetchAll(PDO::FETCH_ASSOC);
 
-        // Exibir a tabela com os dados dos professores
-        echo "<table>";
-        echo "<thead>";
-        echo "<tr>";
-        echo "<th><center>ID</center></th>";
-        echo "<th><center>Nome</center></th>";
-        echo "<th><center>Email</center></th>";
-        echo "<th><center>Materia</center></th>";
-		echo "<th><center>Editar</center></th>";
-		echo "<th><center>Excluir</center></th>";
-		echo "<th><center>Histórico</center></th>";
-        echo "</tr>";
-        echo "</thead>";
-        echo "<tbody>";
+									// Exibir a tabela com os dados dos professores
+									echo "<table>";
+									echo "<thead>";
+									echo "<tr>";
+									echo "<th><center>ID</center></th>";
+									echo "<th><center>Nome</center></th>";
+									echo "<th><center>Email</center></th>";
+									echo "<th><center>Materia</center></th>";
+									echo "<th><center>Editar</center></th>";
+									echo "<th><center>Excluir</center></th>";
+									echo "<th><center>Histórico</center></th>";
+									echo "</tr>";
+									echo "</thead>";
+									echo "<tbody>";
 
-        foreach ($professores as $row) {
-            echo "<tr>";
-            echo "<td><center>" . $row["idProf"] . "</center></td>";
-            echo "<td><center>" . $row["NomeProf"] . "</center></td>";
-            echo "<td><center>" . $row["EmailProf"] . "</center></td>";
-            echo "<td><center>" . $row["MateriaProf"] . "</center></td>";
-			echo "<td><center><button class='edit-button' data-id='" . $row["idProf"] . "'><i class='fas fa-pencil-alt'></i></button></center> 	</td>";
-			echo "<td><center><div class='container'><center><button class='delete-button' type='button' onclick='handlePopup(true)' aria-label='botão excluir'><i class='fas fa-trash-alt'></i></button></center><div class='popup' id='popup'><img src='../img/decisao.png' aria-label='popup decisão'><h2 class='title'>Aviso!</h2><p class='desc'>Deseja mesmo excluir?</p><button class='close-popup-button' type='button' onclick='handlePopup(false)'>Fechar</button><a href='../Controller/CExcluir_prof.php?id={$row["idProf"]}'><button class='close-popup-button'>Excluir</button></a></div></div></div></center></td>";
-			echo "<td><center><a href='../pdf/registrosProfPdf.php' target='_blank'><button class='historico-button' data-id='" . $row["idProf"] . "'><i class='fas fa-history'></i></button></a></center></td>";
+									foreach ($professores as $row) {
+										echo "<tr>";
+										echo "<td><center>" . $row["idProf"] . "</center></td>";
+										echo "<td><center>" . $row["NomeProf"] . "</center></td>";
+										echo "<td><center>" . $row["EmailProf"] . "</center></td>";
+										echo "<td><center>" . $row["MateriaProf"] . "</center></td>";
+										echo "<td><center><button class='edit-button' data-id='" . $row["idProf"] . "'><i class='fas fa-pencil-alt'></i></button></center> 	</td>";
+										echo "<td><center><div class='container'><center><button class='delete-button' type='button' onclick='handlePopup(true)' aria-label='botão excluir'><i class='fas fa-trash-alt'></i></button></center><div class='popup' id='popup'><img src='../img/decisao.png' aria-label='popup decisão'><h2 class='title'>Aviso!</h2><p class='desc'>Deseja mesmo excluir?</p><button class='close-popup-button' type='button' onclick='handlePopup(false)'>Fechar</button><a href='../Controller/CExcluir_prof.php?id={$row["idProf"]}'><button class='close-popup-button'>Excluir</button></a></div></div></div></center></td>";
+										echo "<td><center><a href='../pdf/registrosProfPdf.php?idProf=" . $row["idProf"] . "' target='_blank'><button class='historico-button' data-id='" . $row["idProf"] . "'><i class='fas fa-history'></i></button></a></center></td>";
 
-            echo "</tr>";
-        }
 
-        echo "</tbody>";
-        echo "</table>";
+										echo "</tr>";
+									}
 
-        // Você pode adicionar recursos de paginação, se necessário
-    } else {
-        echo "Não foram encontrados professores na base de dados.";
-    }
-}
+									echo "</tbody>";
+									echo "</table>";
 
-// Lembre-se de fechar a conexão ao final
-$conn = null;
-?>
+									// Você pode adicionar recursos de paginação, se necessário
+								} else {
+									echo "Não foram encontrados professores na base de dados.";
+								}
+							}
+
+							// Lembre-se de fechar a conexão ao final
+							$conn = null;
+							?>
 
 
 

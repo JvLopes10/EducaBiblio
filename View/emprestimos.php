@@ -64,11 +64,11 @@
 						</a>
 					</li>
 					<li>
-				<a href="prof.php">
-					<i class="fas fa-clipboard-list"></i>
-					<span class="text">Professores</span>
-				</a>
-			</li>
+						<a href="prof.php">
+							<i class="fas fa-clipboard-list"></i>
+							<span class="text">Professores</span>
+						</a>
+					</li>
 					<li>
 						<a href="turma.php">
 							<i class="fas fa-users"></i>
