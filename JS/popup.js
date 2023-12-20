@@ -24,3 +24,11 @@ function handlePopup2(open) {
     // Adiciona a classe 'opened' ao elemento se 'open' for verdadeiro, caso contrário, remove a classe
     popup2.classList[open ? "add" : "remove"]("opened");
 }
+
+const popup3 = document.getElementById("popup3");
+
+// Define uma função para lidar com a abertura e fechamento do terceiro popup
+function handlePopup3(open) {
+    // Adiciona a classe 'opened' ao elemento se 'open' for verdadeiro, caso contrário, remove a classe
+    popup3.classList[open ? "add" : "remove"]("opened");
+}

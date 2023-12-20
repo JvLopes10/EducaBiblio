@@ -3,20 +3,48 @@
 include 'config.php';
 
 $sql = "SELECT
-            emprestimo.idEmprestimo,
-            aluno.NomeAluno AS Estudante,
-            DATE_FORMAT(emprestimo.DataEmprestimo, '%d/%m/%Y') AS DataEmprestimoFormatada,
-            IFNULL(DATE_FORMAT(devolucao.DataDevolucao, '%d/%m/%Y'), '--/--/----') AS DataDevolucaoFormatada,
-            IFNULL(DATE_FORMAT(devolucao.DataDevolvida, '%d/%m/%Y'), '--/--/----') AS DataDevolvidaFormatada,
-            CASE
-                WHEN emprestimo.StatusEmprestimo = 0 THEN 'A prazo'
-                WHEN emprestimo.StatusEmprestimo = 1 THEN 'Pendente'
-                WHEN emprestimo.StatusEmprestimo = 2 THEN 'Devolvido'
-                ELSE 'Status não definido'
-            END AS Estado
-        FROM emprestimo
-        LEFT JOIN aluno ON emprestimo.aluno_idAluno = aluno.idAluno
-        LEFT JOIN devolucao ON emprestimo.idEmprestimo = devolucao.emprestimo_idEmprestimo";
+emprestimo.idEmprestimo,
+aluno.NomeAluno AS Estudante,
+prof.NomeProf AS Professor,
+DATE_FORMAT(emprestimo.DataEmprestimo, '%d/%m/%Y') AS DataEmprestimoFormatada,
+IFNULL(DATE_FORMAT(devolucao.DataDevolucao, '%d/%m/%Y'), '--/--/----') AS DataDevolucaoFormatada,
+IFNULL(DATE_FORMAT(devolucao.DataDevolvida, '%d/%m/%Y'), '--/--/----') AS DataDevolvidaFormatada,
+CASE
+    WHEN emprestimo.StatusEmprestimo = 0 THEN 'A prazo'
+    WHEN emprestimo.StatusEmprestimo = 1 THEN 'Pendente'
+    WHEN emprestimo.StatusEmprestimo = 2 THEN 'Devolvido'
+    ELSE 'Status não definido'
+END AS Estado,
+livro.idLivro,
+livro.NomeLivro,
+livro.EditoraLivro,
+livro.IBSMLivro,
+livro.QuantidadeLivros,
+genero.NomeGenero AS GeneroLivro,
+idioma.Idioma AS IdiomaLivro,
+livro.FotoLivro,
+livro.CaminhoFotoLivro,
+livro.LocalLivro,
+livro.PrateleiraLivro,
+livro.ColunaLivro,
+autor.NomeAutor
+FROM
+emprestimo
+LEFT JOIN
+aluno ON emprestimo.aluno_idAluno = aluno.idAluno
+LEFT JOIN
+prof ON emprestimo.prof_idProf = prof.idProf
+LEFT JOIN
+devolucao ON emprestimo.idEmprestimo = devolucao.emprestimo_idEmprestimo
+LEFT JOIN
+livro ON emprestimo.idEmprestimo = livro.idLivro
+LEFT JOIN
+genero ON livro.Genero_idGenero = genero.idGenero
+LEFT JOIN
+autor ON livro.Autor_idAutor = autor.idAutor
+LEFT JOIN
+idioma ON livro.Idioma_idIdioma = idioma.idIdioma;
+";
 
 $res = $conn->query($sql);
 
@@ -87,7 +115,7 @@ if ($res->num_rows > 0) {
             <thead>
                 <tr>
                 <th>ID</th>
-                <th>Estudante</th>
+                <th>Leitor</th>
                 <th>Data do Empréstimo</th>
                 <th>Data de Devolução</th>
                 <th>Data em que foi Devolvido</th>
@@ -99,7 +127,7 @@ if ($res->num_rows > 0) {
     while ($row = $res->fetch_object()) {
         $html .= "<tr>";
         $html .= "<td>" . $row->idEmprestimo . "</td>";
-        $html .= "<td>" . $row->Estudante . "</td>";
+        $html .= "<td>" . (isset($row->Estudante) ? $row->Estudante : $row->Professor) . "</td>";
         $html .= "<td>" . $row->DataEmprestimoFormatada . "</td>";
         $html .= "<td>" . $row->DataDevolucaoFormatada . "</td>";
         $html .= "<td>" . $row->DataDevolvidaFormatada . "</td>";

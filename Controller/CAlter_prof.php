@@ -38,4 +38,3 @@ class CAlter_prof
         }
     }
 }
-?>

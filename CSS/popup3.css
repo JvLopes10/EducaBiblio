@@ -157,7 +157,7 @@ body {
 /* Estilos para imagens dentro do primeiro popup */
 
 .popup img {
-    border-radius: 0% !important;
+    height: 100px;
     /* Remove a borda arredondada da imagem (important é usado para garantir prioridade) */
 }
 

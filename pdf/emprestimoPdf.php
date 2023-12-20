@@ -7,7 +7,7 @@ $sql = "SELECT
             genero.NomeGenero,
             emprestimo.idEmprestimo,
             turma.NomeTurma,
-            aluno.NomeAluno,
+            aluno.NomeAluno as Estudante,
             emprestimo.DataEmprestimo,
             devolucao.DataDevolucao,
             emprestimo.Quantidade_emp,
@@ -92,7 +92,7 @@ if ($res->num_rows > 0) {
                 <th>ID</th>
                 <th>Livro</th>
                 <th>Quantidade</th>
-                <th>Aluno</th>
+                <th>Leitor</th>
                 <th>Turma</th>
                 <th>Data do empréstimo</th>
                 <th>Usuário</th>
@@ -105,7 +105,7 @@ if ($res->num_rows > 0) {
         $html .= "<td>" . $row->idEmprestimo . "</td>";
         $html .= "<td>" . $row->TituloLivro . "</td>";
         $html .= "<td>" . $row->Quantidade_emp . "</td>";
-        $html .= "<td>" . $row->NomeAluno . "</td>";
+        $html .= "<td>" . $row->Estudante . "</td>";
         $html .= "<td>" . $row->NomeTurma . "</td>";
         $html .= "<td>" . $row->DataEmprestimo . "</td>";
         $html .= "<td>" . $row->UserUsuario . "</td>";
