@@ -104,7 +104,7 @@ if ($res->num_rows > 0) {
     $html .= "</tbody>
         </table>
         <div class='footer'>
-            Governo do Ceará - Educação e Leitura
+            Governo do Estado do Ceará - Educação e Leitura
         </div>
     </body>
     </html>";
