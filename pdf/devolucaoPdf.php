@@ -2,13 +2,22 @@
 
 include 'config.php';
 
-$sql = "SELECT emprestimo.idEmprestimo, aluno.NomeAluno AS Leitor, turma.NomeTurma AS Turma, livro.NomeLivro AS Livro, emprestimo.StatusEmprestimo AS Estado, devolucao.DataDevolucao
+$sqlAlunos = "SELECT emprestimo.idEmprestimo, aluno.NomeAluno AS Leitor, turma.NomeTurma AS Turma, livro.NomeLivro AS Livro, emprestimo.StatusEmprestimo AS Estado, devolucao.DataDevolucao
 FROM emprestimo
 INNER JOIN aluno ON emprestimo.aluno_idAluno = aluno.idAluno
 INNER JOIN livro ON emprestimo.livro_idLivro = livro.idLivro
 INNER JOIN turma ON aluno.Turma_idTurma = turma.IdTurma
 LEFT JOIN devolucao ON emprestimo.idEmprestimo = devolucao.emprestimo_idEmprestimo";
 
+$sqlProfessores = "SELECT emprestimo.idEmprestimo, prof.NomeProf AS Professor, 'Professor' AS Turma, livro.NomeLivro AS Livro, emprestimo.StatusEmprestimo AS Estado, devolucao.DataDevolucao
+FROM emprestimo
+INNER JOIN prof ON emprestimo.prof_idProf = prof.idProf
+INNER JOIN livro ON emprestimo.livro_idLivro = livro.idLivro
+LEFT JOIN devolucao ON emprestimo.idEmprestimo = devolucao.emprestimo_idEmprestimo";
+
+
+
+$sql = "($sqlAlunos) UNION ($sqlProfessores)";
 $res = $conn->query($sql);
 
 if ($res->num_rows > 0) {
@@ -90,9 +99,18 @@ if ($res->num_rows > 0) {
         $html .= "<tr>";
         $html .= "<td>" . $row->idEmprestimo . "</td>";
         $html .= "<td>" . $row->Livro . "</td>";
-        $html .= "<td>" . $row->Leitor . "</td>";
+        $html .= "<td>" . ($row->Leitor ? $row->Leitor : $row->Professor) . "</td>";
         $html .= "<td>" . $row->Turma . "</td>";
-        $html .= "<td>" . $row->DataDevolucao . "</td>";
+        $html .= "<td>";
+
+        if (isset($row->DataDevolucao)) {
+            $html .= $row->DataDevolucao;
+        } else {
+            $html .= "Data não disponível";
+        }
+
+        $html .= "</td>";
+
 
         $html .= "</tr>";
     }

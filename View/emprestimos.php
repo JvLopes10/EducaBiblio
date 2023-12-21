@@ -22,38 +22,10 @@
 			<link rel="shortcut icon" href="../img/icon1.png" type="image/x-icon">
 			<link rel="stylesheet" href="../CSS/style.css">
 			<link rel="stylesheet" href="../CSS/popup5.css">
+			<link rel="stylesheet" href="../CSS/darkPaginacao.css">
 			<title>EducaBiblio</title>
 		</head>
 
-		<style>
-	.pagination {
-		text-align: center;
-		margin-top: 15px;
-
-	}
-
-	.page-link {
-		display: inline-block;
-		padding: 5px 10px;
-		margin: 2px;
-		border: 1px solid #333;
-		background-color: #fff;
-		color: #333;
-		text-decoration: none;
-		border-radius: 5px;
-		transition: background-color 0.3s, color 0.3s;
-	}
-
-	.page-link.active {
-		background-color: #333;
-		color: #fff;
-	}
-
-	.page-link:hover {
-		background-color: #333;
-		color: #fff;
-	}
-</style>
 		<body>
 
 			<section id="sidebar">
