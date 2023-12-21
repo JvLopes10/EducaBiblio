@@ -309,7 +309,7 @@ if ($row['Estado'] == 2 || $row['Estado'] == 4) {
     echo '<center><button class="historico-button" type="submit" onclick="handlePopup(true)"><i class="fas fa-check"></i></button></center>';
     echo '<div class="popup" id="popup">';
     echo '<img src="../img/livro2.png">';
-    echo '<h2 class="title"></h2>';
+    echo '<h2 class="title">Devolução</h2>';
     echo '<p class="desc">O livro foi realmente devolvido?</p>';
     echo '<button class="close-popup-button" type="submit" onclick="handlePopup(false)">Fechar</button>';
     echo '<a href="../Controller/CDevolver_livro.php?id=' . $row['idEmprestimo'] . '"><button class="close-popup-button">Devolver</button></a>';
