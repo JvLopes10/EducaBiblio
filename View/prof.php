@@ -203,27 +203,27 @@ if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true)
 									echo "</thead>";
 									echo "<tbody>";
 
-        foreach ($professores as $row) {
-            echo "<tr>";
-            echo "<td><center>" . $row["idProf"] . "</center></td>";
-            echo "<td><center>" . $row["NomeProf"] . "</center></td>";
-            echo "<td><center>" . $row["EmailProf"] . "</center></td>";
-            echo "<td><center>" . $row["MateriaProf"] . "</center></td>";
-			echo "<td><center><button class='edit-button' data-id='" . $row["idProf"] . "'><i class='fas fa-pencil-alt'></i></button></center> 	</td>";
-			echo "<td><center><div class='container'><center><button class='delete-button' type='button' onclick='handlePopup(true)' aria-label='botão excluir'><i class='fas fa-trash-alt'></i></button></center><div class='popup' id='popup'><img src='../img/decisao.png' aria-label='popup decisão'><h2 class='title'>Aviso!</h2><p class='desc'>Deseja mesmo excluir?</p><button class='close-popup-button' type='button' onclick='handlePopup(false)'>Fechar</button><a href='../Controller/CExcluir_prof.php?id={$row["idProf"]}'><button class='close-popup-button'>Excluir</button></a></div></div></div></center></td>";
-			echo "<td><center><a href='../pdf/registrosProfPdf.php?idProf=" . $row["idProf"] . "' target='_blank'><button class='historico-button' data-id='" . $row["idProf"] . "'><i class='fas fa-history'></i></button></a></center></td>";
+									foreach ($professores as $row) {
+										echo "<tr>";
+										echo "<td><center>" . $row["idProf"] . "</center></td>";
+										echo "<td><center>" . $row["NomeProf"] . "</center></td>";
+										echo "<td><center>" . $row["EmailProf"] . "</center></td>";
+										echo "<td><center>" . $row["MateriaProf"] . "</center></td>";
+										echo "<td><center><button class='edit-button' data-id='" . $row["idProf"] . "'><i class='fas fa-pencil-alt'></i></button></center> 	</td>";
+										echo "<td><center><div class='container'><center><button class='delete-button' type='button' onclick='handlePopup(true)' aria-label='botão excluir'><i class='fas fa-trash-alt'></i></button></center><div class='popup' id='popup'><img src='../img/decisao.png' aria-label='popup decisão'><h2 class='title'>Aviso!</h2><p class='desc'>Deseja mesmo excluir?</p><button class='close-popup-button' type='button' onclick='handlePopup(false)'>Fechar</button><a href='../Controller/CExcluir_prof.php?id={$row["idProf"]}'><button class='close-popup-button'>Excluir</button></a></div></div></div></center></td>";
+										echo "<td><center><a href='../pdf/registrosProfPdf.php?idProf=" . $row["idProf"] . "' target='_blank'><button class='historico-button' data-id='" . $row["idProf"] . "'><i class='fas fa-history'></i></button></a></center></td>";
 
-            echo "</tr>";
-        }
+										echo "</tr>";
+									}
 
 									echo "</tbody>";
 									echo "</table>";
 
-        // Você pode adicionar recursos de paginação, se necessário
-    } else {
-        echo "<center>Não foram encontrados professores na base de dados.</center>";
-    }
-}
+									// Você pode adicionar recursos de paginação, se necessário
+								} else {
+									echo "<center>Não foram encontrados professores na base de dados.</center>";
+								}
+							}
 
 							// Lembre-se de fechar a conexão ao final
 							$conn = null;
