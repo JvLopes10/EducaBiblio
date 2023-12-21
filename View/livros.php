@@ -190,7 +190,7 @@ if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true)
 						</select>
 						<input type="text" placeholder="Quantidade" name="QuantidadeLivros" id="QuantidadeLivros" required maxlength="50" class="box" autocomplete="off">
 
-						<center><input type="submit" value="Cadastrar" class="inline-btn" name="action"></center>
+						<center><input type="submit" value="Cadastrar" id="cadastrar" class="inline-btn" name="action"></center>
 					</form>
 				</div>
 			</section>
@@ -346,31 +346,48 @@ if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true)
 
 <script>
 	$(document).ready(function() {
-		// Capturar clique no botão de edição
-		$('.edit-button').click(function() {
-			// Obter o ID do item a ser editado
-			var id = $(this).closest('tr').find('td:eq(1)').text(); // Considerando que o ID está na segunda coluna
+    // Capturar clique no botão de edição
+    $('.edit-button').click(function() {
+        // Obter os dados da linha correspondente na tabela de livros
+        var idLivro = $(this).closest('tr').find('td:eq(1)').text(); // ID do livro na segunda coluna, ajuste conforme a estrutura real da sua tabela
+        var NomeLivro = $(this).closest('tr').find('td:eq(0)').text(); // Nome do livro na primeira coluna, ajuste conforme a estrutura real da sua tabela
+        var EditoraLivro = $(this).closest('tr').find('td:eq(2)').text(); // Editora na terceira coluna, ajuste conforme a estrutura real da sua tabela
+        var IBSMLivro = $(this).closest('tr').find('td:eq(3)').text(); // ISBN/CDD na quarta coluna, ajuste conforme a estrutura real da sua tabela
+        var GeneroLivro = $(this).closest('tr').find('td:eq(4)').text(); // Gênero na quinta coluna, ajuste conforme a estrutura real da sua tabela
+        var IdiomaLivro = $(this).closest('tr').find('td:eq(5)').text(); // Idioma na sexta coluna, ajuste conforme a estrutura real da sua tabela
+        var QuantidadeLivros = $(this).closest('tr').find('td:eq(6)').text(); // Quantidade na sétima coluna, ajuste conforme a estrutura real da sua tabela
+        var LocalLivro = $(this).closest('tr').find('td:eq(7)').text(); // Localização na oitava coluna, ajuste conforme a estrutura real da sua tabela
+        var PrateleiraLivro = $(this).closest('tr').find('td:eq(8)').text(); // Prateleira na nona coluna, ajuste conforme a estrutura real da sua tabela
+        var ColunaLivro = $(this).closest('tr').find('td:eq(9)').text(); // Coluna na décima coluna, ajuste conforme a estrutura real da sua tabela
 
-			// Encontrar os dados correspondentes na tabela de livros e preencher o formulário
-			$('table tbody tr').each(function() {
-				var rowId = $(this).find('td:eq(1)').text(); // Considerando que o ID está na segunda coluna
-				if (rowId == id) {
-					var nomeLivro = $(this).find('td:eq(0)').text();
-					var editoraLivro = $(this).find('td:eq(2)').text();
-					var ibsmLivro = $(this).find('td:eq(3)').text();
-					// A coluna de foto pode ser mais complexa para lidar diretamente assim
+        // Preencher o formulário com os dados obtidos
+        preencherFormulario(idLivro, NomeLivro, EditoraLivro, IBSMLivro, GeneroLivro, IdiomaLivro, QuantidadeLivros, LocalLivro, PrateleiraLivro, ColunaLivro); // Chama a função para preencher o formulário com os dados obtidos
 
-					// Preencher os campos do formulário com os dados obtidos
-					$('#id').val(id);
-					$('#NomeLivro').val(nomeLivro);
-					$('#EditoraLivro').val(editoraLivro);
-					$('#IBSMLivro').val(ibsmLivro);
-					// O campo de foto pode exigir uma manipulação diferente, dependendo da lógica usada para armazenamento/manipulação de imagens
-					// ...
-				}
-			});
-		});
-	});
+		// Alterar o modo de ação para editar
+		$('#modoAcao').val('editar');
+					// Alterar o valor do botão para refletir a ação de edição
+					$('input[type="submit"]').val('Editar');
+        // Modificar o action do formulário para o script responsável pela atualização
+		$('form').attr('action', '../router/Atualizar_livrorotas.php');
+        // Modificar o texto do botão de envio para "Atualizar"
+        $('input[type="submit"]').attr('name', 'Editar');
+    });
+});
+
+// Função para preencher o formulário com os dados do livro ao clicar no botão de edição
+function preencherFormulario(idLivro, NomeLivro, EditoraLivro, IBSMLivro, GeneroLivro, IdiomaLivro, QuantidadeLivros, LocalLivro, PrateleiraLivro, ColunaLivro) {
+    $('#idLivro').val(idLivro);
+    $('#NomeLivro').val(NomeLivro);
+    $('#EditoraLivro').val(EditoraLivro);
+    $('#IBSMLivro').val(IBSMLivro);
+    $('#Genero_idGenero').val(GeneroLivro); // Ajuste conforme o ID do campo select para o gênero na sua página
+    $('#Idioma_idIdioma').val(IdiomaLivro); // Ajuste conforme o ID do campo select para o idioma na sua página
+    $('#QuantidadeLivros').val(QuantidadeLivros);
+    $('#LocalLivro').val(LocalLivro);
+    $('#PrateleiraLivro').val(PrateleiraLivro); // Ajuste conforme o ID do campo select para a prateleira na sua página
+    $('#ColunaLivro').val(ColunaLivro); // Ajuste conforme o ID do campo select para a coluna na sua página
+}
+
 </script>
 <script>
 	$(document).ready(function() {

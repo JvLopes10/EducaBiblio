@@ -133,12 +133,12 @@ if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true)
 				<div class="row">
 					<form action="../Router/alunos_rotas.php" method="post">
 						<h3>Cadastro de leitores</h3>
-						<input type="text" placeholder="ID" name="id" maxlength="50" class="box3" autocomplete="off" readonly>
-<input type="hidden" value="Aluno" id="escolha" name="escolha">
+						<input type="text" placeholder="ID" name="idAluno" id="idAluno" maxlength="50" class="box3" autocomplete="off" readonly>
+						<input type="hidden" value="Aluno" id="escolha" name="escolha">
 						<input type="text" placeholder="Nome" name="NomeAluno" id="NomeAluno" maxlength="50" class="box" autocomplete="off">
 						<input type="email" placeholder="E-mail" name="EmailAluno" id="EmailAluno" maxlength="50" class="box" autocomplete="off">
 
-						<select id="Turma_idTurma" name="Turma_idTurma" class="box select-dark-mode">
+						<select id="Turma_idTurma" name="Turma_idTurma" class="box select-dark-mode required">
 							<option value="0">Turma</option>
 
 							<?php
@@ -322,6 +322,36 @@ $conn = null; // Fecha a conexão
 <script src="../JS/script.js"></script>
 <script src="../JS/popup.js"></script>
 <script src="../ArquivosExternos/Ajax.js"></script>
+<script src="../ArquivosExternos/Jquery.js"></script>
+
+<script>
+    $(document).ready(function() {
+        // Capturar clique no botão de edição
+        $('.edit-button').click(function() {
+            // Encontrar a linha (tr) associada ao botão de edição
+            var row = $(this).closest('tr');
+
+            // Obter os dados das células da linha para preencher o formulário
+            var id = row.find('td:eq(1)').text(); // ID do aluno
+            var nome = row.find('td:eq(0)').text(); // Nome do aluno
+            var email = row.find('td:eq(2)').text(); // Email do aluno
+            var turma = row.find('td:eq(3)').text(); // Turma do aluno, ajuste caso necessário
+
+            // Preencher os campos do formulário com os dados obtidos
+            $('#idAluno').val(id);
+            $('#NomeAluno').val(nome); // Corrigindo para preencher o campo do nome do aluno
+            $('#EmailAluno').val(email);
+            $('#Turma_idTurma').val(turma);
+
+            // Alterar o valor do botão para refletir a ação de edição
+            $('input[type="submit"]').val('Atualizar');
+            // Alterar a rota do formulário para a rota de atualização de usuários
+            $('form').attr('action', '../Router/alunoedit_rotas.php'); // Alterar a action do formulário para a rota correta
+            // Alterar o nome do botão para identificar a ação como atualização
+            $('input[type="submit"]').attr('name', 'Editar');
+        });
+    });
+</script>
 
 <script>
 	$(document).ready(function() {

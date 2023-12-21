@@ -319,7 +319,7 @@ echo '</tr>';
     echo "<div class='pagination'>";
     for ($i = 1; $i <= $totalPaginas; $i++) {
         $classeAtiva = ($i == $paginaAtual) ? "active" : "";
-        echo "<a class='page-link $classeAtiva' href='seu_script.php?pagina=$i'>$i</a>";
+        echo "<a class='page-link $classeAtiva' href='devolucao.php?pagina=$i'>$i</a>";
     }
     echo "</div>";
 } else {
@@ -349,6 +349,7 @@ echo '</tr>';
 <script src="../JS/popup.js"></script>
 <script scr="../ArquivosExternos/ajax.js"></script>
 <script src="../ArquivosExternos/jquery.js"></script>
+
 <script>
     $('#aluno_idAluno').on('change', function() {
         const selectedAlunoId = $(this).val().toLowerCase();

@@ -20,6 +20,7 @@ if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true)
 	<link rel="shortcut icon" href="../img/icon1.png" type="image/x-icon">
 	<link rel="stylesheet" href="../CSS/style.css">
 	<link rel="stylesheet" href="../CSS/popup6.css">
+	<link rel="stylesheet" href="../CSS/darkPaginacao.css">
 	<script src="../JS/alunos_prof.js"></script>
 	<title>EducaBiblio</title>
 </head>
@@ -186,8 +187,12 @@ if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true)
 								echo "Erro na consulta SQL: " . $errorInfo[2];
 							} else {
 								if ($result->rowCount() > 0) {
-									$professores = $result->fetchAll(PDO::FETCH_ASSOC);
-
+									$user = $result->fetchAll(PDO::FETCH_ASSOC);
+									$UsuarioPorPagina = 3;
+									$paginaAtual = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
+									$indiceInicial = ($paginaAtual - 1) * $UsuarioPorPagina;
+									$UsuarioExibidos = array_slice($user, $indiceInicial, $UsuarioPorPagina);
+							
 									// Exibir a tabela com os dados dos professores
 									echo "<table>";
 									echo "<thead>";
@@ -203,7 +208,7 @@ if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true)
 									echo "</thead>";
 									echo "<tbody>";
 
-									foreach ($professores as $row) {
+									foreach ($UsuarioExibidos as $row) {
 										echo "<tr>";
 										echo "<td><center>" . $row["idProf"] . "</center></td>";
 										echo "<td><center>" . $row["NomeProf"] . "</center></td>";
@@ -219,14 +224,21 @@ if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true)
 									echo "</tbody>";
 									echo "</table>";
 
-									// Você pode adicionar recursos de paginação, se necessário
-								} else {
-									echo "<center>Não foram encontrados professores na base de dados.</center>";
+									// Adiciona links de paginação
+									echo "<div class='pagination'>";
+									$totalUser = count($user);
+									$totalPaginas = ceil($totalUser / $UsuarioPorPagina);
+									for ($i = 1; $i <= $totalPaginas; $i++) {
+										$classeAtiva = ($i === $paginaAtual) ? "active" : "";
+										echo "<a class='page-link $classeAtiva' href='prof.php?pagina=$i'>$i</a>";
+									}
+									echo "</div>";
+
+									// Botão Fechar do popup fora da tabela
 								}
 							}
 
-							// Lembre-se de fechar a conexão ao final
-							$conn = null;
+$conn = null; // Fecha a conexão
 							?>
 
 

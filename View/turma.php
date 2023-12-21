@@ -183,7 +183,8 @@ if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true)
 										<h2 class='title'>Ano novo?</h2>
 										<p class='desc'>Deseja adicionar um ano na contagem?</p>
 										<button class='close-popup3-button' type='button' onclick='handlePopup3(false)'>Fechar</button>
-										<button class='close-popup3-button'>Adicionar</button>
+										<a href="../Controller/New_Year.php"><button class='close-popup3-button'>Adicionar</button></a>
+										
 										</a>
 									</div>
 								</div>

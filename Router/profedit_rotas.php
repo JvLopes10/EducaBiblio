@@ -17,7 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['Editar'])) {
 
     if ($resultado) {
         echo "Professor atualizado com sucesso!";
-        header("Location: ../view/professores.php"); // Redireciona para a página correta após a atualização do professor
+        header("Location: ../view/prof.php"); // Redireciona para a página correta após a atualização do professor
     } else {
         echo "Falha ao atualizar o professor.";
     }
