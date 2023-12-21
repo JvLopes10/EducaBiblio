@@ -1,5 +1,4 @@
 <?php
-var_dump($_POST);
 require_once('CConexao.php'); // Inclua o arquivo que contém a classe de conexão
 
 class CAlter_prof
@@ -26,9 +25,9 @@ class CAlter_prof
             // Execute a consulta
             $stmt->execute();
 
-            // Verifique se a atualização foi bem-sucedida
-            if ($stmt->rowCount() > 0) {
-                return true; // Atualização bem-sucedida
+            // Verifique se a atualização foi realizada
+            if ($stmt->rowCount() >= 0) {
+                return true; // Atualização bem-sucedida ou nenhum dado foi modificado
             } else {
                 return false; // Falha na atualização
             }
@@ -38,3 +37,6 @@ class CAlter_prof
         }
     }
 }
+
+var_dump($_POST);
+?>

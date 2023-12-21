@@ -1,6 +1,4 @@
 <?php
-// excluir_usuario.php
-
 // Verifica se o ID do usuário foi enviado via parâmetro GET
 if (isset($_GET['id'])) {
     $idUsuario = $_GET['id'];
@@ -13,23 +11,30 @@ if (isset($_GET['id'])) {
         $conexao = new CConexao();
         $conn = $conexao->getConnection();
 
-        // Prepara a consulta SQL para excluir o usuário com o ID fornecido
-        $sql = "DELETE FROM usuario WHERE idUsuario = :idUsuario";
-        $stmt = $conn->prepare($sql);
-        $stmt->bindParam(':idUsuario', $idUsuario);
+        // Desativa a verificação de chave estrangeira temporariamente para poder deletar as referências
+        $conn->exec("SET FOREIGN_KEY_CHECKS=0");
 
-        // Executa a consulta para excluir o usuário
-        $stmt->execute();
+        // Deleta as referências na tabela de devolução
+        $stmtDeletarDevolucao = $conn->prepare("DELETE FROM devolucao WHERE emprestimo_idEmprestimo IN (SELECT idEmprestimo FROM emprestimo WHERE usuario_idUsuario = :idUsuario)");
+        $stmtDeletarDevolucao->bindParam(':idUsuario', $idUsuario);
+        $stmtDeletarDevolucao->execute();
 
-        // Verifica se a exclusão foi realizada com sucesso
-        if ($stmt->rowCount() > 0) {
-            // Redireciona de volta para a página de usuários após a exclusão
-            header("Location: ../view/usuarios.php");
-            exit();
-        } else {
-            echo "Falha ao excluir o usuário.";
-            header("Location: ../view/usuarios.php");
-        }
+        // Deleta as referências na tabela de empréstimo
+        $stmtDeletarEmprestimo = $conn->prepare("DELETE FROM emprestimo WHERE usuario_idUsuario = :idUsuario");
+        $stmtDeletarEmprestimo->bindParam(':idUsuario', $idUsuario);
+        $stmtDeletarEmprestimo->execute();
+
+        // Agora, deleta o usuário
+        $stmtDeletarUsuario = $conn->prepare("DELETE FROM usuario WHERE idUsuario = :idUsuario");
+        $stmtDeletarUsuario->bindParam(':idUsuario', $idUsuario);
+        $stmtDeletarUsuario->execute();
+
+        // Reativa a verificação de chave estrangeira
+        $conn->exec("SET FOREIGN_KEY_CHECKS=1");
+
+        // Redireciona de volta para a página de usuários após a exclusão
+        header("Location: ../view/usuarios.php");
+        exit();
     } catch (PDOException $e) {
         echo "Erro na exclusão do usuário: " . $e->getMessage();
     }
@@ -40,3 +45,4 @@ if (isset($_GET['id'])) {
     // header("Location: alguma_pagina.php");
     exit();
 }
+?>

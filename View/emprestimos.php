@@ -194,19 +194,17 @@
 									<option value="">Selecione um aluno</option>
 									<!-- Opções de alunos serão preenchidas dinamicamente com JavaScript -->
 								</select>
+								<select id="prof_idProf" name="prof_idProf" class="box select-dark-mode">
+									<option value="">Selecione um prof</option>
+									<!-- Opções de prof serão preenchidas dinamicamente com JavaScript -->
+								</select>
 								<h4>Data do empréstimo:</h4>
 								<input type="date" placeholder="DD/MM/AAAA" name="DataEmprestimo" id="DataEmprestimo" required class="box" autocomplete="off" required>
 
 
 								
-<<<<<<< HEAD
-								
-								<input type="date" placeholder="Data" name="DataEmprestimo" id="DataEmprestimo" required class="box" autocomplete="off" required>
-								<input type="text" placeholder="Quantidade" name="quantidade" required class="box" autocomplete="off" required>
-=======
 								<input type="text" placeholder="Quantidade" name="quantidade" required class="box" autocomplete="off" required>
 
->>>>>>> 3d1d6b52e4304cae4c2e6825f1f2554baaa26618
 								<h4>Data da devolução:</h4>
 								<input type="date" placeholder="Data" name="data" required class="box" autocomplete="off" required>
 								
@@ -424,38 +422,78 @@ $conn = null; // Fecha a conexão
 		<script src="../JS/script.js"></script>
 		<script src="../JS/popup.js"></script>
 		<script src="../ArquivosExternos/Jquery.js"></script>
-		<script>
-			$(document).ready(function() {
-    $("#Turma_idTurma").change(function() {
-        var turmaId = $(this).val();
-        var alunoSelect = $("#aluno_idAluno");
+		
+<script>
+    $(document).ready(function() {
+    // Capturar clique no botão de edição
+    $('.edit-button').click(function() {
+        // Obter o ID do empréstimo da linha correspondente na tabela
+        var idEmprestimo = $(this).closest('tr').find('td:eq(2)').text(); // ID do empréstimo na segunda coluna, ajuste conforme a estrutura real da sua tabela
+        
+        // Preencher o formulário com o ID do empréstimo
+        preencherFormulario(idEmprestimo); // Chama a função para preencher o formulário com o ID do empréstimo
 
-        // Verifica se o valor da turma é válido
+        // Alterar o modo de ação para editar
+        $('#modoAcao').val('editar');
+        // Alterar o valor do botão para refletir a ação de edição
+        $('input[type="submit"]').val('Editar');
+        // Modificar o action do formulário para o script responsável pela atualização
+        $('form').attr('action', '../router/Atualizar_emprotas.php');
+        // Modificar o texto do botão de envio para "Atualizar"
+        $('input[type="submit"]').attr('name', 'Editar');
+    });
+});
+
+// Função para preencher o formulário com o ID do empréstimo ao clicar no botão de edição
+function preencherFormulario(idEmprestimo) {
+    $('#idEmprestimo').val(idEmprestimo);
+}
+
+</script>
+
+		<script>
+	$(document).ready(function() {
+    function toggleSelects() {
+        var turmaId = $("#Turma_idTurma").val();
+        var alunoSelect = $("#aluno_idAluno");
+        var profSelect = $("#prof_idProf");
+
         if (turmaId !== null && turmaId !== '') {
             var url = "../Controller/CBuscar_AlunoProf.php";
-
-            // Define os dados a serem enviados com base no valor da turma
             var requestData = { turmaId: turmaId };
-            if (turmaId === '0') {
-                requestData.turmaId = '0';
-            }
 
-            // Envia a requisição AJAX
             $.ajax({
                 type: "GET",
                 url: url,
                 data: requestData,
                 success: function(data) {
-                    alunoSelect.html(data);
+                    if (turmaId === '0') {
+                        alunoSelect.hide().html('');
+                        profSelect.html(data).show();
+                    } else {
+                        profSelect.hide().html('');
+                        alunoSelect.html(data).show();
+                    }
                 },
                 error: function() {
-                    alunoSelect.html("<option value=''>Erro ao carregar alunos/professores</option>");
+                    alunoSelect.html("<option value=''>Erro ao carregar alunos</option>").show();
+                    profSelect.html("<option value=''>Erro ao carregar professores</option>").show();
                 }
             });
-        } 
+        } else {
+            alunoSelect.show();
+            profSelect.hide().html('');
+        }
+    }
+
+    // Verifica o valor da turma ao carregar a página
+    toggleSelects();
+
+    // Ao mudar o valor da turma
+    $("#Turma_idTurma").change(function() {
+        toggleSelects();
     });
 });
-
 
 		</script>
 		<script>
