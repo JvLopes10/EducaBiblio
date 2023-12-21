@@ -2,25 +2,48 @@
 
 include 'config.php';
 
-$sql = "SELECT
-            livro.NomeLivro AS TituloLivro,
-            genero.NomeGenero,
-            emprestimo.idEmprestimo,
-            turma.NomeTurma,
-            aluno.NomeAluno as Estudante,
-            emprestimo.DataEmprestimo,
-            devolucao.DataDevolucao,
-            emprestimo.Quantidade_emp,
-            usuario.UserUsuario,
-            usuario.EmailUsuario
-        FROM emprestimo
-        INNER JOIN livro ON emprestimo.livro_idLivro = livro.idLivro
-        INNER JOIN genero ON livro.Genero_idGenero = genero.idGenero
-        INNER JOIN aluno ON emprestimo.aluno_idAluno = aluno.idAluno
-        INNER JOIN turma ON aluno.Turma_idTurma = turma.IdTurma
-        INNER JOIN usuario ON emprestimo.usuario_idUsuario = usuario.idUsuario
-        LEFT JOIN devolucao ON emprestimo.idEmprestimo = devolucao.emprestimo_idEmprestimo";
+$sqlAlunos = "
+    SELECT
+        livro.NomeLivro AS TituloLivro,
+        genero.NomeGenero,
+        emprestimo.idEmprestimo,
+        turma.NomeTurma,
+        aluno.NomeAluno,
+        turma.AnoTurma,
+        emprestimo.DataEmprestimo,
+        devolucao.DataDevolucao,
+        emprestimo.Quantidade_emp,
+        usuario.UserUsuario
+    FROM emprestimo
+    LEFT JOIN aluno ON emprestimo.aluno_idAluno = aluno.idAluno
+    INNER JOIN livro ON emprestimo.livro_idLivro = livro.idLivro
+    INNER JOIN genero ON livro.Genero_idGenero = genero.idGenero
+    INNER JOIN turma ON aluno.Turma_idTurma = turma.IdTurma
+    INNER JOIN usuario ON emprestimo.usuario_idUsuario = usuario.idUsuario
+    LEFT JOIN devolucao ON emprestimo.idEmprestimo = devolucao.emprestimo_idEmprestimo";
 
+$sqlProfessores = "
+    SELECT
+        livro.NomeLivro AS TituloLivro,
+        genero.NomeGenero,
+        emprestimo.idEmprestimo,
+        'Professor' AS NomeTurma,
+        prof.NomeProf AS NomeLeitor,
+        NULL AS AnoTurma,
+        emprestimo.DataEmprestimo,
+        devolucao.DataDevolucao,
+        emprestimo.Quantidade_emp,
+        usuario.UserUsuario
+    FROM emprestimo
+    LEFT JOIN prof ON emprestimo.prof_idProf = prof.idProf
+    INNER JOIN livro ON emprestimo.livro_idLivro = livro.idLivro
+    INNER JOIN genero ON livro.Genero_idGenero = genero.idGenero
+    INNER JOIN usuario ON emprestimo.usuario_idUsuario = usuario.idUsuario
+    LEFT JOIN devolucao ON emprestimo.idEmprestimo = devolucao.emprestimo_idEmprestimo
+    WHERE prof.idProf IS NOT NULL"; // Usando a condição na tabela 'prof'
+
+// Consulta geral unindo empréstimos de alunos e professores
+$sql = "($sqlAlunos) UNION ($sqlProfessores)";
 $res = $conn->query($sql);
 
 if ($res->num_rows > 0) {
@@ -105,7 +128,7 @@ if ($res->num_rows > 0) {
         $html .= "<td>" . $row->idEmprestimo . "</td>";
         $html .= "<td>" . $row->TituloLivro . "</td>";
         $html .= "<td>" . $row->Quantidade_emp . "</td>";
-        $html .= "<td>" . $row->Estudante . "</td>";
+        $html .= "<td>" . (isset($row->NomeAluno) ? $row->NomeAluno : $row->NomeLeitor) . "</td>";
         $html .= "<td>" . $row->NomeTurma . "</td>";
         $html .= "<td>" . $row->DataEmprestimo . "</td>";
         $html .= "<td>" . $row->UserUsuario . "</td>";

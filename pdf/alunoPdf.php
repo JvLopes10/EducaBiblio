@@ -10,17 +10,7 @@ aluno.EmailAluno,
 turma.nomeTurma,
 turma.AnoTurma  
 FROM aluno
-LEFT JOIN turma ON aluno.Turma_idTurma = turma.idTurma 
-UNION
-SELECT
-prof.NomeProf AS NomeAluno,
-prof.idProf AS idAluno,
-NULL AS Turma_idTurma,
-prof.EmailProf AS EmailAluno,
-'prof' AS tipo,
-NULL AS nomeTurma,
-NULL AS AnoTurma  
-FROM prof";
+LEFT JOIN turma ON aluno.Turma_idTurma = turma.idTurma ";
 
 $res = $conn->query($sql);
 

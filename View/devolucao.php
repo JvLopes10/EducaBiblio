@@ -26,37 +26,9 @@ $conn = $conexao->getConnection();
     <link rel="shortcut icon" href="../img/icon1.png" type="image/x-icon">
     <link rel="stylesheet" href="../CSS/style.css">
     <link rel="stylesheet" href="../CSS/popup3.css">
+    <link rel="stylesheet" href="../CSS/darkPaginacao.css">
     <title>EducaBiblio</title>
 </head>
-<style>
-    .pagination {
-        text-align: center;
-        margin-top: 15px;
-
-    }
-
-    .page-link {
-        display: inline-block;
-        padding: 5px 10px;
-        margin: 2px;
-        border: 1px solid #333;
-        background-color: #fff;
-        color: #333;
-        text-decoration: none;
-        border-radius: 5px;
-        transition: background-color 0.3s, color 0.3s;
-    }
-
-    .page-link.active {
-        background-color: #333;
-        color: #fff;
-    }
-
-    .page-link:hover {
-        background-color: #333;
-        color: #fff;
-    }
-</style>
 
 <body>
     <section id="sidebar">
@@ -309,7 +281,7 @@ if ($row['Estado'] == 2 || $row['Estado'] == 4) {
     echo '<center><button class="historico-button" type="submit" onclick="handlePopup(true)"><i class="fas fa-check"></i></button></center>';
     echo '<div class="popup" id="popup">';
     echo '<img src="../img/livro2.png">';
-    echo '<h2 class="title"></h2>';
+    echo '<h2 class="title">Devolução</h2>';
     echo '<p class="desc">O livro foi realmente devolvido?</p>';
     echo '<button class="close-popup-button" type="submit" onclick="handlePopup(false)">Fechar</button>';
     echo '<a href="../Controller/CDevolver_livro.php?id=' . $row['idEmprestimo'] . '"><button class="close-popup-button">Devolver</button></a>';

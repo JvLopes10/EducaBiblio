@@ -1,5 +1,3 @@
-/* Define estilos para todos os elementos na página */
-
 * {
     outline: none;
     /* Remove a borda de foco em todos os elementos */
@@ -17,8 +15,6 @@
     /* Cor do texto no popup */
     --vermelho: #db504a;
     /* Cor vermelha personalizada */
-    --verde: #32cd32;
-    /* Cor verde personalizada */
 }
 
 
@@ -38,14 +34,14 @@ body {
 }
 
 
-/* Estilos para o popup */
+/* Estilos para o popup em si */
 
 .popup {
     position: absolute;
     /* Define a posição como absoluta para posicionamento personalizado */
-    top: -2%;
+    top: -200%;
     /* Inicialmente, o topo está fora da tela */
-    right: 470%;
+    right: 110%;
     /* Inicialmente, a direita está fora da tela */
     padding: 5%;
     /* Preenchimento interno do popup */
@@ -63,13 +59,13 @@ body {
     /* Inicialmente, o popup é invisível */
     background-color: var(--pop-up);
     /* Cor de fundo usando a variável personalizada */
-    padding: 10px 50px;
+    padding: 20px 50px;
     /* Mais preenchimento interno */
     border-radius: 8px;
     /* Mais borda arredondada */
     text-align: center;
     /* Mais centralização de conteúdo */
-    width: 360px;
+    width: 370px;
     /* Largura fixa do popup */
     box-sizing: border-box;
     /* Outra vez, garante que o preenchimento não afete o tamanho total */
@@ -86,22 +82,18 @@ body {
 }
 
 
-/* Estilos para o botão de fechamento do primeiro popup */
+/* Estilos para o botão de fechamento do popup */
 
 .popup .close-popup-button {
     background-color: var(--vermelho);
     /* Cor de fundo usando a variável personalizada vermelha */
-    background-size: 200%;
-    /* Tamanho do plano de fundo */
     font-size: 20px;
     /* Tamanho da fonte */
-    margin: 1rem 0;
-    /* Margens superiores e inferiores */
     align-items: center;
     /* Alinhar itens ao centro */
     border: none;
     /* Remove a borda */
-    padding: 8px 20px;
+    padding: 8px 30px;
     /* Preenchimento interno */
     border-radius: 16px;
     /* Borda arredondada */
@@ -117,15 +109,15 @@ body {
     /* Mostra uma mão ao passar o mouse (cursor de clique) */
     transition: all 0.4s;
     /* Transição suave para animações */
-    margin: 10px 0;
+    margin: 6px 0;
     /* Margens */
-    margin-top: 22px;
+    margin-top: 10px;
     /* Margem superior */
     margin-right: 5px;
 }
 
 
-/* Estilos para o botão de fechamento do primeiro popup quando o mouse passa por cima (hover) */
+/* Estilos para o botão de fechamento do popup quando o mouse passa por cima (hover) */
 
 .popup .close-popup-button:hover {
     background-color: #ca1111;
@@ -133,7 +125,7 @@ body {
 }
 
 
-/* Estilos para o botão de fechamento do primeiro popup quando pressionado (active) */
+/* Estilos para o botão de fechamento do popup quando pressionado (active) */
 
 .popup-button:active,
 .popup .close-popup-button:active {
@@ -142,7 +134,7 @@ body {
 }
 
 
-/* Estilos para o primeiro popup quando está aberto (opened) */
+/* Estilos para o popup quando está aberto (opened) */
 
 .popup.opened {
     z-index: 999;
@@ -154,15 +146,15 @@ body {
 }
 
 
-/* Estilos para imagens dentro do primeiro popup */
+/* Estilos para imagens dentro do popup */
 
 .popup img {
-    border-radius: 0% !important;
-    /* Remove a borda arredondada da imagem (important é usado para garantir prioridade) */
+    width: 100px;
+    /* Define uma largura máxima de imagem de 100px */
 }
 
 
-/* Estilos para o título dentro do primeiro popup */
+/* Estilos para o título dentro do popup */
 
 .popup h2.title {
     color: var(--vermelho);
@@ -170,7 +162,7 @@ body {
 }
 
 
-/* Estilos para a descrição dentro do primeiro popup */
+/* Estilos para a descrição dentro do popup */
 
 .popup p.desc {
     color: var(--pop-upTexto);

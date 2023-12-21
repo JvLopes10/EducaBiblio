@@ -19,39 +19,10 @@ if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true)
 	<script src="../ArquivosExternos/icons.js"></script>
 	<link rel="shortcut icon" href="../img/icon1.png" type="image/x-icon">
 	<link rel="stylesheet" href="../CSS/style.css">
-	<link rel="stylesheet" href="../CSS/popup.css">
+	<link rel="stylesheet" href="../CSS/popup6.css">
 	<script src="../JS/alunos_prof.js"></script>
 	<title>EducaBiblio</title>
 </head>
-<style>
-	.pagination {
-		text-align: center;
-		margin-top: 15px;
-
-	}
-
-	.page-link {
-		display: inline-block;
-		padding: 5px 10px;
-		margin: 2px;
-		border: 1px solid #333;
-		background-color: #fff;
-		color: #333;
-		text-decoration: none;
-		border-radius: 5px;
-		transition: background-color 0.3s, color 0.3s;
-	}
-
-	.page-link.active {
-		background-color: #333;
-		color: #fff;
-	}
-
-	.page-link:hover {
-		background-color: #333;
-		color: #fff;
-	}
-</style>
 
 <body>
 
@@ -232,27 +203,27 @@ if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true)
 									echo "</thead>";
 									echo "<tbody>";
 
-        foreach ($professores as $row) {
-            echo "<tr>";
-            echo "<td><center>" . $row["idProf"] . "</center></td>";
-            echo "<td><center>" . $row["NomeProf"] . "</center></td>";
-            echo "<td><center>" . $row["EmailProf"] . "</center></td>";
-            echo "<td><center>" . $row["MateriaProf"] . "</center></td>";
-			echo "<td><center><button class='edit-button' data-id='" . $row["idProf"] . "'><i class='fas fa-pencil-alt'></i></button></center> 	</td>";
-			echo "<td><center><div class='container'><center><button class='delete-button' type='button' onclick='handlePopup(true)' aria-label='botão excluir'><i class='fas fa-trash-alt'></i></button></center><div class='popup' id='popup'><img src='../img/decisao.png' aria-label='popup decisão'><h2 class='title'>Aviso!</h2><p class='desc'>Deseja mesmo excluir?</p><button class='close-popup-button' type='button' onclick='handlePopup(false)'>Fechar</button><a href='../Controller/CExcluir_prof.php?id={$row["idProf"]}'><button class='close-popup-button'>Excluir</button></a></div></div></div></center></td>";
-			echo "<td><center><a href='../pdf/registrosProfPdf.php?idProf=" . $row["idProf"] . "' target='_blank'><button class='historico-button' data-id='" . $row["idProf"] . "'><i class='fas fa-history'></i></button></a></center></td>";
+									foreach ($professores as $row) {
+										echo "<tr>";
+										echo "<td><center>" . $row["idProf"] . "</center></td>";
+										echo "<td><center>" . $row["NomeProf"] . "</center></td>";
+										echo "<td><center>" . $row["EmailProf"] . "</center></td>";
+										echo "<td><center>" . $row["MateriaProf"] . "</center></td>";
+										echo "<td><center><button class='edit-button' data-id='" . $row["idProf"] . "'><i class='fas fa-pencil-alt'></i></button></center> 	</td>";
+										echo "<td><center><div class='container'><center><button class='delete-button' type='button' onclick='handlePopup(true)' aria-label='botão excluir'><i class='fas fa-trash-alt'></i></button></center><div class='popup' id='popup'><img src='../img/decisao.png' aria-label='popup decisão'><h2 class='title'>Aviso!</h2><p class='desc'>Deseja mesmo excluir?</p><button class='close-popup-button' type='button' onclick='handlePopup(false)'>Fechar</button><a href='../Controller/CExcluir_prof.php?id={$row["idProf"]}'><button class='close-popup-button'>Excluir</button></a></div></div></div></center></td>";
+										echo "<td><center><a href='../pdf/registrosProfPdf.php?idProf=" . $row["idProf"] . "' target='_blank'><button class='historico-button' data-id='" . $row["idProf"] . "'><i class='fas fa-history'></i></button></a></center></td>";
 
-            echo "</tr>";
-        }
+										echo "</tr>";
+									}
 
 									echo "</tbody>";
 									echo "</table>";
 
-        // Você pode adicionar recursos de paginação, se necessário
-    } else {
-        echo "<center>Não foram encontrados professores na base de dados.</center>";
-    }
-}
+									// Você pode adicionar recursos de paginação, se necessário
+								} else {
+									echo "<center>Não foram encontrados professores na base de dados.</center>";
+								}
+							}
 
 							// Lembre-se de fechar a conexão ao final
 							$conn = null;
