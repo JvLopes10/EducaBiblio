@@ -10,12 +10,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $conn = $conexao->getConnection();
 
             // Preparar a consulta SQL para inserir os dados do livro
-            $sql = "INSERT INTO Livro (NomeLivro, IBSMLivro, LocalLivro, PrateleiraLivro, ColunaLivro, autor_idAutor, Genero_idGenero, Idioma_idIdioma, EditoraLivro, EdicaoLivro, QuantidadeLivros, DidaticoLivro)
-                    VALUES (:NomeLivro, :IBSMLivro, :LocalLivro, :PrateleiraLivro, :ColunaLivro, :autor_idAutor, :Genero_idGenero, :Idioma_idIdioma, :EditoraLivro, :EdicaoLivro, :QuantidadeLivros, :DidaticoLivro)";
+            $sql = "INSERT INTO Livro (NomeLivro, Tombo, IBSMLivro, LocalLivro, PrateleiraLivro, ColunaLivro, autor_idAutor, Genero_idGenero, Idioma_idIdioma, EditoraLivro, EdicaoLivro, QuantidadeLivros, DidaticoLivro)
+                    VALUES (:NomeLivro, :Tombo, :IBSMLivro, :LocalLivro, :PrateleiraLivro, :ColunaLivro, :autor_idAutor, :Genero_idGenero, :Idioma_idIdioma, :EditoraLivro, :EdicaoLivro, :QuantidadeLivros, :DidaticoLivro)";
             $stmt = $conn->prepare($sql);
 
             // Vincular os parâmetros da consulta
             $stmt->bindParam(':NomeLivro', $_POST['NomeLivro']);
+            $stmt->bindParam(':Tombo', $_POST['Tombo']);
             $stmt->bindParam(':IBSMLivro', $_POST['IBSMLivro']);
             $stmt->bindParam(':LocalLivro', $_POST['LocalLivro']);
             $stmt->bindParam(':PrateleiraLivro', $_POST['PrateleiraLivro']);

@@ -135,11 +135,11 @@ if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true)
 				<div class="row">
 					<form action="../Router/cad_rotas" method="post" enctype="multipart/form-data">
 						<h3>Cadastro de usuários</h3>
-						<input type="text" placeholder="ID" name="idUsuario" id="idUsuario" maxlength="50" class="box3" autocomplete="off">
-						<input type="text" placeholder="Nome" name="NomeUsuario" id="NomeUsuario" required maxlength="50" class="box" autocomplete="off" required>
-						<input type="text" placeholder="Usuário" name="UserUsuario" id="UserUsuario" required maxlength="50" class="box" autocomplete="off" required>
-						<input type="password" placeholder="Senha" name="SenhaUsuario" id="SenhaUsuario" maxlength="50" class="box" autocomplete="off" required>
-						<input type="email" placeholder="E-mail" name="EmailUsuario" id="EmailUsuario" maxlength="50" class="box" autocomplete="off" required>
+						<input type="text" placeholder="ID" name="idUsuario" id="idUsuario" class="box3" autocomplete="off">
+						<input type="text" placeholder="Nome" name="NomeUsuario" id="NomeUsuario" required class="box" autocomplete="off" required>
+						<input type="text" placeholder="Usuário" name="UserUsuario" id="UserUsuario" required  class="box" autocomplete="off" required>
+						<input type="password" placeholder="Senha" name="SenhaUsuario" id="SenhaUsuario" class="box" autocomplete="off" required>
+						<input type="email" placeholder="E-mail" name="EmailUsuario" id="EmailUsuario" class="box" autocomplete="off" required>
 
 						<input type="file" name="FotoUsuario" id="FotoUsuario" class="box">
 
@@ -175,7 +175,7 @@ if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true)
 				<div class="table-data">
 					<div class="order">
 						<div class="head">
-							<h3>Tabela de usuários</h3>
+							<h3>Tabela de cadastro de usuários</h3>
 							<input type="text" id="searchInput" class="searchInput" placeholder="Pesquisar...">
 							<button class="pdf-button" id="pdf-button" aria-label="botão pdf" onclick="abrirAluno()">
 								<i class="fas fa-file-pdf"></i></button>
@@ -212,7 +212,7 @@ if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true)
 							} else {
 								if ($result->rowCount() > 0) {
 									$user = $result->fetchAll(PDO::FETCH_ASSOC);
-									$UsuarioPorPagina = 3;
+									$UsuarioPorPagina = 5;
 									$paginaAtual = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
 									$indiceInicial = ($paginaAtual - 1) * $UsuarioPorPagina;
 									$UsuarioExibidos = array_slice($user, $indiceInicial, $UsuarioPorPagina);

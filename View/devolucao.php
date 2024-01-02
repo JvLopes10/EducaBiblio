@@ -68,11 +68,11 @@ $conn = $conexao->getConnection();
                 </a>
             </li>
             <li>
-				<a href="prof.php">
-					<i class="fas fa-clipboard-list"></i>
-					<span class="text">Professores</span>
-				</a>
-			</li>
+                <a href="prof.php">
+                    <i class="fas fa-clipboard-list"></i>
+                    <span class="text">Professores</span>
+                </a>
+            </li>
             <li>
                 <a href="turma.php">
                     <i class="fas fa-users"></i>
@@ -136,7 +136,7 @@ $conn = $conexao->getConnection();
 
                 <div class="row">
                     <form action="../Router/dev_rotas.php" method="post">
-                        <h3>Busca de empréstimos</h3>
+                        <h3>Busca por empréstimos</h3>
                         <select id="Turma_idTurma" name="Turma_idTurma" class="box select-dark-mode" required>
                             <option value="">Selecione uma turma</option>
                             <?php
@@ -160,7 +160,7 @@ $conn = $conexao->getConnection();
                 <div class="table-data">
                     <div class="order">
                         <div class="head">
-                            <h3>Devolução de livros</h3>
+                            <h3>Tabela de devolução de livros</h3>
                             <input type="text" id="searchInput" class="searchInput" placeholder="Pesquisar...">
                             <button class="pdf-button" id="pdf-button" aria-label="botão pdf" onclick="abrirAluno()">
                                 <i class="fas fa-file-pdf"></i></button>
@@ -175,24 +175,24 @@ $conn = $conexao->getConnection();
                         </div>
                         <table>
 
-                        <?php
-// Verificar se o usuário está logado
-if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true) {
-    header("Location: ../View/login.php"); // Redirecionar para a página de login se não estiver logado
-    exit();
-}
+                            <?php
+                            // Verificar se o usuário está logado
+                            if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true) {
+                                header("Location: ../View/login.php"); // Redirecionar para a página de login se não estiver logado
+                                exit();
+                            }
 
-// Inicialize a instância da classe de conexão.
-$conexao = new CConexao();
-$conn = $conexao->getConnection();
+                            // Inicialize a instância da classe de conexão.
+                            $conexao = new CConexao();
+                            $conn = $conexao->getConnection();
 
-// Variáveis de paginação
-$livrosPorPagina = 3;
-$paginaAtual = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
-$inicio = ($paginaAtual - 1) * $livrosPorPagina;
+                            // Variáveis de paginação
+                            $livrosPorPagina = 5;
+                            $paginaAtual = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
+                            $inicio = ($paginaAtual - 1) * $livrosPorPagina;
 
-// Consulta SQL para recuperar empréstimos de alunos e professores
-$queryEmprestimos = "SELECT e.idEmprestimo, 
+                            // Consulta SQL para recuperar empréstimos de alunos e professores
+                            $queryEmprestimos = "SELECT e.idEmprestimo, 
                             COALESCE(a.NomeAluno, p.Nomeprof) AS Leitor, 
                             COALESCE(a.idAluno, p.idprof) AS idLeitor,
                             COALESCE(ta.NomeTurma, tp.NomeTurma) AS Turma, 
@@ -209,98 +209,95 @@ $queryEmprestimos = "SELECT e.idEmprestimo,
                     ORDER BY e.idEmprestimo
                     LIMIT $inicio, $livrosPorPagina";
 
-// Executar a consulta para obter os empréstimos dos alunos e professores
-$result = $conn->query($queryEmprestimos);
+                            // Executar a consulta para obter os empréstimos dos alunos e professores
+                            $result = $conn->query($queryEmprestimos);
 
-if ($result->rowCount() > 0) {
-    echo '<table>';
-    echo '<thead>';
-    echo '<tr>';
-    echo '<th><center>ID</center></th>';
-    echo '<th><center>Leitor</center></th>';
-    echo '<th><center>Turma</center></th>';
-    echo '<th><center>Livro</center></th>';
-    echo '<th><center>Data de Devolução</center></th>';
-    echo '<th><center>Estado</center></th>';
-    echo '<th><center>Ações</center></th>';
-    echo '</tr>';
-    echo '</thead>';
-    echo '<tbody>';
+                            if ($result->rowCount() > 0) {
+                                echo '<table>';
+                                echo '<thead>';
+                                echo '<tr>';
+                                echo '<th><center>ID</center></th>';
+                                echo '<th><center>Leitor</center></th>';
+                                echo '<th><center>Turma</center></th>';
+                                echo '<th><center>Livro</center></th>';
+                                echo '<th><center>Data de Devolução</center></th>';
+                                echo '<th><center>Estado</center></th>';
+                                echo '<th><center>Ações</center></th>';
+                                echo '</tr>';
+                                echo '</thead>';
+                                echo '<tbody>';
 
-    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
-        $estado = "";
-        $classeCSS = "";
+                                while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+                                    $estado = "";
+                                    $classeCSS = "";
 
-        // Lógica para definir o estado e a classe CSS
-        switch ($row['Estado']) {
-            case 0:
-                $estado = "A prazo";
-                $classeCSS = "status process";
-                break;
-            case 1:
-                $estado = "Pendente";
-                $classeCSS = "status pending";
-                break;
-            case 2:
-                $estado = "Devolvido";
-                $classeCSS = "status completed";
-                break;
-            case 4:
-                $estado = "Devolvido com pendência";
-                $classeCSS = "status process";
-                break;
-            default:
-                $estado = "Estado desconhecido";
-                $classeCSS = "status unknown";
-                break;
-        }
+                                    // Lógica para definir o estado e a classe CSS
+                                    switch ($row['Estado']) {
+                                        case 0:
+                                            $estado = "A prazo";
+                                            $classeCSS = "status process";
+                                            break;
+                                        case 1:
+                                            $estado = "Pendente";
+                                            $classeCSS = "status pending";
+                                            break;
+                                        case 2:
+                                            $estado = "Devolvido";
+                                            $classeCSS = "status completed";
+                                            break;
+                                        case 4:
+                                            $estado = "Devolvido com pendência";
+                                            $classeCSS = "status process";
+                                            break;
+                                        default:
+                                            $estado = "Estado desconhecido";
+                                            $classeCSS = "status unknown";
+                                            break;
+                                    }
 
-        echo '<tr>';
-echo '<td><center>' . $row['idLeitor'] . '</center></td>';
-echo '<td><center>' . $row['Leitor'] . '</center></td>';
+                                    echo '<tr>';
+                                    echo '<td><center>' . $row['idLeitor'] . '</center></td>';
+                                    echo '<td><center>' . $row['Leitor'] . '</center></td>';
 
-// Verifica se o campo de Turma está vazio e se o campo Nomeprof não está vazio para exibir o nome do professor
-if (empty($row['Turma']) && !empty($row['Nomeprof'])) {
-    echo '<td><center>' . $row['Nomeprof'] . '</center></td>';
-} else {
-    echo '<td><center>' . $row['Turma'] . '</center></td>';
-}
+                                    // Verifica se o campo de Turma está vazio e se o campo Nomeprof não está vazio para exibir o nome do professor
+                                    if (empty($row['Turma']) && !empty($row['Nomeprof'])) {
+                                        echo '<td><center>' . $row['Nomeprof'] . '</center></td>';
+                                    } else {
+                                        echo '<td><center>' . $row['Turma'] . '</center></td>';
+                                    }
 
-echo '<td><center>' . $row['Livro'] . '</center></td>';
-echo '<td><center>' . $row['DataDevolucao'] . '</center></td>';
-echo '<td><center><span class="' . $classeCSS . '">' . $estado . '</span></center></td>';
-echo '<td>';
+                                    echo '<td><center>' . $row['Livro'] . '</center></td>';
+                                    echo '<td><center>' . $row['DataDevolucao'] . '</center></td>';
+                                    echo '<td><center><span class="' . $classeCSS . '">' . $estado . '</span></center></td>';
+                                    echo '<td>';
 
-// Lógica para exibir ações com base no estado
-if ($row['Estado'] == 2 || $row['Estado'] == 4) {
-    echo '<div class="container">';
-    echo '<center>-</center>';
-    echo '</div>';
-} else {
-    echo '<div class="container">';
-    echo '<center><button class="historico-button" type="submit" onclick="handlePopup(true)"><i class="fas fa-check"></i></button></center>';
-    echo '<div class="popup" id="popup">';
-    echo '<img src="../img/livro2.png">';
-    echo '<h2 class="title">Devolução</h2>';
-    echo '<p class="desc">O livro foi realmente devolvido?</p>';
-    echo '<button class="close-popup-button" type="submit" onclick="handlePopup(false)">Fechar</button>';
-    echo '<a href="../Controller/CDevolver_livro.php?id=' . $row['idEmprestimo'] . '"><button class="close-popup-button">Devolver</button></a>';
-    echo '</div>';
-    echo '</div>';
-}
+                                    // Lógica para exibir ações com base no estado
+                                    if ($row['Estado'] == 2 || $row['Estado'] == 4) {
+                                        echo '<div class="container">';
+                                        echo '<center>-</center>';
+                                        echo '</div>';
+                                    } else {
+                                        echo '<div class="container">';
+                                        echo '<center><button class="historico-button" type="submit" onclick="handlePopup(true)"><i class="fas fa-check"></i></button></center>';
+                                        echo '<div class="popup" id="popup">';
+                                        echo '<img src="../img/livro2.png">';
+                                        echo '<h2 class="title">Devolução</h2>';
+                                        echo '<p class="desc">O livro foi realmente devolvido?</p>';
+                                        echo '<button class="close-popup-button" type="submit" onclick="handlePopup(false)">Fechar</button>';
+                                        echo '<a href="../Controller/CDevolver_livro.php?id=' . $row['idEmprestimo'] . '"><button class="close-popup-button">Devolver</button></a>';
+                                        echo '</div>';
+                                        echo '</div>';
+                                    }
 
-echo '</td>';
-echo '</tr>';
+                                    echo '</td>';
+                                    echo '</tr>';
+                                }
 
+                                echo '</tbody>';
+                                echo '</table>';
 
-        
-    }
-
-    echo '</tbody>';
-    echo '</table>';
-
-    // Consulta SQL para contar o número total de registros
-    $queryCount = "SELECT COUNT(*) AS total FROM emprestimo e
+                                // Consulta SQL para contar o número total de registros
+                                $queryCount = "SELECT COUNT(*) AS total FROM emprestimo e
                    LEFT JOIN aluno a ON e.aluno_idAluno = a.idAluno
                    LEFT JOIN prof p ON e.prof_idprof = p.idprof
                    LEFT JOIN livro l ON e.livro_idLivro = l.idLivro
@@ -308,24 +305,24 @@ echo '</tr>';
                    LEFT JOIN turma tp ON Turma_idTurma = tp.IdTurma
                    LEFT JOIN devolucao d ON e.idEmprestimo = d.emprestimo_idEmprestimo";
 
-    // Executar a consulta para contar o total de registros
-    $resultCount = $conn->query($queryCount);
-    $totalRegistros = $resultCount->fetch(PDO::FETCH_ASSOC)['total'];
+                                // Executar a consulta para contar o total de registros
+                                $resultCount = $conn->query($queryCount);
+                                $totalRegistros = $resultCount->fetch(PDO::FETCH_ASSOC)['total'];
 
-    // Calcular o número total de páginas
-    $totalPaginas = ceil($totalRegistros / $livrosPorPagina);
+                                // Calcular o número total de páginas
+                                $totalPaginas = ceil($totalRegistros / $livrosPorPagina);
 
-    // Exibir os links de paginação
-    echo "<div class='pagination'>";
-    for ($i = 1; $i <= $totalPaginas; $i++) {
-        $classeAtiva = ($i == $paginaAtual) ? "active" : "";
-        echo "<a class='page-link $classeAtiva' href='devolucao.php?pagina=$i'>$i</a>";
-    }
-    echo "</div>";
-} else {
-    echo "<p><center>Nenhum empréstimo encontrado.</center></p>";
-}
-?>
+                                // Exibir os links de paginação
+                                echo "<div class='pagination'>";
+                                for ($i = 1; $i <= $totalPaginas; $i++) {
+                                    $classeAtiva = ($i == $paginaAtual) ? "active" : "";
+                                    echo "<a class='page-link $classeAtiva' href='devolucao.php?pagina=$i'>$i</a>";
+                                }
+                                echo "</div>";
+                            } else {
+                                echo "<p><center>Nenhum empréstimo encontrado.</center></p>";
+                            }
+                            ?>
 
 
 

@@ -77,7 +77,6 @@ if ($res->num_rows > 0) {
         <table>
             <thead>
                 <tr>
-                <th>ID</th>
                 <th>Série</th>
                 <th>Nome</th>
                 <th>Início</th>
@@ -87,7 +86,6 @@ if ($res->num_rows > 0) {
 
     while ($row = $res->fetch_object()) {
         $html .= "<tr>";
-        $html .= "<td>" . $row->IdTurma . "</td>";
         $html .= "<td>" . $row->AnoTurma . 'º ' .  "</td>";
         $html .= "<td>" . $row->NomeTurma . "</td>";
         $html .= "<td>" . $row->AnodeInicio . "</td>";
@@ -116,7 +114,7 @@ $dompdf->loadHtml($html);
 
 $dompdf->set_option('defaultFont', 'sans');
 
-$dompdf->setPaper('A4', 'portrait');
+$dompdf->setPaper('A4', 'landscape');
 
 $dompdf->render();
 

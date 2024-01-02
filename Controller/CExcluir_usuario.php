@@ -45,4 +45,3 @@ if (isset($_GET['id'])) {
     // header("Location: alguma_pagina.php");
     exit();
 }
-?>

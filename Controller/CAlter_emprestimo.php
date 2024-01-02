@@ -4,7 +4,12 @@ require_once('CConexao.php'); // Substitua pelo arquivo correto
 
 class CAtualizarEmprestimo
 {
-    public function atualizarEmprestimo($idEmprestimo, $Genero_idGenero, $livro_idLivro, $Turma_idTurma, $aluno_idAluno, $prof_idProf, $DataEmprestimo, $quantidade, $data, $usuario_idUsuario)
+    public function debugValues($idEmprestimo, $DataEmprestimo, $StatusEmprestimo, $livro_idLivro, $usuario_idUsuario, $prof_idProf, $aluno_idAluno, $Quantidade_emp)
+    {
+        var_dump($idEmprestimo, $DataEmprestimo, $StatusEmprestimo, $livro_idLivro, $usuario_idUsuario, $prof_idProf, $aluno_idAluno, $Quantidade_emp);
+    }
+
+    public function atualizarEmprestimo($idEmprestimo, $DataEmprestimo, $StatusEmprestimo, $livro_idLivro, $usuario_idUsuario, $prof_idProf, $aluno_idAluno, $Quantidade_emp)
     {
         try {
             // Crie uma instância da classe de conexão
@@ -13,31 +18,31 @@ class CAtualizarEmprestimo
 
             // Construa a consulta SQL para atualizar o empréstimo
             $sql = "UPDATE emprestimo SET 
-                        Genero_idGenero = :Genero_idGenero, 
-                        livro_idLivro = :livro_idLivro, 
-                        Turma_idTurma = :Turma_idTurma, 
-                        aluno_idAluno = :aluno_idAluno, 
-                        prof_idProf = :prof_idProf, 
                         DataEmprestimo = :DataEmprestimo, 
-                        quantidade = :quantidade, 
-                        data = :data, 
-                        usuario_idUsuario = :usuario_idUsuario 
+                        StatusEmprestimo = :StatusEmprestimo, 
+                        livro_idLivro = :livro_idLivro, 
+                        usuario_idUsuario = :usuario_idUsuario, 
+                        prof_idProf = :prof_idProf, 
+                        aluno_idAluno = :aluno_idAluno, 
+                        Quantidade_emp = :Quantidade_emp 
                     WHERE idEmprestimo = :idEmprestimo";
 
             // Prepare a consulta
             $stmt = $conn->prepare($sql);
 
             // Associe os valores aos parâmetros da consulta
-            $stmt->bindParam(':Genero_idGenero', $Genero_idGenero);
-            $stmt->bindParam(':livro_idLivro', $livro_idLivro);
-            $stmt->bindParam(':Turma_idTurma', $Turma_idTurma);
-            $stmt->bindParam(':aluno_idAluno', $aluno_idAluno);
-            $stmt->bindParam(':prof_idProf', $prof_idProf);
             $stmt->bindParam(':DataEmprestimo', $DataEmprestimo);
-            $stmt->bindParam(':quantidade', $quantidade);
-            $stmt->bindParam(':data', $data);
+            $stmt->bindParam(':StatusEmprestimo', $StatusEmprestimo);
+            $stmt->bindParam(':livro_idLivro', $livro_idLivro);
             $stmt->bindParam(':usuario_idUsuario', $usuario_idUsuario);
+            // Verifica se os campos para professor e aluno estão vazios e atribui NULL
+            $stmt->bindValue(':prof_idProf', empty($prof_idProf) ? null : $prof_idProf);
+            $stmt->bindValue(':aluno_idAluno', empty($aluno_idAluno) ? null : $aluno_idAluno);
+            $stmt->bindParam(':Quantidade_emp', $Quantidade_emp);
             $stmt->bindParam(':idEmprestimo', $idEmprestimo);
+
+            // Executar a função de debug para verificar os valores dos parâmetros
+            $this->debugValues($idEmprestimo, $DataEmprestimo, $StatusEmprestimo, $livro_idLivro, $usuario_idUsuario, $prof_idProf, $aluno_idAluno, $Quantidade_emp);
 
             // Execute a consulta
             $stmt->execute();
@@ -54,4 +59,3 @@ class CAtualizarEmprestimo
         }
     }
 }
-?>

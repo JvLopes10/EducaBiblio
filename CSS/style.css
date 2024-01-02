@@ -18,7 +18,7 @@ li {
     --lato: "Lato", sans-serif;
     --light: #f9f9f9;
     --verdePrincipal: #32cd32;
-    --azulClaro: #e0fdcf;
+    --verdeClaro: #e0fdcf;
     --cinzinha: #eee;
     --cinzaIntermediário: #aaaaaa;
     --cinzaEscuro: #494949;
@@ -35,6 +35,9 @@ li {
     --nãoEditável: #e0e0e0;
     --pop-up: rgba(105, 105, 105, 0.4);
     --rosa: #f89b9b;
+    --azul:rgb(52, 90, 206);
+    --azulClaro:rgb(165, 187, 255);
+   
 }
 
 html {
@@ -673,7 +676,7 @@ p {
 }
 
 #content main .box-info li:nth-child(1) .fas {
-    background: var(--azulClaro);
+    background: var(--verdeClaro);
     color: var(--verdePrincipal);
 }
 
@@ -685,6 +688,11 @@ p {
 #content main .box-info li:nth-child(3) .fas {
     background: var(--laranjaClaro);
     color: var(--laranja);
+}
+
+#content main .box-info li:nth-child(4) .fas {
+    background: var(--azulClaro);
+    color: var(--azul);
 }
 
 #content main .box-info li .text h3 {
@@ -1253,12 +1261,7 @@ h4 {
     font-weight: 100;
 }
 
-h4 {
-    margin-right: 80%;
-    color: var(--cinzaEscuro);
-    font-family: var(--poppins);
-    font-weight: 100;
-}
+
 
 #searchInput {
     width: 25% !important;

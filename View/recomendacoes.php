@@ -161,9 +161,9 @@ if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true)
 					<form action="../Router/Rec_rotas.php" method="post" enctype="multipart/form-data">
 						<h3>Recomendações semanais</h3>
 						<input type="text" id="idRec" name="idRec" placeholder="ID" class="box3 select-dark-mode" autocomplete="off" readonly>
-						<input type="text" placeholder="Livro" name="LivroRec" id="LivroRec" required maxlength="50" class="box" autocomplete="off" required>
-						<input type="text" placeholder="Autor" name="AutorRec" id="AutorRec" required maxlength="50" class="box" autocomplete="off" required>
-						<input type="text" placeholder="Categoria" name="CatRec" id="CatRec" required maxlength="50" class="box" autocomplete="off" required>
+						<input type="text" placeholder="Livro" name="LivroRec" id="LivroRec" class="box" autocomplete="off" required>
+						<input type="text" placeholder="Autor" name="AutorRec" id="AutorRec" class="box" autocomplete="off" required>
+						<input type="text" placeholder="Categoria" name="CatRec" id="CatRec" class="box" autocomplete="off" required>
 						<input type="file" name="ImgRec" id="ImgRec" class="box1">
 						<center><input type="submit" value="Enviar" class="inline-btn" name="atualizar"></center>
 					</form>

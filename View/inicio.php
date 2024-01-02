@@ -235,6 +235,34 @@ include('../Controller/CPendencias.php'); // Inclua o arquivo CPendencias.php aq
 						<p>Pendências</p>
 					</span>
 				</li>
+				<li>
+					<i class="fas fa-book"></i>
+					<span class="text">
+						<h3><?php
+
+							try {
+								// Consulta SQL para contar o número de alunos
+								$sql = "SELECT COUNT(*) as total FROM livro";
+								$stmt = $conn->prepare($sql);
+								$stmt->execute();
+								$result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+								if ($result) {
+									$totalAlunos = $result['total'];
+								} else {
+									$totalAlunos = 0;
+								}
+
+								echo $totalAlunos;
+							} catch (PDOException $e) {
+								// Erro na conexão ou consulta SQL
+								echo "Erro: " . $e->getMessage();
+							}
+
+							?></h3>
+						<p>Livros cadastrados</p>
+					</span>
+				</li>
 			</ul>
 
 			<section class="container-livros">
@@ -314,7 +342,7 @@ include('../Controller/CPendencias.php'); // Inclua o arquivo CPendencias.php aq
 							$conn = $conexao->getConnection();
 
 							// Definir o número de registros por página
-							$registrosPorPagina = 3;
+							$registrosPorPagina = 5;
 
 							// Determinar a página atual
 							$paginaAtual = isset($_GET['pagina']) ? $_GET['pagina'] : 1;
@@ -340,7 +368,7 @@ include('../Controller/CPendencias.php'); // Inclua o arquivo CPendencias.php aq
         LEFT JOIN devolucao ON emprestimo.idEmprestimo = devolucao.emprestimo_idEmprestimo
         LIMIT $indiceInicial, $registrosPorPagina";
 
-				
+
 
 							$result = $conn->query($sql);
 
@@ -378,8 +406,8 @@ include('../Controller/CPendencias.php'); // Inclua o arquivo CPendencias.php aq
 										echo "'>" . $emprestimo['Estado'] . "</span></center></td>";
 										echo "</tr>";
 									}
-									
-									
+
+
 
 									echo "</tbody>";
 									echo "</table>";

@@ -13,7 +13,8 @@ $sqlAlunos = "
         emprestimo.DataEmprestimo,
         devolucao.DataDevolucao,
         emprestimo.Quantidade_emp,
-        usuario.UserUsuario
+        usuario.UserUsuario,
+        livro.Tombo
     FROM emprestimo
     LEFT JOIN aluno ON emprestimo.aluno_idAluno = aluno.idAluno
     INNER JOIN livro ON emprestimo.livro_idLivro = livro.idLivro
@@ -33,7 +34,8 @@ $sqlProfessores = "
         emprestimo.DataEmprestimo,
         devolucao.DataDevolucao,
         emprestimo.Quantidade_emp,
-        usuario.UserUsuario
+        usuario.UserUsuario,
+        livro.Tombo
     FROM emprestimo
     LEFT JOIN prof ON emprestimo.prof_idProf = prof.idProf
     INNER JOIN livro ON emprestimo.livro_idLivro = livro.idLivro
@@ -112,9 +114,8 @@ if ($res->num_rows > 0) {
         <table>
             <thead>
                 <tr>
-                <th>ID</th>
-                <th>Livro</th>
-                <th>Quantidade</th>
+                <th>Título do livro</th>
+                <th>Tombo</th>
                 <th>Leitor</th>
                 <th>Turma</th>
                 <th>Data do empréstimo</th>
@@ -125,11 +126,10 @@ if ($res->num_rows > 0) {
 
     while ($row = $res->fetch_object()) {
         $html .= "<tr>";
-        $html .= "<td>" . $row->idEmprestimo . "</td>";
         $html .= "<td>" . $row->TituloLivro . "</td>";
-        $html .= "<td>" . $row->Quantidade_emp . "</td>";
+        $html .= "<td>" . $row->Tombo . "</td>";
         $html .= "<td>" . (isset($row->NomeAluno) ? $row->NomeAluno : $row->NomeLeitor) . "</td>";
-        $html .= "<td>" . $row->NomeTurma . "</td>";
+        $html .= "<td>" . $row->AnoTurma . ' ' . $row->NomeTurma . "</td>";
         $html .= "<td>" . $row->DataEmprestimo . "</td>";
         $html .= "<td>" . $row->UserUsuario . "</td>";
 
@@ -157,7 +157,7 @@ $dompdf->loadHtml($html);
 
 $dompdf->set_option('defaultFont', 'sans');
 
-$dompdf->setPaper('A4', 'portrait');
+$dompdf->setPaper('A4', 'landscape');
 
 $dompdf->render();
 

@@ -132,11 +132,12 @@ if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true)
 			<section class="tabela">
 				<div class="row">
 					<form action="../Router/alunos_rotas.php" method="post">
-						<h3>Cadastro de leitores</h3>
-						<input type="text" placeholder="ID" name="idAluno" id="idAluno" maxlength="50" class="box3" autocomplete="off" readonly>
+						<h3>Cadastro de alunos</h3>
+						<input type="text" placeholder="ID" name="idAluno" id="idAluno" class="box3" autocomplete="off" readonly>
 						<input type="hidden" value="Aluno" id="escolha" name="escolha">
-						<input type="text" placeholder="Nome" name="NomeAluno" id="NomeAluno" maxlength="50" class="box" autocomplete="off">
-						<input type="email" placeholder="E-mail" name="EmailAluno" id="EmailAluno" maxlength="50" class="box" autocomplete="off">
+						<input type="text" placeholder="Nome" name="NomeAluno" id="NomeAluno" class="box" autocomplete="off">
+
+						<input type="text" id="EmailAluno" name="EmailAluno" placeholder="Contato" class="box" autocomplete="off">
 
 						<select id="Turma_idTurma" name="Turma_idTurma" class="box select-dark-mode required">
 							<option value="0">Turma</option>
@@ -176,7 +177,7 @@ if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true)
 				<div class="table-data">
 					<div class="order">
 						<div class="head">
-							<h3>Tabela de leitores</h3>
+							<h3>Tabela de cadastro de alunos</h3>
 							<input type="text" id="searchInput" class="searchInput" placeholder="Pesquisar...">
 
 							<button class="pdf-button" id="pdf-button" aria-label="botão pdf" onclick="abrirAluno2()">
@@ -191,13 +192,13 @@ if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true)
 						</script>
 						<table>
 
-						<?php
-// Inicializa a conexão com o banco de dados
-$conexao = new CConexao();
-$conn = $conexao->getConnection();
+							<?php
+							// Inicializa a conexão com o banco de dados
+							$conexao = new CConexao();
+							$conn = $conexao->getConnection();
 
-// Consulta para obter os dados dos alunos com o nome da turma
-$sql = "SELECT 
+							// Consulta para obter os dados dos alunos com o nome da turma
+							$sql = "SELECT 
         aluno.NomeAluno,
         aluno.idAluno,
         aluno.Turma_idTurma,
@@ -208,41 +209,41 @@ $sql = "SELECT
     FROM aluno
     LEFT JOIN turma ON aluno.Turma_idTurma = turma.idTurma ";
 
-$result = $conn->query($sql);
+							$result = $conn->query($sql);
 
-if ($result === false) {
-    // Use errorInfo para obter informações sobre o erro
-    $errorInfo = $conn->errorInfo();
-    echo "Erro na consulta SQL: " . $errorInfo[2];
-} else {
-    if ($result->rowCount() > 0) {
-        $user = $result->fetchAll(PDO::FETCH_ASSOC);
-        $UsuarioPorPagina = 3;
-        $paginaAtual = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
-        $indiceInicial = ($paginaAtual - 1) * $UsuarioPorPagina;
-        $UsuarioExibidos = array_slice($user, $indiceInicial, $UsuarioPorPagina);
+							if ($result === false) {
+								// Use errorInfo para obter informações sobre o erro
+								$errorInfo = $conn->errorInfo();
+								echo "Erro na consulta SQL: " . $errorInfo[2];
+							} else {
+								if ($result->rowCount() > 0) {
+									$user = $result->fetchAll(PDO::FETCH_ASSOC);
+									$UsuarioPorPagina = 3;
+									$paginaAtual = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
+									$indiceInicial = ($paginaAtual - 1) * $UsuarioPorPagina;
+									$UsuarioExibidos = array_slice($user, $indiceInicial, $UsuarioPorPagina);
 
-        // Exibir a tabela de alunos com o nome da turma
-        echo "<table>";
-        echo "<thead>";
-        echo "<tr>";
-        echo "<th><center>Nome</center></th>";
-        echo "<th><center>ID</center></th>";
-        echo "<th><center>Email</center></th>";
-        echo "<th><center>Turma</center></th>";
-        echo "<th><center>Editar</center></th>";
-        echo "<th><center>Excluir</center></th>";
-        echo "<th><center>Histórico</center></th>";
-        echo "</tr>";
-        echo "</thead>";
-        echo "<tbody>";
+									// Exibir a tabela de alunos com o nome da turma
+									echo "<table>";
+									echo "<thead>";
+									echo "<tr>";
+									echo "<th><center>Nome</center></th>";
+									echo "<th><center>ID</center></th>";
+									echo "<th><center>Contato</center></th>";
+									echo "<th><center>Turma</center></th>";
+									echo "<th><center>Editar</center></th>";
+									echo "<th><center>Excluir</center></th>";
+									echo "<th><center>Histórico</center></th>";
+									echo "</tr>";
+									echo "</thead>";
+									echo "<tbody>";
 
-        foreach ($UsuarioExibidos as $row) {
-            echo "<tr>";
-            echo "<td><center>" . $row["NomeAluno"] . "</center></td>";
-            echo "<td><center>" . $row["idAluno"] . "</center></td>";
-            echo "<td><center>" . $row["EmailAluno"] . "</center></td>";
-            echo "<td><center>" . ($row["nomeTurma"] ? $row["AnoTurma"] . ' º ' . $row["nomeTurma"] : "Não se aplica") . "</center></td>";
+									foreach ($UsuarioExibidos as $row) {
+										echo "<tr>";
+										echo "<td><center>" . $row["NomeAluno"] . "</center></td>";
+										echo "<td><center>" . $row["idAluno"] . "</center></td>";
+										echo "<td><center>" . $row["EmailAluno"] . "</center></td>";
+										echo "<td><center>" . ($row["nomeTurma"] ? $row["AnoTurma"] . ' º ' . $row["nomeTurma"] : "Não se aplica") . "</center></td>";
 
 										// Botões de edição, exclusão e histórico
 										echo "<td><center>";
@@ -269,25 +270,56 @@ if ($result === false) {
 												. "<a class='button-link' href='../pdf/registrosAluPdf.php?idAluno=" . $row["idAluno"] . "' target='_blank'>"
 												. "<i class='fas fa-history'></i></a></button>";
 										}
-										
-            if (array_key_exists('idProf', $row)) {
-                echo "<button class='historico-button' data-id='" . $row["idProf"] . "'><i class='fas fa-history'></i></button>";
-            }
-            echo "</center></td>";
 
-            echo "</tr>";
-        }
+										if (array_key_exists('idProf', $row)) {
+											echo "<button class='historico-button' data-id='" . $row["idProf"] . "'><i class='fas fa-history'></i></button>";
+										}
+										echo "</center></td>";
+
+										echo "</tr>";
+									}
 
 									echo "</tbody>";
 									echo "</table>";
 
 									// Adiciona links de paginação
 									echo "<div class='pagination'>";
-									$totalUser = count($user);
-									$totalPaginas = ceil($totalUser / $UsuarioPorPagina);
-									for ($i = 1; $i <= $totalPaginas; $i++) {
-										$classeAtiva = ($i === $paginaAtual) ? "active" : "";
-										echo "<a class='page-link $classeAtiva' href='aluno.php?pagina=$i'>$i</a>";
+									if (!empty($user)) {
+										$totaluser = count($user);
+										$totalPaginas = ceil($totaluser / $UsuarioPorPagina);
+										if ($totalPaginas > 4) {
+											// Se houver mais de 4 páginas, exibe de forma mais seletiva
+											if ($paginaAtual <= 2) {
+												for ($i = 1; $i <= 3; $i++) {
+													$classeAtiva = ($i === $paginaAtual) ? "active" : "";
+													echo "<a class='page-link $classeAtiva' href='aluno.php?pagina=$i'>$i</a>";
+												}
+												echo "<span>ₒₒₒ</span>";
+												echo "<a class='page-link' href='aluno.php?pagina=$totalPaginas'>$totalPaginas</a>";
+											} elseif ($paginaAtual >= $totalPaginas - 1) {
+												echo "<a class='page-link' href='aluno.php?pagina=1'>1</a>";
+												echo "<span>ₒₒₒ</span>";
+												for ($i = $totalPaginas - 2; $i <= $totalPaginas; $i++) {
+													$classeAtiva = ($i === $paginaAtual) ? "active" : "";
+													echo "<a class='page-link $classeAtiva' href='aluno.php?pagina=$i'>$i</a>";
+												}
+											} else {
+												echo "<a class='page-link' href='aluno.php?pagina=1'>1</a>";
+												echo "<span>ₒₒₒ</span>";
+												for ($i = $paginaAtual - 1; $i <= $paginaAtual + 1; $i++) {
+													$classeAtiva = ($i === $paginaAtual) ? "active" : "";
+													echo "<a class='page-link $classeAtiva' href='aluno.php?pagina=$i'>$i</a>";
+												}
+												echo "<span>ₒₒₒ</span>";
+												echo "<a class='page-link' href='aluno.php?pagina=$totalPaginas'>$totalPaginas</a>";
+											}
+										} else {
+											// Caso contrário, exibe normalmente
+											for ($i = 1; $i <= $totalPaginas; $i++) {
+												$classeAtiva = ($i === $paginaAtual) ? "active" : "";
+												echo "<a class='page-link $classeAtiva' href='aluno.php?pagina=$i'>$i</a>";
+											}
+										}
 									}
 									echo "</div>";
 
@@ -295,8 +327,8 @@ if ($result === false) {
 								}
 							}
 
-$conn = null; // Fecha a conexão
-?>
+							$conn = null; // Fecha a conexão
+							?>
 
 							</tbody>
 						</table>
@@ -325,32 +357,32 @@ $conn = null; // Fecha a conexão
 <script src="../ArquivosExternos/Jquery.js"></script>
 
 <script>
-    $(document).ready(function() {
-        // Capturar clique no botão de edição
-        $('.edit-button').click(function() {
-            // Encontrar a linha (tr) associada ao botão de edição
-            var row = $(this).closest('tr');
+	$(document).ready(function() {
+		// Capturar clique no botão de edição
+		$('.edit-button').click(function() {
+			// Encontrar a linha (tr) associada ao botão de edição
+			var row = $(this).closest('tr');
 
-            // Obter os dados das células da linha para preencher o formulário
-            var id = row.find('td:eq(1)').text(); // ID do aluno
-            var nome = row.find('td:eq(0)').text(); // Nome do aluno
-            var email = row.find('td:eq(2)').text(); // Email do aluno
-            var turma = row.find('td:eq(3)').text(); // Turma do aluno, ajuste caso necessário
+			// Obter os dados das células da linha para preencher o formulário
+			var id = row.find('td:eq(1)').text(); // ID do aluno
+			var nome = row.find('td:eq(0)').text(); // Nome do aluno
+			var email = row.find('td:eq(2)').text(); // Email do aluno
+			var turma = row.find('td:eq(3)').text(); // Turma do aluno, ajuste caso necessário
 
-            // Preencher os campos do formulário com os dados obtidos
-            $('#idAluno').val(id);
-            $('#NomeAluno').val(nome); // Corrigindo para preencher o campo do nome do aluno
-            $('#EmailAluno').val(email);
-            $('#Turma_idTurma').val(turma);
+			// Preencher os campos do formulário com os dados obtidos
+			$('#idAluno').val(id);
+			$('#NomeAluno').val(nome); // Corrigindo para preencher o campo do nome do aluno
+			$('#EmailAluno').val(email);
+			$('#Turma_idTurma').val(turma);
 
-            // Alterar o valor do botão para refletir a ação de edição
-            $('input[type="submit"]').val('Atualizar');
-            // Alterar a rota do formulário para a rota de atualização de usuários
-            $('form').attr('action', '../Router/alunoedit_rotas.php'); // Alterar a action do formulário para a rota correta
-            // Alterar o nome do botão para identificar a ação como atualização
-            $('input[type="submit"]').attr('name', 'Editar');
-        });
-    });
+			// Alterar o valor do botão para refletir a ação de edição
+			$('input[type="submit"]').val('Atualizar');
+			// Alterar a rota do formulário para a rota de atualização de usuários
+			$('form').attr('action', '../Router/alunoedit_rotas.php'); // Alterar a action do formulário para a rota correta
+			// Alterar o nome do botão para identificar a ação como atualização
+			$('input[type="submit"]').attr('name', 'Editar');
+		});
+	});
 </script>
 
 <script>
@@ -385,7 +417,16 @@ $conn = null; // Fecha a conexão
 	});
 </script>
 
-
+<script>
+	$(document).ready(function() {
+		$('#EmailAluno').on('input', function() {
+			let tel = $(this).val().replace(/\D/g, '');
+			tel = tel.replace(/^(\d{2})(\d)/g, '($1) $2');
+			tel = tel.replace(/(\d{5})(\d)/, '$1-$2');
+			$(this).val(tel);
+		});
+	});
+</script>
 
 
 <script>
@@ -397,4 +438,5 @@ $conn = null; // Fecha a conexão
 
 
 </body>
+
 </html>

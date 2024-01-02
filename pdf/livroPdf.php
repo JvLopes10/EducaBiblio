@@ -4,6 +4,7 @@ include 'config.php';
 
 $sql = "SELECT
             livro.idLivro,
+            livro.Tombo,
             livro.NomeLivro,
             livro.EditoraLivro,
             livro.IBSMLivro,
@@ -93,21 +94,21 @@ if ($res->num_rows > 0) {
         <table>
             <thead>
                 <tr>
-                    <th>Id</th>
                     <th>Título</th>
+                    <th>Tombo</th>
                     <th>Editora</th>
                     <th>ISBN/CDD</th>
                     <th>Gênero</th>
                     <th>Idioma</th>
-                    <th>Quantidade</th>
+                    <th>Quant</th>
                 </tr>
             </thead>
             <tbody>";
 
     while ($row = $res->fetch_object()) {
         $html .= "<tr>";
-        $html .= "<td>" . $row->idLivro . "</td>";
         $html .= "<td>" . $row->NomeLivro . "</td>";
+        $html .= "<td>" . $row->Tombo . "</td>";
         $html .= "<td>" . $row->EditoraLivro . "</td>";
         $html .= "<td>" . $row->IBSMLivro . "</td>";
         $html .= "<td>" . $row->GeneroLivro . "</td>";
@@ -138,7 +139,7 @@ $dompdf->loadHtml($html);
 
 $dompdf->set_option('defaultFont', 'sans');
 
-$dompdf->setPaper('A4', 'portrait');
+$dompdf->setPaper('A4', 'landscape');
 
 $dompdf->render();
 

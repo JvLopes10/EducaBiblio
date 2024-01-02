@@ -114,7 +114,6 @@ if ($res->num_rows > 0) {
         <table>
             <thead>
                 <tr>
-                <th>ID</th>
                 <th>Leitor</th>
                 <th>Data do Empréstimo</th>
                 <th>Data de Devolução</th>
@@ -126,7 +125,6 @@ if ($res->num_rows > 0) {
 
     while ($row = $res->fetch_object()) {
         $html .= "<tr>";
-        $html .= "<td>" . $row->idEmprestimo . "</td>";
         $html .= "<td>" . (isset($row->Estudante) ? $row->Estudante : $row->Professor) . "</td>";
         $html .= "<td>" . $row->DataEmprestimoFormatada . "</td>";
         $html .= "<td>" . $row->DataDevolucaoFormatada . "</td>";
@@ -157,7 +155,7 @@ $dompdf->loadHtml($html);
 
 $dompdf->set_option('defaultFont', 'sans');
 
-$dompdf->setPaper('A4', 'portrait');
+$dompdf->setPaper('A4', 'landscape');
 
 $dompdf->render();
 

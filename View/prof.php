@@ -133,10 +133,10 @@ if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true)
 				<div class="row">
 					<form action="../Router/prof_rotas.php" method="post">
 						<h3>Cadastro de Professores</h3>
-						<input type="text" placeholder="ID" name="idProf" id="idProf" maxlength="50" class="box3 autocomplete=" off" readonly>
-						<input type="text" placeholder="Nome" name="NomeProf" id="NomeProf" maxlength="50" class="box" autocomplete="off">
-						<input type="email" placeholder="E-mail" name="EmailProf" id="EmailProf" maxlength="50" class="box" autocomplete="off">
-						<input type="text" placeholder="Disciplina" name="MateriaProf" id="MateriaProf" maxlength="50" class="box" autocomplete="off">
+						<input type="text" placeholder="ID" name="idProf" id="idProf" class="box3" autocomplete= "off" readonly>
+						<input type="text" placeholder="Nome" name="NomeProf" id="NomeProf" class="box" autocomplete="off">
+						<input type="email" placeholder="E-mail" name="EmailProf" id="EmailProf" class="box" autocomplete="off">
+						<input type="text" placeholder="Disciplina" name="MateriaProf" id="MateriaProf"  class="box" autocomplete="off">
 						<center><input type="submit" value="Enviar" class="inline-btn" name="action"></center>
 					</form>
 				</div>
@@ -158,7 +158,7 @@ if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true)
 				<div class="table-data">
 					<div class="order">
 						<div class="head">
-							<h3>Tabela de Professores</h3>
+							<h3>Tabela de cadastro de professores</h3>
 							<input type="text" id="searchInput" class="searchInput" placeholder="Pesquisar...">
 
 							<button class="pdf-button" id="pdf-button" aria-label="botão pdf" onclick="abrirAluno2()">
@@ -188,11 +188,11 @@ if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true)
 							} else {
 								if ($result->rowCount() > 0) {
 									$user = $result->fetchAll(PDO::FETCH_ASSOC);
-									$UsuarioPorPagina = 3;
+									$UsuarioPorPagina = 5;
 									$paginaAtual = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
 									$indiceInicial = ($paginaAtual - 1) * $UsuarioPorPagina;
 									$UsuarioExibidos = array_slice($user, $indiceInicial, $UsuarioPorPagina);
-							
+
 									// Exibir a tabela com os dados dos professores
 									echo "<table>";
 									echo "<thead>";
@@ -238,7 +238,7 @@ if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true)
 								}
 							}
 
-$conn = null; // Fecha a conexão
+							$conn = null; // Fecha a conexão
 							?>
 
 

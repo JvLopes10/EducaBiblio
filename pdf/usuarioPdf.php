@@ -78,7 +78,6 @@ if ($res->num_rows > 0) {
         <table>
             <thead>
                 <tr>
-                <th>ID</th>
                 <th>Nome</th>
                 <th>Usuário</th>
                 <th>E-mail</th>
@@ -88,7 +87,6 @@ if ($res->num_rows > 0) {
 
     while ($row = $res->fetch_object()) {
         $html .= "<tr>";
-        $html .= "<td>" . $row->idUsuario . "</td>";
         $html .= "<td>" . $row->NomeUsuario . "</td>";
         $html .= "<td>" . $row->UserUsuario . "</td>";
         $html .= "<td>" . $row->EmailUsuario . "</td>";
@@ -117,7 +115,7 @@ $dompdf->loadHtml($html);
 
 $dompdf->set_option('defaultFont', 'sans');
 
-$dompdf->setPaper('A4', 'portrait');
+$dompdf->setPaper('A4', 'landscape');
 
 $dompdf->render();
 

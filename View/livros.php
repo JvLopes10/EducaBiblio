@@ -22,6 +22,7 @@ if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true)
 
 	<title>EducaBiblio</title>
 </head>
+
 <body>
 
 	<section id="sidebar">
@@ -130,15 +131,17 @@ if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true)
 				<div class="row">
 					<form action="../router/livro_rotas.php" method="post" enctype="multipart/form-data">
 						<h3>Cadastro de livros</h3>
-						<input type="text" placeholder="ID" name="idLivro" required maxlength="50" class="box2" autocomplete="off" readonly>
+						<input type="text" placeholder="ID" name="idLivro" id="idLivro" required  class="box3" autocomplete="off" readonly>
 						<style>
 
 						</style>
-						<input type="text" placeholder="Nome" name="NomeLivro" id="NomeLivro" required maxlength="50" class="box" autocomplete="off" required>
-						<input type="text" placeholder="Autor" name="NomeAutor" id="NomeAutor" maxlength="50" class="box" autocomplete="off" required>
-						<input type="text" placeholder="Edição" name="EdicaoLivro" id="EdicaoLivro" maxlength="50" class="box" autocomplete="off">
-						<input type="text" placeholder="Editora" name="EditoraLivro" id="EditoraLivro" maxlength="50" class="box" autocomplete="off">
-						<input type="text" placeholder="ISBN/CDD" name="IBSMLivro" id="IBSMLivro" maxlength="50" class="box" autocomplete="off">
+						<input type="text" placeholder="Nome" name="NomeLivro" id="NomeLivro" class="box" autocomplete="off" required>
+						<input type="text" placeholder="Autor" name="NomeAutor" id="NomeAutor" class="box" autocomplete="off" required>
+						<input type="text" placeholder="Edição" name="EdicaoLivro" id="EdicaoLivro"  class="box" autocomplete="off">
+						<input type="text" placeholder="Editora" name="EditoraLivro" id="EditoraLivro"  class="box" autocomplete="off">
+						<input type="text" placeholder="Tombo " name="Tombo" id="Tombo" class="box" autocomplete="off">
+						<input type="text" placeholder="ISBN / CDD " name="IBSMLivro" id="IBSMLivro"  class="box" autocomplete="off">
+
 
 						<select name="Genero_idGenero" id="Genero_idGenero" class="box select-dark-mode" required>
 							<option value="1">Autoajuda</option>
@@ -146,7 +149,7 @@ if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true)
 							<option value="3">Clássico</option>
 							<option value="4">Conto</option>
 							<option value="5">Fantasia</option>
-							<option value="6">Ficção científica</option>
+							<option value="6">Ficção</option>
 							<option value="7">Poesia</option>
 							<option value="8">Romance</option>
 							<option value="9">Outro</option>
@@ -158,37 +161,13 @@ if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true)
 						</select>
 
 						<select name="DidaticoLivro" id="DidaticoLivro" class="box select-dark-mode">
+						<option value="Não">Material não didático</option>
 							<option value="Sim">Material didático</option>
-							<option value="Não">Material não didático</option>
 						</select>
 						<input type="text" placeholder="Localização" name="LocalLivro" id="LocalLivro" class="box" autocomplete="off">
-						<select id="PrateleiraLivro" name="PrateleiraLivro" class="box select-dark-mode">
-							<option>Prateleira</option>
-							<option value="1">1</option>
-							<option value="2">2</option>
-							<option value="3">3</option>
-							<option value="4">4</option>
-							<option value="5">5</option>
-							<option value="6">6</option>
-							<option value="7">7</option>
-							<option value="8">8</option>
-							<option value="9">9</option>
-							<option value="10">10</option>
-						</select>
-						<select id="ColunaLivro" name="ColunaLivro" class="box select-dark-mode">
-							<option>Coluna</option>
-							<option value="A">A</option>
-							<option value="B">B</option>
-							<option value="C">C</option>
-							<option value="D">D</option>
-							<option value="E">E</option>
-							<option value="F">F</option>
-							<option value="G">G</option>
-							<option value="H">H</option>
-							<option value="I">I</option>
-							<option value="J">J</option>
-						</select>
-						<input type="text" placeholder="Quantidade" name="QuantidadeLivros" id="QuantidadeLivros" required maxlength="50" class="box" autocomplete="off">
+
+
+						<input type="text" placeholder="Quantidade" name="QuantidadeLivros" id="QuantidadeLivros" class="box" autocomplete="off">
 
 						<center><input type="submit" value="Cadastrar" id="cadastrar" class="inline-btn" name="action"></center>
 					</form>
@@ -210,7 +189,7 @@ if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true)
 				<div class="table-data">
 					<div class="order">
 						<div class="head">
-							<h3>Tabela de livros</h3>
+							<h3>Tabela de cadastro livros</h3>
 							<input type="text" id="searchInput" class="searchInput" placeholder="Pesquisar...">
 
 							<button class="pdf-button" id="pdf-button" aria-label="botão pdf" onclick="abrirAluno()">
@@ -234,6 +213,7 @@ if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true)
             livro.idLivro,
             livro.NomeLivro,
             livro.EditoraLivro,
+            livro.Tombo,
             livro.IBSMLivro,
 			livro.QuantidadeLivros,
             genero.NomeGenero AS GeneroLivro,
@@ -260,7 +240,7 @@ if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true)
 							} else {
 								if ($result->rowCount() > 0) {
 									$livros = $result->fetchAll(PDO::FETCH_ASSOC);
-									$livrosPorPagina = 3;
+									$livrosPorPagina = 5;
 									$paginaAtual = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
 									$indiceInicial = ($paginaAtual - 1) * $livrosPorPagina;
 									$livrosExibidos = array_slice($livros, $indiceInicial, $livrosPorPagina);
@@ -271,7 +251,8 @@ if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true)
 									echo "<th><center>Nome</center></th>";
 									echo "<th><center>ID</center></th>";
 									echo "<th><center>Editora</center></th>";
-									echo "<th><center>ISBN/CDD</center></th>";
+									echo "<th><center>Tombo</center></th>";
+									echo "<th><center>ISBN / CDD</center></th>";
 									echo "<th><center>Gênero</center></th>";
 									echo "<th><center>Idioma</center></th>";
 									echo "<th><center>Quantidade</center></th>";
@@ -287,6 +268,7 @@ if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true)
 										echo "<td><center>" . $row["NomeLivro"] . "</center></td>";
 										echo "<td><center>" . $row["idLivro"] . "</center></td>";
 										echo "<td><center>" . $row["EditoraLivro"] . "</center></td>";
+										echo "<td><center>" . $row["Tombo"] . "</center></td>";
 										echo "<td><center>" . $row["IBSMLivro"] . "</center></td>";
 										echo "<td><center>" . $row["GeneroLivro"] . "</center></td>";
 										echo "<td><center>" . $row["IdiomaLivro"] . "</center></td>";
@@ -308,10 +290,41 @@ if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true)
 									echo "<div class='pagination'>";
 									$totalLivros = count($livros);
 									$totalPaginas = ceil($totalLivros / $livrosPorPagina);
-									for ($i = 1; $i <= $totalPaginas; $i++) {
-										$classeAtiva = ($i === $paginaAtual) ? "active" : "";
-										echo "<a class='page-link $classeAtiva' href='livros.php?pagina=$i'>$i</a>";
+
+									if ($totalPaginas > 4) {
+										// Se houver mais de 4 páginas, exibe de forma mais seletiva
+										if ($paginaAtual <= 2) {
+											for ($i = 1; $i <= 3; $i++) {
+												$classeAtiva = ($i === $paginaAtual) ? "active" : "";
+												echo "<a class='page-link $classeAtiva' href='livros.php?pagina=$i'>$i</a>";
+											}
+											echo "<span>ₒₒₒ</span>";
+											echo "<a class='page-link' href='livros.php?pagina=$totalPaginas'>$totalPaginas</a>";
+										} elseif ($paginaAtual >= $totalPaginas - 1) {
+											echo "<a class='page-link' href='livros.php?pagina=1'>1</a>";
+											echo "<span>ₒₒₒ</span>";
+											for ($i = $totalPaginas - 2; $i <= $totalPaginas; $i++) {
+												$classeAtiva = ($i === $paginaAtual) ? "active" : "";
+												echo "<a class='page-link $classeAtiva' href='livros.php?pagina=$i'>$i</a>";
+											}
+										} else {
+											echo "<a class='page-link' href='livros.php?pagina=1'>1</a>";
+											echo "<span>ₒₒₒ</span>";
+											for ($i = $paginaAtual - 1; $i <= $paginaAtual + 1; $i++) {
+												$classeAtiva = ($i === $paginaAtual) ? "active" : "";
+												echo "<a class='page-link $classeAtiva' href='livros.php?pagina=$i'>$i</a>";
+											}
+											echo "<span>ₒₒₒ</span>";
+											echo "<a class='page-link' href='livros.php?pagina=$totalPaginas'>$totalPaginas</a>";
+										}
+									} else {
+										// Caso contrário, exibe normalmente
+										for ($i = 1; $i <= $totalPaginas; $i++) {
+											$classeAtiva = ($i === $paginaAtual) ? "active" : "";
+											echo "<a class='page-link $classeAtiva' href='livros.php?pagina=$i'>$i</a>";
+										}
 									}
+
 									echo "</div>";
 								} else {
 									echo "<tr><td colspan='8'><center>Nenhum livro encontrado.</center></td></tr>";
@@ -352,33 +365,35 @@ if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true)
         var idLivro = $(this).closest('tr').find('td:eq(1)').text(); // ID do livro na segunda coluna, ajuste conforme a estrutura real da sua tabela
         var NomeLivro = $(this).closest('tr').find('td:eq(0)').text(); // Nome do livro na primeira coluna, ajuste conforme a estrutura real da sua tabela
         var EditoraLivro = $(this).closest('tr').find('td:eq(2)').text(); // Editora na terceira coluna, ajuste conforme a estrutura real da sua tabela
-        var IBSMLivro = $(this).closest('tr').find('td:eq(3)').text(); // ISBN/CDD na quarta coluna, ajuste conforme a estrutura real da sua tabela
-        var GeneroLivro = $(this).closest('tr').find('td:eq(4)').text(); // Gênero na quinta coluna, ajuste conforme a estrutura real da sua tabela
-        var IdiomaLivro = $(this).closest('tr').find('td:eq(5)').text(); // Idioma na sexta coluna, ajuste conforme a estrutura real da sua tabela
-        var QuantidadeLivros = $(this).closest('tr').find('td:eq(6)').text(); // Quantidade na sétima coluna, ajuste conforme a estrutura real da sua tabela
-        var LocalLivro = $(this).closest('tr').find('td:eq(7)').text(); // Localização na oitava coluna, ajuste conforme a estrutura real da sua tabela
-        var PrateleiraLivro = $(this).closest('tr').find('td:eq(8)').text(); // Prateleira na nona coluna, ajuste conforme a estrutura real da sua tabela
-        var ColunaLivro = $(this).closest('tr').find('td:eq(9)').text(); // Coluna na décima coluna, ajuste conforme a estrutura real da sua tabela
+        var Tombo = $(this).closest('tr').find('td:eq(3)').text(); // ISBN/CDD na quarta coluna, ajuste conforme a estrutura real da sua tabela
+        var IBSMLivro = $(this).closest('tr').find('td:eq(4)').text(); // ISBN/CDD na quarta coluna, ajuste conforme a estrutura real da sua tabela
+        var GeneroLivro = $(this).closest('tr').find('td:eq(5)').text(); // Gênero na quinta coluna, ajuste conforme a estrutura real da sua tabela
+        var IdiomaLivro = $(this).closest('tr').find('td:eq(6)').text(); // Idioma na sexta coluna, ajuste conforme a estrutura real da sua tabela
+        var QuantidadeLivros = $(this).closest('tr').find('td:eq(7)').text(); // Quantidade na sétima coluna, ajuste conforme a estrutura real da sua tabela
+        var LocalLivro = $(this).closest('tr').find('td:eq(8)').text(); // Localização na oitava coluna, ajuste conforme a estrutura real da sua tabela
+        var PrateleiraLivro = $(this).closest('tr').find('td:eq(9)').text(); // Prateleira na nona coluna, ajuste conforme a estrutura real da sua tabela
+        var ColunaLivro = $(this).closest('tr').find('td:eq(10)').text(); // Coluna na décima coluna, ajuste conforme a estrutura real da sua tabela
 
         // Preencher o formulário com os dados obtidos
-        preencherFormulario(idLivro, NomeLivro, EditoraLivro, IBSMLivro, GeneroLivro, IdiomaLivro, QuantidadeLivros, LocalLivro, PrateleiraLivro, ColunaLivro); // Chama a função para preencher o formulário com os dados obtidos
+        preencherFormulario(idLivro, NomeLivro, EditoraLivro, Tombo, IBSMLivro, GeneroLivro, IdiomaLivro, QuantidadeLivros, LocalLivro, PrateleiraLivro, ColunaLivro); // Chama a função para preencher o formulário com os dados obtidos
 
-		// Alterar o modo de ação para editar
-		$('#modoAcao').val('editar');
-					// Alterar o valor do botão para refletir a ação de edição
-					$('input[type="submit"]').val('Editar');
+        // Alterar o modo de ação para editar
+        $('#modoAcao').val('editar');
+        // Alterar o valor do botão para refletir a ação de edição
+        $('input[type="submit"]').val('Editar');
         // Modificar o action do formulário para o script responsável pela atualização
-		$('form').attr('action', '../router/Atualizar_livrorotas.php');
+        $('form').attr('action', '../router/Atualizar_livrorotas.php');
         // Modificar o texto do botão de envio para "Atualizar"
         $('input[type="submit"]').attr('name', 'Editar');
     });
 });
 
 // Função para preencher o formulário com os dados do livro ao clicar no botão de edição
-function preencherFormulario(idLivro, NomeLivro, EditoraLivro, IBSMLivro, GeneroLivro, IdiomaLivro, QuantidadeLivros, LocalLivro, PrateleiraLivro, ColunaLivro) {
+function preencherFormulario(idLivro, NomeLivro, EditoraLivro, Tombo, IBSMLivro, GeneroLivro, IdiomaLivro, QuantidadeLivros, LocalLivro, PrateleiraLivro, ColunaLivro) {
     $('#idLivro').val(idLivro);
     $('#NomeLivro').val(NomeLivro);
     $('#EditoraLivro').val(EditoraLivro);
+    $('#Tombo').val(Tombo);
     $('#IBSMLivro').val(IBSMLivro);
     $('#Genero_idGenero').val(GeneroLivro); // Ajuste conforme o ID do campo select para o gênero na sua página
     $('#Idioma_idIdioma').val(IdiomaLivro); // Ajuste conforme o ID do campo select para o idioma na sua página
@@ -417,23 +432,19 @@ function preencherFormulario(idLivro, NomeLivro, EditoraLivro, IBSMLivro, Genero
 </script>
 <script>
 	function handlePopup1(local, prateleira, coluna) {
-    const popup = document.getElementById("popup1");
+		const popup = document.getElementById("popup1");
 
-    if (popup.classList.contains("opened")) {
-        popup.classList.remove("opened");
-    } else {
-        const locationInfo = `
+		if (popup.classList.contains("opened")) {
+			popup.classList.remove("opened");
+		} else {
+			const locationInfo = `
             <b>✧ Localização:</b> ${local}<br>
-            <b>✧ Prateleira:</b> ${prateleira}<br>
-            <b>✧ Coluna:</b> ${coluna}<br>
         `;
 
-        document.querySelector("#popup1 .desc").innerHTML = locationInfo;
-        popup.classList.add("opened");
-    }
-}
-
-
+			document.querySelector("#popup1 .desc").innerHTML = locationInfo;
+			popup.classList.add("opened");
+		}
+	}
 </script>
 
 </body>

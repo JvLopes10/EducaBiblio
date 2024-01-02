@@ -55,10 +55,11 @@ class LivroController
 
     private function inserirLivro($conn, $dadosLivro, $idAutor)
     {
-        $sqlLivro = "INSERT INTO Livro (NomeLivro, IBSMLivro, LocalLivro, PrateleiraLivro, ColunaLivro, autor_idAutor, Genero_idGenero, Idioma_idIdioma, EditoraLivro, EdicaoLivro, QuantidadeLivros, DidaticoLivro)
-                     VALUES (:NomeLivro, :IBSMLivro, :LocalLivro, :PrateleiraLivro, :ColunaLivro, :autor_idAutor, :Genero_idGenero, :Idioma_idIdioma, :EditoraLivro, :EdicaoLivro, :QuantidadeLivros, :DidaticoLivro)";
+        $sqlLivro = "INSERT INTO Livro (NomeLivro, Tombo, IBSMLivro, LocalLivro, PrateleiraLivro, ColunaLivro, autor_idAutor, Genero_idGenero, Idioma_idIdioma, EditoraLivro, EdicaoLivro, QuantidadeLivros, DidaticoLivro)
+                     VALUES (:NomeLivro, :Tombo, :IBSMLivro, :LocalLivro, :PrateleiraLivro, :ColunaLivro, :autor_idAutor, :Genero_idGenero, :Idioma_idIdioma, :EditoraLivro, :EdicaoLivro, :QuantidadeLivros, :DidaticoLivro)";
         $stmtLivro = $conn->prepare($sqlLivro);
         $stmtLivro->bindParam(':NomeLivro', $dadosLivro['NomeLivro']);
+        $stmtLivro->bindParam(':Tombo', $dadosLivro['Tombo']);
         $stmtLivro->bindParam(':IBSMLivro', $dadosLivro['IBSMLivro']);
         $stmtLivro->bindParam(':LocalLivro', $dadosLivro['LocalLivro']);
         $stmtLivro->bindParam(':PrateleiraLivro', $dadosLivro['PrateleiraLivro']);

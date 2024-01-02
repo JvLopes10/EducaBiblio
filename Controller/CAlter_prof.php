@@ -39,4 +39,3 @@ class CAlter_prof
 }
 
 var_dump($_POST);
-?>

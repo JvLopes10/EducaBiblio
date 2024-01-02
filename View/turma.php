@@ -132,10 +132,10 @@ if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true)
 				<div class="row">
 					<form action="../Router/turma_rotas.php" method="post">
 						<h3>Cadastro de Turmas</h3>
-						<input type="number" placeholder="ID" name="IdTurma" id="IdTurma" required maxlength="50" class="box3" autocomplete="off" readonly>
-						<input type="Number" placeholder="Ano de início" name="AnodeInicio" id="AnodeInicio" required maxlength="50" class="box" autocomplete="off">
-						<input type="text" placeholder="Série" name="AnoTurma" id="AnoTurma" required maxlength="50" class="box" autocomplete="off" required>
-						<input type="text" placeholder="Turma" name="NomeTurma" id="NomeTurma" maxlength="50" class="box" autocomplete="off">
+						<input type="number" placeholder="ID" name="IdTurma" id="IdTurma" class="box3" autocomplete="off" readonly>
+						<input type="Number" placeholder="Ano de início" name="AnodeInicio" id="AnodeInicio" class="box" autocomplete="off">
+						<input type="text" placeholder="Série" name="AnoTurma" id="AnoTurma"  class="box" autocomplete="off" required>
+						<input type="text" placeholder="Turma" name="NomeTurma" id="NomeTurma" class="box" autocomplete="off">
 
 						<center><input type="submit" value="Enviar" class="inline-btn" name="action"></center>
 					</form>
@@ -169,7 +169,7 @@ if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true)
 				<div class="table-data">
 					<div class="order">
 						<div class="head">
-							<h3>Tabela de turmas</h3>
+							<h3>Tabela de cadastro de turmas</h3>
 							<input type="text" id="searchInput" class="searchInput" placeholder="Pesquisar...">
 							<td>
 								<div class='container'>
@@ -184,7 +184,7 @@ if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true)
 										<p class='desc'>Deseja adicionar um ano na contagem?</p>
 										<button class='close-popup3-button' type='button' onclick='handlePopup3(false)'>Fechar</button>
 										<a href="../Controller/New_Year.php"><button class='close-popup3-button'>Adicionar</button></a>
-										
+
 										</a>
 									</div>
 								</div>
@@ -385,7 +385,7 @@ if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado'] !== true)
 							} else {
 								if ($result->rowCount() > 0) {
 									$turm = $result->fetchAll(PDO::FETCH_ASSOC);
-									$TurmaPorPagina = 3;
+									$TurmaPorPagina = 5;
 									$paginaAtual = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
 									$indiceInicial = ($paginaAtual - 1) * $TurmaPorPagina;
 									$TurmasExibidos = array_slice($turm, $indiceInicial, $TurmaPorPagina);
